@@ -1,0 +1,34 @@
+[
+    {
+        "name": "我的文库",
+        "icon": "fa-arrows",
+        "children": [
+            {
+                "name": "文章列表",
+                "link": "template"
+            },
+            {
+                "name": "草稿箱",
+                "link": "template"
+            },
+            {
+                "name": "新建文章",
+                "link": "template"
+            }
+        ]
+    },
+    {
+        "name": "直播管理",
+        "icon": "fa-video-camera",
+        "children": [
+            {
+                "name": "直播列表",
+                "link": "livelist"
+            },
+            {
+                "name": "创建直播",
+                "link": "createlive"
+            }
+        ]
+    }
+]

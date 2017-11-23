@@ -1,0 +1,13 @@
+label{
+    line-height: 29px;
+}
+
+.dailyItem {
+    font-size: 15px;
+}  
+
+@media screen and (max-width: 767px){
+    .dailyItem {
+        font-size: 21px;
+    } 
+}
