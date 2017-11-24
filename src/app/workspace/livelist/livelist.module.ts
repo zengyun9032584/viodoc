@@ -7,7 +7,11 @@ import {LivelistComponent} from "./livelist.component";
 
 import {
     GrowlModule,
+    ButtonModule,         // 按钮
+    
   } from 'primeng/primeng';
+
+  import {MyBreadcrumbModule} from "../../components/my-breadcrumb/my-breadcrumb";
 
 
 @NgModule({
@@ -19,7 +23,10 @@ import {
     CommonModule,
     ReactiveFormsModule,
 
+    ButtonModule,         // 按钮
+    
     GrowlModule,
+    MyBreadcrumbModule,
 
     RouterModule.forChild([
       { path:'',component:LivelistComponent}

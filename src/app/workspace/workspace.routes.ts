@@ -39,7 +39,6 @@ export const workspaceRoutes = [
         loadChildren: './createlive/createlive.module#CreateliveModule',
         data: {preload: true}
       },
-      
       {
         path: '**',
         component: PageNotFoundComponent

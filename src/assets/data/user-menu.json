@@ -5,15 +5,15 @@
         "children": [
             {
                 "name": "文章列表",
-                "link": "template"
+                "link": "**"
             },
             {
                 "name": "草稿箱",
-                "link": "template"
+                "link": "**"
             },
             {
                 "name": "新建文章",
-                "link": "template"
+                "link": "**"
             }
         ]
     },

@@ -8,10 +8,9 @@
         color: rgba(#000, .7)">登录非凡医品</h3>
     
         <div class="login-form-item" >
-
-          <input [(ngModel)]="username" type="text" pInputText placeholder="Username">
-          <input [(ngModel)]="password" type="password" pPassword placeholder="Userpassword">
-
+          <input [(ngModel)]="username" type="text" pInputText placeholder="Phone Number">
+          <div class="login-form-item--error">{{phoneErrorText}}</div>
+          <input [(ngModel)]="password" type="password" pPassword placeholder="User Password">
           <div class="login-form-item--error">{{passwordErrorText}}</div>
         </div>
         <div class="login-form-item">

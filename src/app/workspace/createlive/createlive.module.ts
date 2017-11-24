@@ -9,6 +9,9 @@ import {
     GrowlModule,
   } from 'primeng/primeng';
 
+  import {MyBreadcrumbModule} from "../../components/my-breadcrumb/my-breadcrumb";
+  
+
 
 @NgModule({
   imports: [
@@ -20,7 +23,8 @@ import {
     ReactiveFormsModule,
 
     GrowlModule,
-
+    MyBreadcrumbModule,
+    
     RouterModule.forChild([
       { path:'',component:CreateliveComponent}
     ])

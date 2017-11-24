@@ -1,0 +1,17 @@
+.myImg{
+    height: 180px;
+    width: 180px;
+}
+.content{
+    height: 200px
+}
+.live{
+    border: 1px solid black
+
+}
+.live button{
+    width: 94%;
+    left:3%;
+    bottom: -70px;
+
+}

@@ -1,3 +1,8 @@
-<p>
-  createlive works!
-</p>
+<div [@pageAnimation]="'in'">
+    <my-breadcrumb name1="直播管理" name2="创建直播"></my-breadcrumb>
+</div>
+
+<div class="ui-g">
+  创建直播
+  <input [(ngModel)]="livename" type="text" pInputText placeholder="Phone Number">
+</div>

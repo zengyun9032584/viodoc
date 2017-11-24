@@ -12,6 +12,12 @@ import { pageAnimation, tagAnimation } from '../../common/public-data';
   ]
 })
 export class CreateliveComponent implements OnInit {
+  
+  liveName:string;
+  liveType:string;
+  liveTime:string;
+  liveContent:string;
+  livefile = new Array<any>();
 
   constructor() { }
 

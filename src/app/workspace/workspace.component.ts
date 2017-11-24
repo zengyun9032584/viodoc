@@ -49,7 +49,6 @@ export class WorkspaceComponent implements OnInit {
   };
 
   ngOnInit() {
-    debugger
     this.getMenu();
     if (sessionStorage.getItem('userToken')) {
       this.realname = sessionStorage.getItem('realname');

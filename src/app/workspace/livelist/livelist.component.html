@@ -1,3 +1,18 @@
-<p>
-  livelist works!
-</p>
+<!-- <p-growl [(value)]="msgs" life="2000"></p-growl> -->
+<div [@pageAnimation]="'in'">
+  <my-breadcrumb name1="直播管理" name2="直播列表"></my-breadcrumb>
+</div>
+
+<div class="ui-g content" >
+  <div *ngFor="let item of livelist ;let i=index" class="ui-g-12 ui-md-6 ui-lg-3 live">
+    <h3> {{item.title}}</h3>
+    <p>{{item.name}}</p>
+    <h4>{{item.time}}</h4>
+    <h4>{{item.status}}</h4>
+    <div>{{item.introduce}}</div>
+    <!-- <img class="myImg" src="assets/image/timg.jpeg"> -->
+    <!-- <br><br> -->
+    <button (click)="login()" pButton type="button" label ="进入详情"></button>
+  </div>
+
+</div>

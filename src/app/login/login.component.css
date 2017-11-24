@@ -60,6 +60,13 @@
         height:45px;
         font-size: 18px;
     }
+    .login-form-item--error {
+      color: #ff4949;
+      position: relative;
+      font-size: 15px;
+      top: -25px;
+      /* transition: height .3s; */
+    }
 
 
     .tip {

@@ -29,70 +29,82 @@ export class HttpService {
    }
 
    getServerIP() {
-       return `http://139.196.87.132:8099`;
+       return 'http://viodoc.tpddns.cn:9500/';
     //    return `http://localhost:3000`;
    }
 
-   async newget(url: string) {
-        console.log('start');
-        let options = new RequestOptions({ withCredentials:false });
-        const data = await this.http.get(url,options) // 这里得到了一个返回错误
-            return data.toPromise();
+async newget(url: string) {
+    console.log('HTTP GET '+url);
+    let options = new RequestOptions({ withCredentials:false });
+    const data = await this.http.get(url,options) // 这里得到了一个返回错误
+    return data.toPromise();
 };
 
-   get(url: string): Promise<any> {
-        let options = new RequestOptions({ withCredentials:false });
-        return this.http.get(url,options)
-                   .toPromise()
-                   .then(response => response.json())
-                   //.then(response => response.text())
-                   .catch(this.handleError);
-    }
-
-
-
-
-    post(url: string, jsonBody: any): Promise<any> {
-        // let headers = new Headers({'Content-Type': 'application/json'});
-        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
-
+async newpost(url: string,json:any){
+    console.log("http POST"+url)
+    let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+    let options = new RequestOptions({ headers: headers,withCredentials:false });
+    const data = await this.http.post(url,json,options) // 这里得到了一个返回错误
+    return data.toPromise();
+}
+async newput(url:string,json:any){
+    let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+    
         let options = new RequestOptions({ headers: headers,withCredentials:false });
-        return this.http.post(url, jsonBody, options)
-                        .toPromise()
-                        .then(response => response.json())
-                        .catch(this.handleError);
-    }
+        const data= this.http.put(url, json, options)
+        return data.toPromise();
+}
 
-    put(url: string, jsonBody: any): Promise<any> {
-        //let headers = new Headers({'Content-Type': 'application/json'});
-        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+get(url: string): Promise<any> {
+    let options = new RequestOptions({ withCredentials:false });
+    return this.http.get(url,options)
+                .toPromise()
+                .then(response => response.json())
+                //.then(response => response.text())
+                .catch(this.handleError);
+}
 
-        let options = new RequestOptions({ headers: headers,withCredentials:false });
-        return this.http.put(url, jsonBody, options)
-                        .toPromise()
-                        .then(response => response.text())
-                        .catch(this.handleError);
-    }
+post(url: string, jsonBody: any): Promise<any> {
+    // let headers = new Headers({'Content-Type': 'application/json'});
+    let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
 
-    delete(url: string): Promise<any> {
-        //let headers = new Headers({'Content-Type': 'application/json'});
-        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
-        let options = new RequestOptions({ headers: headers,withCredentials:false });
-        return this.http.delete(url, options)
-                        .toPromise()
-                        //.then(this.extractData)
-                        .then(response => response.text())
-                        .catch(this.handleError);
-    } 
+    let options = new RequestOptions({ headers: headers,withCredentials:false });
+    return this.http.post(url, jsonBody, options)
+                    .toPromise()
+                    .then(response => response.json())
+                    .catch(this.handleError);
+}
 
-    private extractData(res: Response): Promise<any> {
-        //alert("extractting" + res);
-        //let body = res.json();
-        let body = res.json();
-        return body || { };
-    }
+put(url: string, jsonBody: any): Promise<any> {
+    //let headers = new Headers({'Content-Type': 'application/json'});
+    let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
 
-    private handleError(error: any): Promise<any> {
-        return Promise.reject(error.message || error);
-    }
+    let options = new RequestOptions({ headers: headers,withCredentials:false });
+    return this.http.put(url, jsonBody, options)
+                    .toPromise()
+                    .then(response => response.text())
+                    .catch(this.handleError);
+}
+
+delete(url: string): Promise<any> {
+    //let headers = new Headers({'Content-Type': 'application/json'});
+    let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+    let options = new RequestOptions({ headers: headers,withCredentials:false });
+    return this.http.delete(url, options)
+                    .toPromise()
+                    //.then(this.extractData)
+                    .then(response => response.text())
+                    .catch(this.handleError);
+} 
+
+private extractData(res: Response): Promise<any> {
+    //alert("extractting" + res);
+    //let body = res.json();
+    let body = res.json();
+    return body || { };
+}
+
+private handleError(error: any): Promise<any> {
+    return Promise.reject(error.message || error);
+}
 }
