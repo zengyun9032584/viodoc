@@ -4,7 +4,7 @@ import { pageAnimation, tagAnimation,LiveData } from '../../common/public-data';
 
 const LiveList: LiveData[]=[
   { 
-    title:"吹空调会面瘫么",
+    title:"吹空调会面瘫么吹空调会面瘫么吹空调会面瘫么",
     name:"王玉涛",
     time:"2017年1月1日",
     status:"直播中",

@@ -4,12 +4,12 @@
 </div>
 
 <div class="ui-g content" >
-  <div *ngFor="let item of livelist ;let i=index" class="ui-g-12 ui-md-6 ui-lg-3 live">
+  <div *ngFor="let item of livelist ;let i=index" class="ui-g-12 ui-md-6 ui-lg-3 liveitem">
     <h3> {{item.title}}</h3>
     <p>{{item.name}}</p>
-    <h4>{{item.time}}</h4>
-    <h4>{{item.status}}</h4>
-    <div>{{item.introduce}}</div>
+    <h5>{{item.time}}</h5>
+    <h5>{{item.status}}</h5>
+    <div class="introduce">{{item.introduce}}</div>
     <!-- <img class="myImg" src="assets/image/timg.jpeg"> -->
     <!-- <br><br> -->
     <button (click)="login()" pButton type="button" label ="进入详情"></button>

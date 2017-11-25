@@ -5,13 +5,46 @@
 .content{
     height: 200px
 }
-.live{
-    border: 1px solid black
+.liveitem{
+    border: 1px solid black;
+    position: relative;
 
 }
-.live button{
+
+.liveitem h3{
+    /* border:1px solid red; */
+    width: 90%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 1px;
+    margin: 2px;
+}
+.liveitem p{
+    color: #2399e5;
+    padding: 1px;
+    margin: 2px 2px 2px 4px;
+}
+
+.liveitem h4{
+    padding: 1px;
+    margin: 2px 2px 2px 4px;
+}
+.liveitem .introduce{
+    position: absolute;
+    height: 40%;
+    width: 90%;
+     /* border:1px solid red; */
+     overflow: hidden;
+     text-overflow: ellipsis;
+     /* 单行超出省略号方式 */
+     /* white-space: nowrap; */
+     padding: 1px;
+     margin: 2px ;
+}
+.liveitem button{
     width: 94%;
     left:3%;
-    bottom: -70px;
-
+    position: absolute;
+    bottom: 0px;
 }
