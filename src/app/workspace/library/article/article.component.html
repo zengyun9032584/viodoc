@@ -1,14 +1,18 @@
 <p-growl [(value)]="msgs" life="2000"></p-growl>
 <div [@pageAnimation]="'in'">
-  <my-breadcrumb name1="日报管理" name2="我的日报"></my-breadcrumb>
+  <my-breadcrumb name1="我的文库" name2="新建文章"></my-breadcrumb>
 
-  <div class="search-area">
+  <!-- <div class="search-area">
     <label class="mr15">选择日期</label>
 
-    <p-calendar [showIcon]="true" [inputStyle]="{'width':'100px'}" [style]="{'margin-right':'35px'}" [(ngModel)]="selectTime"
-      (onSelect)="selectDate()"></p-calendar>
-  </div>
+      <p-calendar [showIcon]="true" [inputStyle]="{'width':'100px'}" [style]="{'margin-right':'35px'}" [(ngModel)]="selectTime"
+        (onSelect)="selectDate()">
+      </p-calendar>
+  </div> -->
+  开发中
 </div>
+
+<!-- 
 <h1>
   {{title}}{{date}}
 </h1>
@@ -71,4 +75,4 @@
     <button type="button" pButton icon="fa-check" (click)="postCollect()" label="收藏"></button>
     <button type="button" pButton icon="fa-close" (click)="display=false" label="取消"></button>
   </p-footer>
-</p-dialog>
+</p-dialog> -->

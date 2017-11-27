@@ -1,18 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { beforeUrl, China, pageAnimation, tagAnimation } from '../common/public-data';
+import { beforeUrl, China, pageAnimation, tagAnimation } from '../../../common/public-data';
 import NProgress from 'nprogress';
-import { HttpService } from '../common/http.service';
+import { HttpService } from '../../../common/http.service';
 
 @Component({
     selector: 'app-data-table',
-    templateUrl: './data-table.component.html',
-    styleUrls: ['./data-table.component.css'],
+    templateUrl: './article.component.html',
+    styleUrls: ['./article.component.css'],
     animations: [
         pageAnimation,
         tagAnimation
     ]
 })
-export class DataTableComponent implements OnInit {
+export class ArticleComponent implements OnInit {
     constructor(private http: HttpService) {
         NProgress.start();
     }
@@ -35,7 +35,7 @@ export class DataTableComponent implements OnInit {
         var month = date.getMonth() >= 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1);
         var day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
         this.date = `${date.getFullYear()}${month}${day}`;
-        this.getData();
+        // this.getData();
     }
 
     getData() {

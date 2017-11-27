@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { pageAnimation, tagAnimation } from '../common/public-data';
-import { HttpService } from '../common/http.service';
+import { pageAnimation, tagAnimation } from '../../../common/public-data';
+import { HttpService } from '../../../common/http.service';
 
 @Component({
   selector: 'app-collection',
-  templateUrl: './collection.component.html',
-  styleUrls: ['./collection.component.css'],
+  templateUrl: './draft.component.html',
+  styleUrls: ['./draft.component.css'],
   animations: [
     pageAnimation,
     tagAnimation
   ]
 })
-export class CollectionComponent implements OnInit {
+export class DraftComponent implements OnInit {
   msgs = [];
   items: any;
   selectedItem: any;
@@ -28,7 +28,7 @@ export class CollectionComponent implements OnInit {
   constructor(private http: HttpService) { }
 
   ngOnInit() {
-    this.getData();
+    // this.getData();
   }
 
   getData() {

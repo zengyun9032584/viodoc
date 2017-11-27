@@ -29,8 +29,8 @@ import {
 } from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule} from "@angular/http";
-import {MyBreadcrumbModule} from "../components/my-breadcrumb/my-breadcrumb";
-import {DataTableComponent} from "./data-table.component";
+import {MyBreadcrumbModule} from "../../../components/my-breadcrumb/my-breadcrumb";
+import {ArticleComponent} from "./article.component";
 
 
 @NgModule({
@@ -59,10 +59,10 @@ import {DataTableComponent} from "./data-table.component";
     MyBreadcrumbModule,
 
     RouterModule.forChild([
-      { path:'',component:DataTableComponent}
+      { path:'',component:ArticleComponent}
     ])
   ],
-  declarations: [DataTableComponent],
+  declarations: [ArticleComponent],
   exports:[RouterModule]
 })
-export class MyDataTableModule { }
+export class ArticleModule { }

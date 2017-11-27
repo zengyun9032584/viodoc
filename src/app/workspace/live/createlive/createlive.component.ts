@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { pageAnimation, tagAnimation } from '../../common/public-data';
+import { pageAnimation, tagAnimation } from '../../../common/public-data';
 
 
 @Component({

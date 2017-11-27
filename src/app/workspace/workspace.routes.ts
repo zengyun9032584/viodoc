@@ -7,11 +7,11 @@ export const workspaceRoutes = [
     component: WorkspaceComponent,
     children: [
       {
-        path: '', redirectTo: 'data-table', pathMatch: 'full'
+        path: '', redirectTo: 'article-list', pathMatch: 'full'
       },
       {
-        path: 'data-table',
-        loadChildren: '../data-table/data-table.module#MyDataTableModule',
+        path: 'article-list',
+        loadChildren: './library/article-list/article-list.module#ArticleListModule',
         data: {preload: true}
       },
       // {
@@ -20,23 +20,23 @@ export const workspaceRoutes = [
       //   data: {preload: true}
       // },
       {
-        path: 'collection',
-        loadChildren: '../collection/collection.module#CollectionModule',
+        path: 'article',
+        loadChildren: './library/article/article.module#ArticleModule',
         data: {preload: true}
       },
       {
-        path: 'template',
-        loadChildren: '../template/template.module#TemplateModule',
+        path: 'draft',
+        loadChildren: './library/draft/draft.module#DraftModule',
         data: {preload: true}
       },
       {
         path: 'livelist',
-        loadChildren: './livelist/livelist.module#LivelistModule',
+        loadChildren: './live/livelist/livelist.module#LivelistModule',
         data: {preload: true}
       },
       {
         path: 'createlive',
-        loadChildren: './createlive/createlive.module#CreateliveModule',
+        loadChildren: './live/createlive/createlive.module#CreateliveModule',
         data: {preload: true}
       },
       {

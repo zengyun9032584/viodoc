@@ -29,7 +29,7 @@ export class HttpService {
    }
 
    getServerIP() {
-       return 'http://viodoc.tpddns.cn:9500/';
+    //    return 'http://viodoc.tpddns.cn:9500/';
     //    return `http://localhost:3000`;
    }
 

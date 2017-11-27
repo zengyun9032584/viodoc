@@ -6,8 +6,8 @@ import {
 } from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule} from "@angular/http";
-import {TemplateComponent} from "./template.component";
-import {MyBreadcrumbModule} from "../components/my-breadcrumb/my-breadcrumb";
+import {ArticleListComponent} from "./article-list.component";
+import {MyBreadcrumbModule} from "../../../components/my-breadcrumb/my-breadcrumb";
 
 
 @NgModule({
@@ -23,10 +23,10 @@ import {MyBreadcrumbModule} from "../components/my-breadcrumb/my-breadcrumb";
 
     MyBreadcrumbModule,
     RouterModule.forChild([
-      { path:'',component:TemplateComponent}
+      { path:'',component:ArticleListComponent}
     ])
   ],
-  declarations: [TemplateComponent],
+  declarations: [ArticleListComponent],
   exports:[RouterModule]
 })
-export class TemplateModule { }
+export class ArticleListModule { }
