@@ -3,63 +3,63 @@
   <my-breadcrumb name1="直播管理" name2="直播列表"></my-breadcrumb>
 </div>
 
-<div class="ui-g content" >
+<div class="ui-g content"  >
   <div *ngFor="let item of livelist ;let i=index" class="ui-g-12 ui-md-6 ui-lg-3 liveitem">
     <h3> {{item.title}}</h3>
-    <p>{{item.name}}</p>
-    <h5>{{item.time}}</h5>
+    <p>{{item.doctorName}}</p>
+    <h5>{{item.startTime}}</h5>
     <h5>{{item.status}}</h5>
-    <div class="introduce">{{item.introduce}}</div>
-    <button (click)="showliveinfo()" pButton type="button" label ="进入详情"></button>
+    <!-- <div class="introduce">{{item.introduce}}</div> -->
+    <textarea  rows="5" cols="30" readonly="readonly" pInputTextarea autoResize="autoResize">
+        {{item.comment}}
+        </textarea>
+    <button (click)="showliveinfo(item,i)" pButton type="button" label ="进入详情"></button>
   </div>
 
 </div>
-<p-dialog header="直播详细" [(visible)]="display" modal="modal" width="800" [responsive]="true" [positionTop]="'60'">
+<p-dialog header="直播详细"  *ngIf="display" [(visible)]="display" modal="modal" width="800" [responsive]="true" [positionTop]="'60'">
   <div style="height:400px">
     <div class="dialog-item" >  
-    <div class="ui-g">
-          <div class="ui-g-11">
-            <h3>直播标题</h3>
-          </div>
-          <div class="ui-g-1">
-              <img style="width:30px"src="assets/img/editbutton.jpg">
-          </div>
-      </div>
-      <div class="ui-g">
-        <div class="ui-g-4">直播状态</div>
-      </div>
-      <div class="ui-g">
-          <div class="ui-g-4">时间</div>
-      </div>
-  </div>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <input id="title-input" type="text"  size="30" pInputText [(ngModel)]="liveinfo.title"> 
+            </div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-4">{{liveinfo.status}}</div>
+        </div>
+        <div class="ui-g">
+            <div class="ui-g-4">{{liveinfo.startTime}}</div>
+        </div>
+    </div>
 
   <div class="dialog-item" >  
     <div class="ui-g">
-        <div class="ui-g-11 ui-g-nopad">
+        <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-12">
                 <h3>直播简介</h3>
             </div>
             <div class="ui-g-12">
-                <p>主讲人:王玉涛</p>
+                <p>主讲人:{{liveinfo.doctorName}}</p>
             </div>
             <div class="ui-g-12">
                 <h3>直播概要</h3>
             </div>
         </div>
-        <div class="ui-g-1">
-            <img style="width:30px"src="assets/img/editbutton.jpg">
-        </div>
+        <!-- <div class="ui-g-1">
+            <img (click)="editliveinfo($event,'content-textarea')" style="width:30px"src="assets/img/editbutton.jpg">
+        </div> -->
     </div>
     <div class="ui-g">
         <div class="ui-g-12">
-            <p>11月3日，“85后”的长春姑娘于音背着30斤重的翼装装备从喜马拉雅两万多英尺的高空上跳下并成功着陆，这一跳，使她成为首个在喜马拉雅进行翼装飞行的中国人。此次挑战并不容易，要克服高原缺氧、极寒等环境影响，还要面临“离机自旋”等多种技术难题。去年，于音辞去了一家世界五百强企业的工作，成为一名极限运动员和一家跳伞学校的创始人，她希望自己能成为飞行运动的推广者，“让更多人体验飞翔的感觉”。
-                高原上空挑战翼装飞行
-                连续四五天每天徒步二十多公里，于音和她的团队终于爬上了喜马拉雅一座海拔近五千米的高峰。
+                <textarea id="content-textarea"  rows="8" cols="88" pInputTextarea autoResize="autoResize">
+                {{liveinfo.comment}}
+                </textarea>
         </div>
-      </div>
+    </div>
     <div class="ui-g part">
       <div class="ui-g-12">
-        <h3>报名人数：（111）</h3> 
+        <h3>报名人数：（{{liveinfo.liveCount}}）</h3> 
       </div>  
     </div>
   </div>
@@ -67,12 +67,13 @@
   <div class="dialog-item">
       <div class="ui-g">
           <div class="ui-g-12">
+
               <h3>课件</h3>
           </div>
           <div  *ngFor="let pic of piclist ; let i=index" class="ui-g-2 ui-md-6 ui-lg-2 dialog-item-pic"  >
                 <span class="pic">
-                    <img style="width:100px" [src]="pic">
-                    <button class="del "pButton type="button" (click)="delpic($event)" icon="fa-close"></button>
+                <img style="width:100px" (click)="previewimg($event)" [src]="pic">
+                    <button class="del "pButton type="button" (click)="delpic($event,i)" icon="fa-close"></button>
                 </span>
           </div>
           <div class="ui-g-12 ui-md-6 ui-lg-2 dialog-item-pic"  >

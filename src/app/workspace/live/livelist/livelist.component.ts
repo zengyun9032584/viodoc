@@ -1,41 +1,16 @@
+
 import { Component, OnInit } from '@angular/core';
 import { pageAnimation, tagAnimation,LiveData } from '../../../common/public-data';
-import { debug } from 'util';
+import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStateSnapshot } from '@angular/router';
+import { debug, error } from 'util';
+import { HttpService } from '../../../common/http.service'
 
 
-const LiveList: LiveData[]=[
-  { 
-    title:"吹空调会面瘫么吹空调会面瘫么吹空调会面瘫么",
-    name:"王玉涛",
-    time:"2017年1月1日",
-    status:"直播中",
-    introduce:"最近有新闻说，2岁的宝宝，吹空调",
-    content:"最近有新闻说，2岁的宝宝，吹空调",
-    file:""
-  },
-  { 
-    title:"吹空调会面瘫么",
-    name:"王玉涛",
-    time:"2017年1月1日",
-    status:"直播中",
-    introduce:"最近有新闻说，2岁的宝宝，吹空调",
-    content:"最近有新闻说，2岁的宝宝，吹空调",
-    file:""
-  },
-  { 
-    title:"吹空调会面瘫么",
-    name:"王玉涛",
-    time:"2017年1月1日",
-    status:"直播中",
-    introduce:"最近有新闻说，2岁的宝宝，吹空调",
-    content:"最近有新闻说，2岁的宝宝，吹空调",
-    file:""
-  },
-  
-]
-
-
-
+/**
+ *  直播列表组件
+ *
+ * @stable
+ */
 @Component({
   selector: 'app-livelist',
   templateUrl: './livelist.component.html',
@@ -49,23 +24,90 @@ const LiveList: LiveData[]=[
 
 export class LivelistComponent implements OnInit {
   msgs = ["1","1","1","11","1","q","1"];
-  livelist=LiveList
+  livelist:LiveData[]
   display = false
-  userId :any
   token:any
-  constructor() { }
-  piclist = ['assets/image/sport.jpg',
-  'assets/image/timg.jpeg',
-  'assets/image/timg.jpeg',
-  'assets/image/timg.jpeg',
-  'assets/image/timg.jpeg',
-  'assets/image/timg.jpeg',
-  'assets/image/timg.jpeg']
+  liveinfo:LiveData
+  userId:any
+  liveID:any
+
+  constructor(private httpservice:HttpService,public router: Router,) { }
+  piclist = []
   ngOnInit() {
+   this.checklogin()
+   this.getlivelist()
   }
 
-  showliveinfo(){
+/**
+ *  检查是否登录，登录信息存储在localstorage
+ *
+ * @stable
+*/
+  checklogin(){
+    if (this.httpservice.storeget('ffys_user_info')) {
+      const userinfo:any = this.httpservice.storeget('ffys_user_info')
+      this.userId = userinfo.userId;
+    } else {
+      this.router.navigateByUrl("login");
+    }
+  }
+  
+  /**
+ *  显示直播详细信息
+ *
+ * @stable
+ */
+  showliveinfo(item:any,i:any){
+    this.checklogin()
     this.display=true;
+    this.liveinfo = item;
+
+    this.getlivepiclist( this.liveinfo);
+  }
+
+  /**
+ *  获取直播列表
+ *
+ * @stable
+ */
+  async getlivelist () {
+    try {
+      const json={
+        header: this.httpservice.makeBodyHeader({}, false),
+        page: {
+          pageNo:1,
+          pageSize:12,
+          total:1
+        },
+        anchorId: 480
+      }
+      const doctor:any = await this.httpservice.newpost('api/viodoc/getSomebodyLiveList',JSON.stringify(json))
+      var a:any=JSON.parse(doctor._body)
+      this.livelist=a.anchorLivinglist
+    } catch (err) {
+      console.log(err)
+    } 
+  }
+
+ /**
+ *  获取直播内课件
+ *
+ * @stable
+ */
+
+  async getlivepiclist(e:any){
+    try {
+      const id:Number = new Number(e.liveId)
+      const json={
+        header: this.httpservice.makeBodyHeader({}, false),
+        liveId: id
+      }
+      const data:any = await this.httpservice.newpost('api/viodoc/getLivePIC',JSON.stringify(json))
+      var a:any=JSON.parse(data._body)
+      this.piclist=a.picUrl
+    } catch (err) {
+      console.log(err)
+    } 
   }
 
   async imgOperate(event:any) {
@@ -80,13 +122,31 @@ export class LivelistComponent implements OnInit {
     }
     let dotIndex = file.name.lastIndexOf('.')
     const ext = file.name.substring(dotIndex + 1, file.name.length)
+    const form:any = this.uploadImage(file, ext, width, height)
     debugger
-    this.piclist.push(readerFile.src)
-    // ApiInvoke.uploadImage(file, ext, width, height).then(data => {
-    //   this.editor.cmd.do('insertHTML', `<p><img src=${data.picURL} owidth=${width} oheight=${height}></p>`)
-    // }).catch(errorHandle)
+    const json={
+      body:form
+    }
+     this.httpservice.post('http://viodoc.tpddns.cn:9500/api/viodoc/uploadPIC', json).then(
+        success=>{
+          debugger
+          this.piclist.push(success.picURL)
+        },error=>{
+          alert(error)
+        })
+      debugger 
+     
+        // this.editor.cmd.do('insertHTML', `<p><img src=${data.picURL} owidth=${width} oheight=${height}></p>`)
+     
   }
-
+ /**
+ *  显示图片详细
+ *
+ * @stable
+ */
+  previewimg(e:any){
+    window.open(e.target.src)
+  }
 
   readImageAttr (file) {
     return new Promise(function (resolve, reject) {
@@ -112,49 +172,37 @@ export class LivelistComponent implements OnInit {
   }
 
   uploadImage (file, ext, width, height) {
-    let  userId  = sessionStorage.get('ffys_user_info')
-    let json ={
-      header:1
-    }
+    let  userId  = this.httpservice.storeget('ffys_user_info')
     if (!userId) throw new Error('用户id丢失')
     const form = new FormData()
-    let HJson = this.makeBodyHeader()
+    let HJson = this.httpservice.makeBodyHeader()
     let HString = JSON.stringify(HJson)
     form.append('header', HString)
     form.append('picContent', file)
     form.append('fileName', `article_imgage_${new Date().getTime()}`)
     form.append('extName', ext)
-    form.append('height', width)
-    form.append('width', height)
-
-    // return this.Invoke('api/viodoc/uploadPIC', {
-    //   body: form
-    // })
-
-    
+    form.append('height', height)
+    form.append('width', width)
+    // var json={
+    //   // body:form
+    //   header:HString,
+    //   picContent:file,
+    //   fileName:`article_imgage_${new Date().getTime()}`,
+    //   extName:ext,
+    //   height:height,
+    //   width:width
+    // }
+    return form
   }
 
-  makeBodyHeader (params = {}, needAuth = true) {
-    this.token = sessionStorage.get('ffys_user_token') || null
-    this.userId = sessionStorage.get('ffys_user_info') && sessionStorage.get('ffys_user_info').userId || null
-    if (!this.userId && needAuth) throw new Error('用户丢失,请按 F5 刷新')
-    if (!this.token && needAuth) throw new Error('用户token丢失,请按 F5 刷新')
-    const timeStamp = new Date().getTime()
-    // const nonce = generateUUID()
-    // const signature = sha256(`049ddf35f8f43f0058176da1c9c462b3fcffaa3b3822767dd28c60618e76da70${timeStamp}${nonce}`)
-    const appType = 4
-    // console.log(signature)
-    return Object.assign(params, {
-      timeStamp,
-      // nonce,
-      // signature,
-      appType,
-      token: this.token,
-      userId: this.userId && Number(this.userId)
-    })
+  delpic(e:any,index:any){
+    this.piclist.splice(index,1)
   }
 
-  delpic(e:any){
+  editliveinfo(e:any,str:string){
     debugger
+    var data:any= document.getElementById(str)
+    data.readOnly = false;
+    data.focus()
   }
 }

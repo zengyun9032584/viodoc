@@ -15,12 +15,14 @@ import {WorkspaceService} from './workspace/workspace.service';
 import { LoginComponent } from './login/login.component';
 
 import {ChipsModule, PasswordModule,ButtonModule} from 'primeng/primeng';
+import { TreedemoComponent } from './treedemo/treedemo.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    // TreedemoComponent,
    
   ],
   imports: [

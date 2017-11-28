@@ -9,6 +9,17 @@ import {
     GrowlModule,
     ButtonModule,         // 按钮
     DialogModule,
+    PanelModule,
+    InputTextModule,
+    DataTableModule,
+    SharedModule,
+    CalendarModule,
+    MultiSelectModule,
+    DropdownModule,
+    CheckboxModule,
+    PaginatorModule,
+    TooltipModule,
+    OverlayPanelModule,
     
   } from 'primeng/primeng';
 
@@ -25,10 +36,20 @@ import {
     ReactiveFormsModule,
 
     ButtonModule,         // 按钮
-    
-    GrowlModule,
-    MyBreadcrumbModule,
+    PanelModule,
+    InputTextModule,
+    DataTableModule,
     DialogModule,
+    SharedModule,
+    CalendarModule,
+    GrowlModule,
+    MultiSelectModule,
+    DropdownModule,
+    CheckboxModule,
+    PaginatorModule,
+    TooltipModule,
+    OverlayPanelModule,
+    MyBreadcrumbModule,
 
     RouterModule.forChild([
       { path:'',component:LivelistComponent}

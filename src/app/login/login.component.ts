@@ -36,15 +36,15 @@ export class LoginComponent implements OnInit {
     if (!verifyResult) return
     try {
       this.disableSubmit = true
-      const url= `${this.httpservice.getServerIP()}`+'api/viodoc/signIn'
       const json={
-        "phone":this.username,
-        "password":this.password
+        header: this.httpservice.makeBodyHeader({}, false),
+        accountName: this.username,
+        pwd: this.password
       }
-      const doctorInfo = await this.httpservice.newpost(url,json)
-      debugger
-      // sessionStorage.set('ffys_user_info', doctorInfo.userInfo)
-      // sessionStorage.set('ffys_user_token', doctorInfo.token)
+      const doctor:any = await this.httpservice.newpost('api/viodoc/signIn',JSON.stringify(json))
+      const doctorInfo=JSON.parse(doctor._body)
+      this.httpservice.storeset('ffys_user_info', doctorInfo.userInfo)
+      this.httpservice.storeset('ffys_user_token', doctorInfo.token)
 
       this.disableSubmit = false
       this.loginSuccess = true
@@ -55,13 +55,13 @@ export class LoginComponent implements OnInit {
   }
 
   redirect() {
-    const user = sessionStorage.get('ffys_user_info')
+    const user = this.httpservice.storeget('ffys_user_info')
     if (user) {
       // 是否通过认证，弹出下载app提示 || 当前默认进入文章列表页面
       // this.authPass = true || user.authPass
       this.loginSuccess = true
       // this.authPass && this.$router.push({name: 'content'})
-      this.router.navigateByUrl("workspace/livelist");
+      this.router.navigateByUrl("workspace");
     }
   }
 

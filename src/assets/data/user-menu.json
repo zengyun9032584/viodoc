@@ -4,16 +4,16 @@
         "icon": "fa-arrows",
         "children": [
             {
+                "name": "新建文章",
+                "link": "article"
+            },
+            {
                 "name": "文章列表",
                 "link": "article-list"
             },
             {
                 "name": "草稿箱",
                 "link": "draft"
-            },
-            {
-                "name": "新建文章",
-                "link": "article"
             }
         ]
     },
@@ -22,12 +22,12 @@
         "icon": "fa-video-camera",
         "children": [
             {
-                "name": "直播列表",
-                "link": "livelist"
-            },
-            {
                 "name": "创建直播",
                 "link": "createlive"
+            },
+            {
+                "name": "直播列表",
+                "link": "livelist"
             }
         ]
     }

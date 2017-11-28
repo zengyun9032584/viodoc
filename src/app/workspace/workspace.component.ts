@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStateSnapshot } from '@angular/router';
 // import {Car, Message} from '../common/car';
-// import {beforeUrl} from '../common/public-data';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { WorkspaceService } from './workspace.service';
 import { HttpService } from '../common/http.service';
+import {beforeUrl,UserInfo} from '../common/public-data';
+
 
 @Component({
   selector: 'app-workspace',
@@ -45,15 +46,20 @@ import { HttpService } from '../common/http.service';
 })
 export class WorkspaceComponent implements OnInit {
 
+  private menuUrl = 'assets/data/user-menu.json';
+  
+
   constructor(private myService: WorkspaceService, public router: Router, private http: HttpService) {
   };
 
   ngOnInit() {
     this.getMenu();
-    if (sessionStorage.getItem('userToken')) {
-      this.realname = sessionStorage.getItem('realname');
+    if (this.http.storeget('ffys_user_info')) {
+      const userinfo:any = this.http.storeget('ffys_user_info')
+      this.realname = userinfo.name;
+     
     } else {
-      // this.router.navigateByUrl("login");
+      this.router.navigateByUrl("login");
     }
   }
   /*************************  ********************************/
@@ -64,24 +70,21 @@ export class WorkspaceComponent implements OnInit {
   pTooltipIf: boolean = false;                     //pTooltipIf状态
   // beforeUrl: string = beforeUrl;                   //api前缀地址
   timeout: any;                                    //错误信息时间
-  realname: string = '未登录';                                 //头部账号名字
+  realname: string = '未登录';                      //头部账号名字
   menumsg: string;
   display = false;
   userName: string;
   password: string;
   /************************* 获取菜单 ********************************/
   getMenu() {
-    // debugger
     // if (sessionStorage.getItem('menu111')) {
-    //   debugger
     //   this.menus = JSON.parse(sessionStorage.getItem('menu111'));
     //   console.log(this.menus);
     // } else {
-      this.myService.getMenu()
+      this.myService.getMenu(this.menuUrl)
         .then(
         menus => this.menus = menus,
         error => {
-          debugger
           this.menumsg = '获取菜单失败,请刷新再试'
         }
         )
@@ -112,41 +115,29 @@ export class WorkspaceComponent implements OnInit {
   }
 
   showLoginWindow() {
-    this.display = true;
+    // this.display = true;
   }
 
-  login() {
-    let postBody = {
-      userName: this.userName,
-      password: this.password
-    }
-    let url = this.http.getServerIP();
-    debugger;
-    this.http.post(`${url}/api/login`,JSON.stringify(postBody)).then(
-      success => {
-        this.msgs = [];
-        if(success.info === 'login successed!') {
-          this.msgs.push({severity:'success', summary:'登陆成功', detail:`${this.userName}登陆成功！`});
-          this.realname = this.userName;
-          sessionStorage.setItem('userToken', window.btoa(`${this.userName}:${this.password}`));
-          sessionStorage.setItem('realname', this.userName);
-          window.location.reload();
-        } else{
-          this.msgs.push({severity:'warn', summary:'登陆失败', detail:`${success.error}`});
-        }
-        this.display = false;
-      }
-    ).catch(
-      error => {
-        this.msgs.push({severity:'error', summary:'error Message', detail:`${error}`});
-      }
-    )
-  }
   /************************* 退出登录 ********************************/
   loginOut() {
-    sessionStorage.removeItem('userToken');
-    sessionStorage.removeItem('menu111');
-    sessionStorage.removeItem('realname');
-    this.realname = '未登录';  
+    try{
+      
+      const json={
+        body:JSON.stringify({
+          header: this.http.makeBodyHeader()
+        })
+      }
+      this.http.newpost('api/viodoc/signOut', JSON.stringify(json))
+      this.realname = '未登录';  
+      this.http.storeremove("ffys_user_info")
+      this.http.storeremove("ffys_user_token")
+      this.router.navigateByUrl("login");
+
+    } catch(err){
+      console.log("登出失败"+err)
+    }
+
   }
+
+  
 }

@@ -2,7 +2,53 @@
     <my-breadcrumb name1="直播管理" name2="创建直播"></my-breadcrumb>
 </div>
 
-<div class="ui-g">
-  开发中
-  <!-- <input [(ngModel)]="livename" type="text" pInputText placeholder="Phone Number"> -->
+<div class="content">
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <span>
+                标题
+            </span>
+            <input id="title-input" type="text" size="20" pInputText [(ngModel)]="livetiele">
+        </div>
+        <div class="ui-g-12">
+            <span>时间</span>
+            <p-calendar [(ngModel)]="livetime" [showTime]="true"></p-calendar> {{date7}}
+        </div>
+        <div class="ui-g-12">
+                <p-tree [value]="files" selectionMode="checkbox" [(selection)]="selectedFiles"
+                [propagateSelectionUp]="true" [propagateSelectionDown]="true"
+                (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="onNodeUnselect($event)"></p-tree>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12">
+            <textarea id="content-textarea" rows="8" cols="88" pInputTextarea autoResize="autoResize">
+                    {{livecontent}}
+                    </textarea>
+        </div>
+    </div>
+
+    <!-- <div class="dialog-item">
+            <div class="ui-g">
+                <div class="ui-g-12">
+        
+                    <h3>课件</h3>
+                </div>
+                <div *ngFor="let pic of piclist ; let i=index" class="ui-g-2 ui-md-6 ui-lg-2 dialog-item-pic">
+                    <span class="pic">
+                        <img style="width:100px" [src]="pic">
+                        <button class="del " pButton type="button" (click)="delpic($event,i)" icon="fa-close"></button>
+                    </span>
+                </div>
+                <div class="ui-g-12 ui-md-6 ui-lg-2 dialog-item-pic">
+                    <img onclick="getElementById('file').click()" style="width:100px" title="点击添加图片" alt="点击添加图片" src="assets/img/uploadpic.jpg">
+                    <input (change)="imgOperate($event)" type="file" multiple="multiple" id="file" name='file' style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"
+                    />
+                </div>
+            </div>
+            <div class="ui-g">
+                <button class="upficbtn" (click)="uploadpic()" pButton type="button" label="上传课件"></button>
+            </div>
+    </div> -->
 </div>
+

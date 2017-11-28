@@ -59,13 +59,33 @@ export const China = {
 };
 
 export class LiveData {
+  comment:string
+  doctorId:string
+  doctorName:string
+  doctorPic:string
+  groupId:string
+  liveCount:any
+  liveId:Number
+  pic:any[]
+  startTime:string
+  status:any
   title:string
-  name:string
-  time:string
-  status:string
-  introduce:string
-  content:string
-  file:any
   constructor(){
   }
 }; 
+
+export class UserInfo{
+  headImgPath:string
+  name:string
+  nickName:string
+  gender:any
+  tags:any[]
+  userId:any
+  otherUserId:any
+  relationship:any
+  fllowType:any
+  userKid:any
+  accountName:any
+  constructor(){}
+
+}

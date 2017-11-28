@@ -23,6 +23,7 @@
     "@angular/router": "^4.2.4",
     "chart.js": "*",
     "core-js": "^2.4.1",
+    "js-sha256": "^0.8.0",
     "monaco-editor": "^0.10.0",
     "ngx-monaco-editor": "^1.0.2",
     "normalize.css": "7.0.0",
