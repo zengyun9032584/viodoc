@@ -35,7 +35,7 @@ export class HttpService {
 
    getServerIP() {
         return 'http://viodoc.tpddns.cn:9500/';
-    //    return `http://localhost:3000`;
+    //    return `http://192.168.1.131:9500/`;
    }
 
 async newget(url: string) {
@@ -58,8 +58,29 @@ async newput(url:string,json:any){
     url = this.getServerIP()+url;
     let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
     let options = new RequestOptions({ headers: headers,withCredentials:false });
-    const data= this.http.put(url, json, options)
+    const data= await this.http.put(url, json, options)
     return data.toPromise();
+}
+
+request(url,config){
+    let headers = new Headers(Object.assign({
+        // 'Content-Type': 'application/json;charset=UTF-8',
+        'Accept': 'application/json, text/plain, */*'
+      }, config && config.headers))
+      // headers.append('UserId', 'shopid=12312')
+      debugger
+      let reqInit = {
+        headers: headers,
+        method: config.method || 'POST',
+        body: config.body || ''
+      }
+  
+    //   const reqUrl = `${url.includes('http') ? url : this.baseUrl + url}`
+    return this.http.request(url, reqInit)
+                    .toPromise()
+                    .then(response=>response)
+                    .catch(this.handleError)
+
 }
 
 get(url: string): Promise<any> {
@@ -73,15 +94,21 @@ get(url: string): Promise<any> {
 
 post(url: string, jsonBody: any): Promise<any> {
    
-    let headers = new Headers({ 'Accept': 'application/json, text/plain, */*'});
-    // let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
-
+    let headers = new Headers(Object.assign({
+        // 'Content-Type': 'application/json;charset=UTF-8',
+        'Accept': 'application/json, text/plain, */*'
+      }, jsonBody && jsonBody.headers))
+    // let headers = new Headers({ 'Accept': 'application/json, text/plain, */*'});
+    // let headers = new Headers({'Content-Type': false});
+    debugger
     let options = new RequestOptions({ headers: headers,withCredentials:false });
     return this.http.post(url, jsonBody, options)
                     .toPromise()
                     .then(response => response.json())
                     .catch(this.handleError);
 }
+
+
 
 put(url: string, jsonBody: any): Promise<any> {
     //let headers = new Headers({'Content-Type': 'application/json'});
@@ -113,7 +140,27 @@ private extractData(res: Response): Promise<any> {
 }
 
 private handleError(error: any): Promise<any> {
-    return Promise.reject(error.message || error);
+    let errMsg: string;
+    if (error.status == 0) {
+      errMsg = `亲~~ 请求未执行,1:服务未启动接口2:api地址错误|error`;
+    } else if (error._body.substring(0, 1) == '{') {
+      const err = JSON.parse(error._body).defaultMessage || '未知错误';
+      if (error.status >= 500) {
+        errMsg = `${error.status} ${error.statusText} ${err}|warn`;
+      } else if (error.status == 403) {
+        errMsg = `${error.status} ${error.statusText} ${err}|info`;
+      } else {
+        errMsg = `${error.status} ${error.statusText} ${err}|error`;
+      }
+    } else {
+      if (error.status >= 500) {
+        errMsg = `${error.status} ${error.statusText} 服务器超时|warn`;
+      } else {
+        errMsg = `${error.status} ${error.statusText} 服务器错误|error`;
+      }
+    }
+
+    return Promise.reject(errMsg);
 }
 
 makeBodyHeader (params = {}, needAuth = true) {

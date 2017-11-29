@@ -31,6 +31,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule} from "@angular/http";
 import {MyBreadcrumbModule} from "../../../components/my-breadcrumb/my-breadcrumb";
 import {ArticleComponent} from "./article.component";
+import { TreedemoComponent } from '../../../treedemo/treedemo.component';
 
 
 @NgModule({
@@ -62,7 +63,10 @@ import {ArticleComponent} from "./article.component";
       { path:'',component:ArticleComponent}
     ])
   ],
-  declarations: [ArticleComponent],
+  declarations: [
+    ArticleComponent,
+    // TreedemoComponent
+  ],
   exports:[RouterModule]
 })
 export class ArticleModule { }

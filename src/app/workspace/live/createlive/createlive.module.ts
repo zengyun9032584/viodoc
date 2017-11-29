@@ -6,6 +6,7 @@ import {HttpModule, JsonpModule} from "@angular/http";
 import {CreateliveComponent} from "./createlive.component";
 
 
+
 import {
     ButtonModule,         // 按钮
     PanelModule,
@@ -33,7 +34,6 @@ import {
 @NgModule({
   imports: [
     FormsModule,
-    ReactiveFormsModule,
     HttpModule,
     JsonpModule,
     CommonModule,
@@ -66,7 +66,7 @@ import {
   ],
   declarations: [
     CreateliveComponent,
-    // TreedemoComponent,
+    TreedemoComponent
   ],
   exports:[RouterModule]
 })

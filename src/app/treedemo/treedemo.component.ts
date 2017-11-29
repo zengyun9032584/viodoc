@@ -8,6 +8,8 @@ import {TreeNode } from 'primeng/primeng'
   templateUrl: './treedemo.component.html',
   styleUrls: ['./treedemo.component.css']
 })
+
+
 export class TreedemoComponent implements OnInit {
 
   treeUrl = 'assets/data/tree.json';
@@ -49,10 +51,11 @@ export class TreedemoComponent implements OnInit {
   nodeSelect(event:any) {
     //event.node = selected node
     debugger
-}
+  }
   onNodeUnselect(e:any){
     debugger
   }
 
 
 }
+

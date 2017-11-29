@@ -47,6 +47,9 @@ import { TreedemoComponent } from './treedemo/treedemo.component';
     Preload,
     {provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
+  // exports:[
+  //   TreedemoComponent,
+  // ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

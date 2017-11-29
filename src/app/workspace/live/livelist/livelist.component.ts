@@ -1,9 +1,10 @@
 
 import { Component, OnInit } from '@angular/core';
-import { pageAnimation, tagAnimation,LiveData } from '../../../common/public-data';
+import { pageAnimation, tagAnimation,LiveData,LiveDetail } from '../../../common/public-data';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStateSnapshot } from '@angular/router';
 import { debug, error } from 'util';
 import { HttpService } from '../../../common/http.service'
+import { WorkspaceService } from '../../workspace.service';
 
 
 /**
@@ -23,21 +24,23 @@ import { HttpService } from '../../../common/http.service'
 
 
 export class LivelistComponent implements OnInit {
-  msgs = ["1","1","1","11","1","q","1"];
+  msgs: any;
   livelist:LiveData[]
   display = false
   token:any
-  liveinfo:LiveData
+  liveinfo:LiveDetail
   userId:any
   liveID:any
+  piclist = []      //直播课件列表
+  backuppiclist = [] // 直播课件列表备份
 
-  constructor(private httpservice:HttpService,public router: Router,) { }
-  piclist = []
+  constructor(private httpservice:HttpService,public router: Router,private myService: WorkspaceService) { }
   ngOnInit() {
    this.checklogin()
    this.getlivelist()
   }
 
+  
 /**
  *  检查是否登录，登录信息存储在localstorage
  *
@@ -59,10 +62,8 @@ export class LivelistComponent implements OnInit {
  */
   showliveinfo(item:any,i:any){
     this.checklogin()
-    this.display=true;
-    this.liveinfo = item;
-
-    this.getlivepiclist( this.liveinfo);
+    // this.liveinfo = item;
+    this.GetLiveDetails(item)
   }
 
   /**
@@ -84,17 +85,39 @@ export class LivelistComponent implements OnInit {
       const doctor:any = await this.httpservice.newpost('api/viodoc/getSomebodyLiveList',JSON.stringify(json))
       var a:any=JSON.parse(doctor._body)
       this.livelist=a.anchorLivinglist
-    } catch (err) {
-      console.log(err)
+    } catch (error) {
+      this.msgs = [];
+      this.msgs.push({ severity: 'error', summary: '获取直播列表失败', detail: `${error}` });
     } 
   }
+
+
+  /**
+ *  获取直播详细信息
+ *
+ * @stable
+ */
+async GetLiveDetails(e:any){
+  try {
+    const json={
+      header: this.httpservice.makeBodyHeader({}, false),
+      liveId: e.liveId
+    }
+    const data:any = await this.httpservice.newpost('api/viodoc/getLiveDetails',JSON.stringify(json))
+    var a:any=JSON.parse(data._body)
+    this.liveinfo = a.live
+    this.getlivepiclist(e);
+  } catch (err) {
+    this.msgs = [];
+    this.msgs.push({ severity: 'error', summary: '获取直播详细信息失败', detail: `${error}` });
+  } 
+}
 
  /**
  *  获取直播内课件
  *
  * @stable
  */
-
   async getlivepiclist(e:any){
     try {
       const id:Number = new Number(e.liveId)
@@ -105,8 +128,11 @@ export class LivelistComponent implements OnInit {
       const data:any = await this.httpservice.newpost('api/viodoc/getLivePIC',JSON.stringify(json))
       var a:any=JSON.parse(data._body)
       this.piclist=a.picUrl
-    } catch (err) {
-      console.log(err)
+      this.display=true;
+     
+    } catch (error) {
+      this.msgs = [];
+      this.msgs.push({ severity: 'error', summary: '获取直播课件失败', detail: `${error}` });
     } 
   }
 
@@ -123,22 +149,17 @@ export class LivelistComponent implements OnInit {
     let dotIndex = file.name.lastIndexOf('.')
     const ext = file.name.substring(dotIndex + 1, file.name.length)
     const form:any = this.uploadImage(file, ext, width, height)
-    debugger
-    const json={
-      body:form
-    }
-     this.httpservice.post('http://viodoc.tpddns.cn:9500/api/viodoc/uploadPIC', json).then(
-        success=>{
-          debugger
-          this.piclist.push(success.picURL)
-        },error=>{
+    try {
+    const data:any = await this.httpservice.request('http://viodoc.tpddns.cn:9500/api/viodoc/uploadPIC', {
+        body:form
+      })
+      var a = JSON.parse(data._body)
+      this.piclist.push(a.picURL);
+    }catch(error){
           alert(error)
-        })
-      debugger 
-     
-        // this.editor.cmd.do('insertHTML', `<p><img src=${data.picURL} owidth=${width} oheight=${height}></p>`)
-     
+    }
   }
+
  /**
  *  显示图片详细
  *
@@ -148,6 +169,11 @@ export class LivelistComponent implements OnInit {
     window.open(e.target.src)
   }
 
+   /**
+ *  读取图片信息
+ *
+ * @stable
+ */
   readImageAttr (file) {
     return new Promise(function (resolve, reject) {
       const src = URL.createObjectURL(file)
@@ -171,6 +197,11 @@ export class LivelistComponent implements OnInit {
     })
   }
 
+   /**
+ *  上传图片，返回图片url
+ *
+ * @stable
+ */
   uploadImage (file, ext, width, height) {
     let  userId  = this.httpservice.storeget('ffys_user_info')
     if (!userId) throw new Error('用户id丢失')
@@ -183,15 +214,6 @@ export class LivelistComponent implements OnInit {
     form.append('extName', ext)
     form.append('height', height)
     form.append('width', width)
-    // var json={
-    //   // body:form
-    //   header:HString,
-    //   picContent:file,
-    //   fileName:`article_imgage_${new Date().getTime()}`,
-    //   extName:ext,
-    //   height:height,
-    //   width:width
-    // }
     return form
   }
 
@@ -200,9 +222,63 @@ export class LivelistComponent implements OnInit {
   }
 
   editliveinfo(e:any,str:string){
-    debugger
     var data:any= document.getElementById(str)
     data.readOnly = false;
     data.focus()
   }
+
+/**
+ *  上传直播课件
+ *
+ * @stable
+ */
+  async uploadlivepiclist(id:Number){
+    const json={
+      header:this.httpservice.makeBodyHeader({}, false),
+      liveId:new Number(id),
+      picUrl:this.piclist
+    }
+    try{
+      const data:any = this.httpservice.newpost("api/viodoc/uploadHttpLivePIC",JSON.stringify(json))
+      this.msgs = [];
+      this.msgs.push({ severity: 'success', summary: '上传成功', detail: `` });
+    }
+    catch(error){
+      this.msgs = [];
+      this.msgs.push({ severity: 'error', summary: '上传图片失败', detail: `${error}` });
+      // alert(error)
+    }
+  }
+
+  /**
+ *  上传直播信息
+ *
+ * @stable
+ */
+async uploadliveinfo(e:LiveData){
+  const json={
+    header:this.httpservice.makeBodyHeader({}, false),
+    // liveId:new Number(id),
+    // picUrl:this.piclist
+  }
+  try{
+    const data:any = this.httpservice.post("api/viodoc/uploadHttpLivePIC",JSON.stringify(json))
+  }
+  catch(error){
+    alert(error)
+  }
+}
+
+  update(e: LiveData){
+    debugger
+    this.uploadlivepiclist(e.liveId)
+
+  }
+
+  close(){
+    this.liveinfo=null;
+    this.display=false;
+
+  }
+
 }

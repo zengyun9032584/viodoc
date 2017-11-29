@@ -1,9 +1,11 @@
 import { ViewChild,Component, OnInit } from '@angular/core';
 import { pageAnimation, tagAnimation, LiveData } from '../../../common/public-data';
-import {TreedemoComponent } from '../../../treedemo/treedemo.component'
 import {TreeNode} from 'primeng/primeng';
 import { HttpService } from '../../../common/http.service';
 import { WorkspaceService } from '../../../workspace/workspace.service';
+import { NgModule } from '@angular/core/src/metadata/ng_module';
+
+// import { TreedemoComponent } from '../../../treedemo/treedemo.component';
 
 @Component({
   selector: 'app-createlive',
@@ -15,8 +17,6 @@ import { WorkspaceService } from '../../../workspace/workspace.service';
   ]
 })
 export class CreateliveComponent implements OnInit {
-  @ViewChild(TreedemoComponent)
-  private treedemo:TreedemoComponent
 
   liveinfo:LiveData;
   livetiele:string;
@@ -40,7 +40,6 @@ export class CreateliveComponent implements OnInit {
     
   }
   gettree(){
-    debugger
     this.myService.getMenu(this.treeUrl)
     .then(
       menus => {
@@ -60,10 +59,8 @@ export class CreateliveComponent implements OnInit {
 
   nodeSelect(event:any) {
     //event.node = selected node
-    debugger
 }
   onNodeUnselect(e:any){
-    debugger
   }
 
 }

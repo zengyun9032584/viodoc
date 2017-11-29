@@ -73,6 +73,24 @@ export class LiveData {
   constructor(){
   }
 }; 
+export class LiveDetail{
+
+  affirmType:any
+  comment:any
+  doctorId:any
+  doctorName:any
+  endTime:any
+  groupId:any
+  liveCount:Number
+  liveId:any
+  orderNum:Number
+  pic:any
+  startTime:any
+  status:Number
+  tags: any[]
+  title:any
+  constructor(){}
+}
 
 export class UserInfo{
   headImgPath:string
@@ -87,5 +105,4 @@ export class UserInfo{
   userKid:any
   accountName:any
   constructor(){}
-
 }

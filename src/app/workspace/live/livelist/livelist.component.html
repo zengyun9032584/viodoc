@@ -1,4 +1,4 @@
-<!-- <p-growl [(value)]="msgs" life="2000"></p-growl> -->
+<p-growl [(value)]="msgs" life="2000"></p-growl>
 <div [@pageAnimation]="'in'">
   <my-breadcrumb name1="直播管理" name2="直播列表"></my-breadcrumb>
 </div>
@@ -9,7 +9,6 @@
     <p>{{item.doctorName}}</p>
     <h5>{{item.startTime}}</h5>
     <h5>{{item.status}}</h5>
-    <!-- <div class="introduce">{{item.introduce}}</div> -->
     <textarea  rows="5" cols="30" readonly="readonly" pInputTextarea autoResize="autoResize">
         {{item.comment}}
         </textarea>
@@ -67,8 +66,9 @@
   <div class="dialog-item">
       <div class="ui-g">
           <div class="ui-g-12">
-
-              <h3>课件</h3>
+              <h3>课件
+                <span>（编辑课件后记得点击上传课件）</span>
+              </h3>
           </div>
           <div  *ngFor="let pic of piclist ; let i=index" class="ui-g-2 ui-md-6 ui-lg-2 dialog-item-pic"  >
                 <span class="pic">
@@ -82,13 +82,13 @@
           </div>
       </div>
       <div class="ui-g">
-          <button class="upficbtn" (click)="uploadpic()" pButton type="button" label ="上传课件"></button>
+          <button class="upficbtn" (click)="uploadlivepiclist(liveinfo.liveId)" pButton type="button" label ="上传课件"></button>
       </div>
   </div>
 
 </div>
   <p-footer>
-    <button type="button" pButton icon="fa-check" (click)="login()" label="确认"></button>
-    <button type="button" pButton icon="fa-close" (click)="display=false" label="关闭"></button>
+    <button type="button" pButton icon="fa-check" (click)="update(liveinfo)" label="确认"></button>
+    <button type="button" pButton icon="fa-close" (click)="close()" label="关闭"></button>
   </p-footer>
 </p-dialog>

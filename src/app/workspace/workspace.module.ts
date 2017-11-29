@@ -13,6 +13,8 @@ import {PageNotFoundComponent} from '../not-found.component';
 import {MyGoTopModule} from '../components/my-gotop/my-gotop';
 import {DialogModule, ButtonModule, InputTextModule} from 'primeng/primeng';
 import {SharedModule, AccordionModule, GrowlModule, TooltipModule} from 'primeng/primeng';
+// import { TreedemoComponent } from '.././treedemo/treedemo.component';
+
 
 
 
@@ -40,9 +42,9 @@ import {SharedModule, AccordionModule, GrowlModule, TooltipModule} from 'primeng
   declarations: [
     WorkspaceComponent,
     PageNotFoundComponent,
+    // TreedemoComponent
   ],
   providers: [
-
   ],
 })
 export class WorkspaceModule {
