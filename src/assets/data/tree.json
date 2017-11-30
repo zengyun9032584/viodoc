@@ -2,8 +2,8 @@
     "data": 
     [
         {
-            "label": "Documents",
-            "data": "Documents Folder",
+            "label": "部位",
+            "data": "1",
             "expandedIcon": "fa-folder-open",
             "collapsedIcon": "fa-folder",
             "children": [{
@@ -22,8 +22,8 @@
                 }]
         },
         {
-            "label": "Pictures",
-            "data": "Pictures Folder",
+            "label": "亚专科",
+            "data": "111",
             "expandedIcon": "fa-folder-open",
             "collapsedIcon": "fa-folder",
             "children": [
@@ -32,8 +32,8 @@
                 {"label": "primeui.png", "icon": "fa-file-image-o", "data": "PrimeUI Logo"}]
         },
         {
-            "label": "Movies",
-            "data": "Movies Folder",
+            "label": "科普",
+            "data": "1322",
             "expandedIcon": "fa-folder-open",
             "collapsedIcon": "fa-folder",
             "children": [{

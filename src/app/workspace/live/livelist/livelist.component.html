@@ -6,11 +6,12 @@
 <div class="ui-g content"  >
   <div *ngFor="let item of livelist ;let i=index" class="ui-g-12 ui-md-6 ui-lg-3 liveitem">
     <h3> {{item.title}}</h3>
-    <p>{{item.doctorName}}</p>
-    <h5>{{item.startTime}}</h5>
-    <h5>{{item.status}}</h5>
-    <textarea  rows="5" cols="30" readonly="readonly" pInputTextarea autoResize="autoResize">
-        {{item.comment}}
+    <p>主讲人:{{item.doctorName}}</p>
+    <h5>直播开始:{{item.startTime}}</h5>
+    <h5 *ngIf="item.status==0">直播状态：报名中</h5>
+    <h5 *ngIf="item.status==1">直播状态：直播中</h5>
+    <h5 *ngIf="item.status==2">直播状态：直播结束</h5>
+    <textarea  rows="5" cols="30" [(ngModel)]="item.comment" readonly="readonly" pInputTextarea autoResize="autoResize">
         </textarea>
     <button (click)="showliveinfo(item,i)" pButton type="button" label ="进入详情"></button>
   </div>
@@ -40,6 +41,7 @@
             </div>
             <div class="ui-g-12">
                 <p>主讲人:{{liveinfo.doctorName}}</p>
+
             </div>
             <div class="ui-g-12">
                 <h3>直播概要</h3>
@@ -51,8 +53,7 @@
     </div>
     <div class="ui-g">
         <div class="ui-g-12">
-                <textarea id="content-textarea"  rows="8" cols="88" pInputTextarea autoResize="autoResize">
-                {{liveinfo.comment}}
+                <textarea id="content-textarea" [(ngModel)]="liveinfo.comment" rows="8" cols="88" pInputTextarea autoResize="autoResize">
                 </textarea>
         </div>
     </div>

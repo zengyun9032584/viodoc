@@ -1,3 +1,3 @@
-<p>
-  treedemo works!
-</p>
+<p-tree [value]="files" selectionMode="multiple" [(selection)]="selectedFiles" 
+(onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="onNodeUnselect($event)">
+</p-tree>

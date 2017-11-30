@@ -1,10 +1,10 @@
 
 import { Component, OnInit } from '@angular/core';
-import { pageAnimation, tagAnimation,LiveData,LiveDetail } from '../../../common/public-data';
 import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStateSnapshot } from '@angular/router';
 import { debug, error } from 'util';
 import { HttpService } from '../../../common/http.service'
 import { WorkspaceService } from '../../workspace.service';
+import { pageAnimation, tagAnimation, LiveData, LiveDetail,TreeNode } from '../../../common/public-data';
 
 
 /**
@@ -34,12 +34,66 @@ export class LivelistComponent implements OnInit {
   piclist = []      //直播课件列表
   backuppiclist = [] // 直播课件列表备份
 
-  constructor(private httpservice:HttpService,public router: Router,private myService: WorkspaceService) { }
+  files = new Array<TreeNode>();
+  selectedFiles: TreeNode[];
+  tree: any[];
+
+  constructor(private httpservice:HttpService,public router: Router,private myService: WorkspaceService) {
+    this.getIllTag();
+   }
   ngOnInit() {
    this.checklogin()
    this.getlivelist()
+  //  this.getsubjectlist(0);
+  }
+  async getIllTag() {
+    try {
+      this.tree = await this.getsubjectlist(0)
+      this.traverse(this.tree, this.files)
+    } catch (error) {
+      this.msgs = [];
+      this.msgs.push({ severity: 'error', summary: '获取标签列表失败', detail: `${error}` });
+    }
   }
 
+/**
+ *  遍历
+ *
+ * @stable
+ */
+  async traverse(e: any[], file: TreeNode[]) {
+    debugger
+    if(!e){return}
+    for (let i = 0; i < e.length; i++) {
+      var data = new TreeNode()
+      data.label = e[i].nodeName
+      data.data = e[i].nodeId
+      data.children = new Array<TreeNode>();
+      try{
+        e[i].chilren = await this.getsubjectlist(e[i].nodeId)
+        file[i] = data
+        if (e[i].chilren.length > 0) {
+          this.traverse(e[i].chilren, file[i].children)
+        } else {
+          break
+        }
+      }catch(error){
+        this.msgs = [];
+        this.msgs.push({ severity: 'error', summary: '获取标签列表失败', detail: `${error}` });
+      }
+    
+    }
+  }
+
+
+  nodeSelect(event: any) {
+    debugger
+    this.selectedFiles.push()
+    //event.node = selected node
+  }
+  onNodeUnselect(e: any) {
+    debugger
+  }
   
 /**
  *  检查是否登录，登录信息存储在localstorage
@@ -72,6 +126,7 @@ export class LivelistComponent implements OnInit {
  * @stable
  */
   async getlivelist () {
+    debugger
     try {
       const json={
         header: this.httpservice.makeBodyHeader({}, false),
@@ -134,6 +189,27 @@ async GetLiveDetails(e:any){
       this.msgs = [];
       this.msgs.push({ severity: 'error', summary: '获取直播课件失败', detail: `${error}` });
     } 
+  }
+
+  /**
+ *  获取直播标签
+ *
+ * @stable
+ */
+  async getsubjectlist(id:any){
+    const json={
+      header:this.httpservice.makeBodyHeader({}, false),
+      parentId: new Number(id)
+    }
+    try{
+    const data: any =await this.httpservice.newpost('api/viodoc/getSubjectTreeNode',JSON.stringify(json))
+    var a = JSON.parse(data._body)
+    var tree = a.subjectNode;
+  
+    } catch(error){
+      console.log(error)
+    }
+    return tree
   }
 
   async imgOperate(event:any) {
@@ -255,24 +331,33 @@ async GetLiveDetails(e:any){
  *
  * @stable
  */
-async uploadliveinfo(e:LiveData){
+async uploadliveinfo(e:LiveDetail){
+  debugger
   const json={
     header:this.httpservice.makeBodyHeader({}, false),
-    // liveId:new Number(id),
-    // picUrl:this.piclist
+    // type:e.tags,
+    comment:e.comment,
+    pic:e.pic,
+    title:e.title,
+    liveId:e.liveId,
+    groupId:e.groupId
   }
+  debugger
   try{
-    const data:any = this.httpservice.post("api/viodoc/uploadHttpLivePIC",JSON.stringify(json))
+    const data:any =await this.httpservice.newpost("api/viodoc/editLive",JSON.stringify(json))
+    this.getlivelist()
   }
   catch(error){
-    alert(error)
+    this.msgs = [];
+    this.msgs.push({ severity: 'error', summary: '保存直播信息失败', detail: `${error}` });
   }
 }
 
-  update(e: LiveData){
-    debugger
+  update(e:LiveDetail){
     this.uploadlivepiclist(e.liveId)
-
+    this.uploadliveinfo(e)
+   
+    this.close()
   }
 
   close(){
@@ -280,5 +365,7 @@ async uploadliveinfo(e:LiveData){
     this.display=false;
 
   }
+
+
 
 }

@@ -6,18 +6,25 @@
     <div class="ui-g">
         <div class="ui-g-12">
             <span>
-                标题
+                直播标题
             </span>
             <input id="title-input" type="text" size="20" pInputText [(ngModel)]="livetiele">
         </div>
         <div class="ui-g-12">
-            <span>时间</span>
+            <span>开始时间</span>
+            <p-calendar [(ngModel)]="livetime" [showTime]="true"></p-calendar> {{date7}}
+            <span>截止时间</span>
             <p-calendar [(ngModel)]="livetime" [showTime]="true"></p-calendar> {{date7}}
         </div>
-        <div class="ui-g-12">
-                <p-tree [value]="files" selectionMode="checkbox" [(selection)]="selectedFiles"
-                [propagateSelectionUp]="true" [propagateSelectionDown]="true"
-                (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="onNodeUnselect($event)"></p-tree>
+        <div class="ui-g-6" (click)="showtagtree()" >直播标签： 
+            <span *ngFor="let file of selectedFiles">{{file.label}} 
+                    <i class="fa fa-times" aria-hidden="true" (click)="del(file)"></i>
+            </span>
+        </div>
+        <div class="ui-g-12" *ngIf="tagtree">
+            <p-tree [value]="files" selectionMode="multiple" 
+                (onNodeSelect)="nodeSelect($event)" >
+            </p-tree>
         </div>
     </div>
     <div class="ui-g">
@@ -51,5 +58,4 @@
             </div>
     </div> -->
 </div>
-<app-treedemo></app-treedemo>
 

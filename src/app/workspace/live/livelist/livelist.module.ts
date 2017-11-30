@@ -20,6 +20,7 @@ import {
     PaginatorModule,
     TooltipModule,
     OverlayPanelModule,
+    TreeModule,
     
   } from 'primeng/primeng';
 
@@ -50,6 +51,8 @@ import {
     TooltipModule,
     OverlayPanelModule,
     MyBreadcrumbModule,
+    TreeModule,
+    
 
     RouterModule.forChild([
       { path:'',component:LivelistComponent}
