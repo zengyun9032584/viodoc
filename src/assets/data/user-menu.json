@@ -5,15 +5,23 @@
         "children": [
             {
                 "name": "新建文章",
-                "link": "article"
+                "icon": "fa-arrows",
+                "link": "http://localhost:8083",
+                "flag":"1"
             },
             {
-                "name": "文章列表",
-                "link": "article-list"
+                "name": "我的文库",
+                "icon": "fa-arrows",
+                "link": "http://stgdr.viodoc.com",
+                "flag":"1"
+                
             },
             {
                 "name": "草稿箱",
-                "link": "draft"
+                "icon": "fa-arrows",
+                "link": "http://stgdr.viodoc.com",
+                "flag":"1"
+                
             }
         ]
     },
@@ -22,12 +30,9 @@
         "icon": "fa-video-camera",
         "children": [
             {
-                "name": "创建直播",
-                "link": "createlive"
-            },
-            {
                 "name": "直播列表",
-                "link": "livelist"
+                "link": "livelist",
+                "flag":"0"
             }
         ]
     }

@@ -4,17 +4,20 @@
 }
 .content{
     /* height: 1000px; */
-    overflow-y:auto;
+    overflow-y: auto;
+    /* border: 1px solid black; */
+    width: 94%;
+    margin-left: 3%;
 }
 .liveitem{
     /* border: 1px solid #46b587; */
     position: relative;
     border-radius: 3px;
-    height:210px;
+    height:220px;
     margin-top: 6px;
     margin-bottom: 6px;
-    border-top: 1px solid #46b587;
-    border-right: 1px solid #46b587;
+    border: 1px solid #bbbbbb;
+    /* border-right: 1px solid #46b587; */
     /* background-color: #aaa; */
 }
 
@@ -30,12 +33,12 @@
 .liveitem p{
     color: #2399e5;
     padding: 1px;
-    margin: 2px 2px 2px 4px;
+    margin: 4px 2px 2px 4px;
 }
 
 .liveitem h5{
     padding: 1px;
-    margin: 2px 2px 2px 4px;
+    margin: 4px 2px 2px 4px;
 }
 .liveitem .introduce{
     position: absolute;
@@ -54,6 +57,13 @@
     left:3%;
     position: absolute;
     bottom: 0px;
+}
+.liveitem .content{
+    /* border:1px solid; */
+    height:40%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 8px 2px 2px 2px;
 }
 
 .dialog-item{

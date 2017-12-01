@@ -3,20 +3,61 @@
   <my-breadcrumb name1="直播管理" name2="直播列表"></my-breadcrumb>
 </div>
 
-<div class="ui-g content"  >
-  <div *ngFor="let item of livelist ;let i=index" class="ui-g-12 ui-md-6 ui-lg-3 liveitem">
-    <h3> {{item.title}}</h3>
-    <p>主讲人:{{item.doctorName}}</p>
-    <h5>直播开始:{{item.startTime}}</h5>
-    <h5 *ngIf="item.status==0">直播状态：报名中</h5>
-    <h5 *ngIf="item.status==1">直播状态：直播中</h5>
-    <h5 *ngIf="item.status==2">直播状态：直播结束</h5>
-    <textarea  rows="5" cols="30" [(ngModel)]="item.comment" readonly="readonly" pInputTextarea autoResize="autoResize">
-        </textarea>
-    <button (click)="showliveinfo(item,i)" pButton type="button" label ="进入详情"></button>
+
+<div  style="position:absolute;right: 20px;top:70px;">
+<p-selectButton  [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+</div>
+
+<div class="ui-g content" *ngIf="selectedType=='title'" >
+  <div *ngFor="let item of livelist ;let i=index" class="ui-g-12 ui-md-6 ui-lg-3 ">
+    <div class="liveitem">
+        <h3> {{item.title}}</h3>
+        <p>主讲人:{{item.doctorName}}</p>
+        <h5>直播开始:{{item.startTime}}</h5>
+        <h5 *ngIf="item.status==0">报名中</h5>
+        <h5 *ngIf="item.status==1">直播中</h5>
+        <h5 *ngIf="item.status==2">直播结束</h5>
+        <!-- <textarea  rows="5" cols="30" [(ngModel)]="item.comment" readonly="readonly" pInputTextarea autoResize="autoResize">
+        </textarea> -->
+        <div class="content">{{item.comment}}</div>
+        <button (click)="showliveinfo(item,i)" pButton type="button" label ="进入详情"></button>
+    </div>
+   
   </div>
 
 </div>
+
+<p-dataList [value]="livelist" [paginator]="true" [rows]="5" *ngIf="selectedType=='list'">
+        <!-- <p-header>
+            List of Cars
+        </p-header> -->
+        <ng-template let-car let-i="index" pTemplate="item">
+            <div class="ui-g ui-fluid car-item">
+                <!-- <div class="ui-g-12 ui-md-3" style="text-align:center">
+                    <img src="assets/showcase/images/demo/car/{{car.brand}}.png">
+                </div> -->
+                <div class="ui-g-12 ui-md-9 car-details">
+                    <div class="ui-g">
+                        <!-- <div class="ui-g-1 ui-sm-6">标题: </div> -->
+                        <div class="ui-g-11 ui-sm-6">{{car.title}}</div>
+                        
+                        <!-- <div class="ui-g-1 ui-sm-6">主讲人: </div> -->
+                        <div class="ui-g-11 ui-sm-6">{{car.doctorName}}</div>
+                        
+                        <!-- <div class="ui-g-1 ui-sm-6">时间: </div> -->
+                        <div class="ui-g-11 ui-sm-6">{{car.startTime}}</div>
+                        
+                        <!-- <div class="ui-g-1 ui-sm-6">直播状态: </div> -->
+                        <div *ngIf="car.status==0" class="ui-g-11 ui-sm-6">报名中</div>
+                        <div *ngIf="car.status==1" class="ui-g-11 ui-sm-6">正在直播</div>
+                        <div *ngIf="car.status==2" class="ui-g-11 ui-sm-6">直播结束</div>
+                        
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+    </p-dataList>
+
 <p-dialog header="直播详细"  *ngIf="display" [(visible)]="display" modal="modal" width="800" [responsive]="true" [positionTop]="'60'">
   <div style="height:400px">
     <div class="dialog-item" >  

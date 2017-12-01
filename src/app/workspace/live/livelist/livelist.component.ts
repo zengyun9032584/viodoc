@@ -5,7 +5,7 @@ import { debug, error } from 'util';
 import { HttpService } from '../../../common/http.service'
 import { WorkspaceService } from '../../workspace.service';
 import { pageAnimation, tagAnimation, LiveData, LiveDetail,TreeNode } from '../../../common/public-data';
-
+import {SelectItem} from 'primeng/primeng';
 
 /**
  *  直播列表组件
@@ -34,18 +34,25 @@ export class LivelistComponent implements OnInit {
   piclist = []      //直播课件列表
   backuppiclist = [] // 直播课件列表备份
 
+  types: SelectItem[];
+  
+  selectedType="title";
+
   files = new Array<TreeNode>();
   selectedFiles: TreeNode[];
   tree: any[];
 
   constructor(private httpservice:HttpService,public router: Router,private myService: WorkspaceService) {
-    this.getIllTag();
+    // this.getIllTag();
+    this.types = [];
+    this.types.push({label: '列表', value: 'list'});
+    this.types.push({label: '标签', value: 'title'});
    }
   ngOnInit() {
    this.checklogin()
    this.getlivelist()
-  //  this.getsubjectlist(0);
   }
+  
   async getIllTag() {
     try {
       this.tree = await this.getsubjectlist(0)
@@ -62,7 +69,6 @@ export class LivelistComponent implements OnInit {
  * @stable
  */
   async traverse(e: any[], file: TreeNode[]) {
-    debugger
     if(!e){return}
     for (let i = 0; i < e.length; i++) {
       var data = new TreeNode()
@@ -78,16 +84,13 @@ export class LivelistComponent implements OnInit {
           break
         }
       }catch(error){
-        this.msgs = [];
-        this.msgs.push({ severity: 'error', summary: '获取标签列表失败', detail: `${error}` });
+      console.log("traverse err")
       }
-    
     }
   }
 
 
   nodeSelect(event: any) {
-    debugger
     this.selectedFiles.push()
     //event.node = selected node
   }
@@ -126,7 +129,6 @@ export class LivelistComponent implements OnInit {
  * @stable
  */
   async getlivelist () {
-    debugger
     try {
       const json={
         header: this.httpservice.makeBodyHeader({}, false),
@@ -140,6 +142,9 @@ export class LivelistComponent implements OnInit {
       const doctor:any = await this.httpservice.newpost('api/viodoc/getSomebodyLiveList',JSON.stringify(json))
       var a:any=JSON.parse(doctor._body)
       this.livelist=a.anchorLivinglist
+      for(let i=0; i<10;i++){
+        this.livelist.push(a.anchorLivinglist)
+      }
     } catch (error) {
       this.msgs = [];
       this.msgs.push({ severity: 'error', summary: '获取直播列表失败', detail: `${error}` });
@@ -332,7 +337,6 @@ async GetLiveDetails(e:any){
  * @stable
  */
 async uploadliveinfo(e:LiveDetail){
-  debugger
   const json={
     header:this.httpservice.makeBodyHeader({}, false),
     // type:e.tags,
@@ -342,7 +346,6 @@ async uploadliveinfo(e:LiveDetail){
     liveId:e.liveId,
     groupId:e.groupId
   }
-  debugger
   try{
     const data:any =await this.httpservice.newpost("api/viodoc/editLive",JSON.stringify(json))
     this.getlivelist()

@@ -4,7 +4,7 @@
 <div class="header">
   <ul>
       <li class="header-li">
-          <a style="font-size:18px;width:150px;">非凡医品</a>
+          <a style="font-size:25px;width:150px;">非凡医品</a>
       </li>
   </ul>
   <ul style="float: right">
@@ -28,12 +28,16 @@
       </p-header>
       <ul>
         <div *ngIf="!pTooltipIf">
-          <li *ngFor="let children of item.children"><a routerLink="{{children.link}}" routerLinkActive='active-link'>{{children.name}}</a>
+          <li *ngFor="let children of item.children">
+            
+            <a *ngIf="children.flag==1" href="{{children.link}}" >{{children.name}}</a>
+            <a *ngIf="children.flag==0" routerLink="{{children.link}}" routerLinkActive='active-link'>{{children.name}}</a>
           </li>
         </div>
         <div *ngIf="pTooltipIf">
           <li *ngFor="let children of item.children">
-            <a  routerLink="{{children.link}}" 
+              <a *ngIf="children.flag==1" href="{{children.link}}" >{{children.name}}</a>
+            <a  *ngIf="children.flag==0" routerLink="{{children.link}}" 
                 routerLinkActive='active-link'
                 pTooltip="{{children.name}}">
             </a>

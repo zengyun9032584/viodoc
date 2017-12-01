@@ -21,9 +21,9 @@ import {
     TooltipModule,
     OverlayPanelModule,
     TreeModule,
-    
+    DataListModule,
+    SelectButtonModule
   } from 'primeng/primeng';
-
   import {MyBreadcrumbModule} from "../../../components/my-breadcrumb/my-breadcrumb";
 
 
@@ -52,7 +52,8 @@ import {
     OverlayPanelModule,
     MyBreadcrumbModule,
     TreeModule,
-    
+    DataListModule,
+    SelectButtonModule,
 
     RouterModule.forChild([
       { path:'',component:LivelistComponent}
