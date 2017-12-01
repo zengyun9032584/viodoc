@@ -33,6 +33,8 @@ export class CreateliveComponent implements OnInit {
   selectedFiles= new Array<TreeNode>();
   tree: any[];
   tagtree=false;
+
+  date7:any;
   
   constructor(private httpservice: HttpService, private myService: WorkspaceService, ) {
     // this.getIllTag();

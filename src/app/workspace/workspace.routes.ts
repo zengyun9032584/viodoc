@@ -14,11 +14,6 @@ export const workspaceRoutes = [
         loadChildren: './library/article-list/article-list.module#ArticleListModule',
         data: {preload: true}
       },
-      // {
-      //   path: 'editor',
-      //   loadChildren: '../editor/editor.module#EditorModule',
-      //   data: {preload: true}
-      // },
       {
         path: 'article',
         loadChildren: './library/article/article.module#ArticleModule',
