@@ -1,12 +1,13 @@
 <p-growl [(value)]="msgs" life="2000"></p-growl>
+
 <div [@pageAnimation]="'in'">
   <my-breadcrumb name1="直播管理" name2="直播列表"></my-breadcrumb>
 </div>
 
-
+<!-- 
 <div  style="position:absolute;right: 20px;top:70px;">
 <p-selectButton  [options]="types" [(ngModel)]="selectedType"></p-selectButton>
-</div>
+</div> -->
 
 <div class="ui-g content" *ngIf="selectedType=='title'" >
   <div *ngFor="let item of livelist ;let i=index" class="ui-g-12 ui-md-6 ui-lg-3 ">
@@ -14,13 +15,13 @@
         <h3> {{item.title}}</h3>
         <p>主讲人:{{item.doctorName}}</p>
         <h5>直播开始:{{item.startTime}}</h5>
-        <h5 *ngIf="item.status==0">报名中</h5>
-        <h5 *ngIf="item.status==1">直播中</h5>
-        <h5 *ngIf="item.status==2">直播结束</h5>
+        <p class="status" *ngIf="item.status==0">报名中</p>
+        <p class="status" *ngIf="item.status==1">直播中</p>
+        <p class="status" *ngIf="item.status==2">直播结束</p>
         <!-- <textarea  rows="5" cols="30" [(ngModel)]="item.comment" readonly="readonly" pInputTextarea autoResize="autoResize">
         </textarea> -->
         <div class="content">{{item.comment}}</div>
-        <button (click)="showliveinfo(item,i)" pButton type="button" label ="进入详情"></button>
+        <button (click)="showliveinfo(item,i)" pButton type="button" label ="编辑直播"></button>
     </div>
    
   </div>

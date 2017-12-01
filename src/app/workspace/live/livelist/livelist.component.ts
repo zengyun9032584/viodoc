@@ -142,9 +142,9 @@ export class LivelistComponent implements OnInit {
       const doctor:any = await this.httpservice.newpost('api/viodoc/getSomebodyLiveList',JSON.stringify(json))
       var a:any=JSON.parse(doctor._body)
       this.livelist=a.anchorLivinglist
-      for(let i=0; i<10;i++){
-        this.livelist.push(a.anchorLivinglist)
-      }
+      // for(let i=0; i<10;i++){
+      //   this.livelist.push(a.anchorLivinglist)
+      // }
     } catch (error) {
       this.msgs = [];
       this.msgs.push({ severity: 'error', summary: '获取直播列表失败', detail: `${error}` });
