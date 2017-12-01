@@ -15,9 +15,12 @@
   </ul>
   <ul style="float: right">
     <li class="header-li">
-      <a style="width: 150px;overflow: hidden;" (click)="showLoginWindow()">{{realname}}</a>
+      <a style="width: 50px;overflow: hidden;" (click)="showLoginWindow()">{{realname}}
+      </a>
     </li>
-   
+    <li class="header-li" style="margin-top:10px">
+        <img style="width: 40px;overflow: hidden;" (click)="showLoginWindow()" [src]="userpic">
+    </li>
     <li class="header-li" style="width: 150px" >
       <a class="fa fa-sign-out" (click)="loginOut()"></a>
     </li>
@@ -28,23 +31,22 @@
   <span class="text-error">{{menumsg}}</span>
   <span class="fa fa-bars bars" (click)="changeMenuWidth()"></span>
   <p-accordion>
-    <p-accordionTab *ngFor="let item of menus ;let i=index;" [selected]="i == 0">
+    <p-accordionTab  *ngFor="let item of menus ;let i=index;" [selected]="i == 0">
       <p-header>
         <i class="item-url fa" [ngClass]="item.icon" [@imgState]="state"></i>
         <span>{{item.name}}</span>
       </p-header>
       <ul>
-        <div *ngIf="!pTooltipIf">
+        <div *ngIf="!pTooltipIf" class="data">
           <li *ngFor="let children of item.children">
-            
             <a *ngIf="children.flag==1" href="{{children.link}}" >{{children.name}}</a>
             <a *ngIf="children.flag==0" routerLink="{{children.link}}" routerLinkActive='active-link'>{{children.name}}</a>
           </li>
         </div>
-        <div *ngIf="pTooltipIf">
+        <div *ngIf="pTooltipIf"  class="data">
           <li *ngFor="let children of item.children">
               <a *ngIf="children.flag==1" href="{{children.link}}" >{{children.name}}</a>
-            <a  *ngIf="children.flag==0" routerLink="{{children.link}}" 
+              <a  *ngIf="children.flag==0" routerLink="{{children.link}}" 
                 routerLinkActive='active-link'
                 pTooltip="{{children.name}}">
             </a>

@@ -57,7 +57,10 @@ export class WorkspaceComponent implements OnInit {
     if (this.http.storeget('ffys_user_info')) {
       const userinfo:any = this.http.storeget('ffys_user_info')
       this.realname = userinfo.name;
-     
+      this.userpic = userinfo.headImgPath;
+      if( this.realname===""){
+        this.router.navigateByUrl("login");
+      }
     } else {
       this.router.navigateByUrl("login");
     }
@@ -75,6 +78,7 @@ export class WorkspaceComponent implements OnInit {
   display = false;
   userName: string;
   password: string;
+  userpic:string;
   /************************* 获取菜单 ********************************/
   getMenu() {
     // if (sessionStorage.getItem('menu111')) {
@@ -120,6 +124,7 @@ export class WorkspaceComponent implements OnInit {
 
   /************************* 退出登录 ********************************/
   loginOut() {
+    debugger
     try{
       
       const json={
@@ -127,6 +132,7 @@ export class WorkspaceComponent implements OnInit {
           header: this.http.makeBodyHeader()
         })
       }
+      debugger
       this.http.newpost('api/viodoc/signOut', JSON.stringify(json))
       this.realname = '未登录';  
       this.http.storeremove("ffys_user_info")

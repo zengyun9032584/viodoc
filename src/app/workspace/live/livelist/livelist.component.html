@@ -21,7 +21,7 @@
         <!-- <textarea  rows="5" cols="30" [(ngModel)]="item.comment" readonly="readonly" pInputTextarea autoResize="autoResize">
         </textarea> -->
         <div class="content">{{item.comment}}</div>
-        <button (click)="showliveinfo(item,i)" pButton type="button" label ="编辑直播"></button>
+        <button (click)="showliveinfo(item,i)" style="border:1px solid #f0f0f0;color:#000;background:#f0f0f0;" pButton type="button" label ="编辑直播"></button>
     </div>
    
   </div>
@@ -59,7 +59,7 @@
         </ng-template>
     </p-dataList>
 
-<p-dialog header="直播详细"  *ngIf="display" [(visible)]="display" modal="modal" width="800" [responsive]="true" [positionTop]="'60'">
+<p-dialog header="我的直播"  *ngIf="display" [(visible)]="display" modal="modal" width="800" [responsive]="true" [positionTop]="'60'">
   <div style="height:400px">
     <div class="dialog-item" >  
         <div class="ui-g">
@@ -67,11 +67,19 @@
                 <input id="title-input" type="text"  size="30" pInputText [(ngModel)]="liveinfo.title"> 
             </div>
         </div>
+    </div>
+    <div class="dialog-item" > 
         <div class="ui-g">
-            <div class="ui-g-4">{{liveinfo.status}}</div>
-        </div>
-        <div class="ui-g">
-            <div class="ui-g-4">{{liveinfo.startTime}}</div>
+                <div class="ui-g-12 ui-g-nopad">
+                        <div class="ui-g-2">
+                                <img style="width: 100px;overflow: hidden;" (click)="showLoginWindow()" [src]="userpic">
+                        </div>
+                        <div class="ui-g-6">
+                            <h3>
+                          {{this.realname}}
+                            </h3>  
+                        </div>
+                </div>
         </div>
     </div>
 
@@ -79,19 +87,9 @@
     <div class="ui-g">
         <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-12">
-                <h3>直播简介</h3>
-            </div>
-            <div class="ui-g-12">
-                <p>主讲人:{{liveinfo.doctorName}}</p>
-
-            </div>
-            <div class="ui-g-12">
-                <h3>直播概要</h3>
+                <h3>直播概述</h3>
             </div>
         </div>
-        <!-- <div class="ui-g-1">
-            <img (click)="editliveinfo($event,'content-textarea')" style="width:30px"src="assets/img/editbutton.jpg">
-        </div> -->
     </div>
     <div class="ui-g">
         <div class="ui-g-12">
@@ -99,29 +97,31 @@
                 </textarea>
         </div>
     </div>
-    <div class="ui-g part">
+    <!-- <div class="ui-g part">
       <div class="ui-g-12">
         <h3>报名人数：（{{liveinfo.liveCount}}）</h3> 
       </div>  
-    </div>
+    </div> -->
   </div>
   
   <div class="dialog-item">
       <div class="ui-g">
           <div class="ui-g-12">
-              <h3>课件
-                <span>（编辑课件后记得点击上传课件）</span>
-              </h3>
+              <h3>课件</h3>
           </div>
           <div  *ngFor="let pic of piclist ; let i=index" class="ui-g-2 ui-md-6 ui-lg-2 dialog-item-pic"  >
                 <span class="pic">
                 <img style="width:100px" (click)="previewimg($event)" [src]="pic">
                     <button class="del "pButton type="button" (click)="delpic($event,i)" icon="fa-close"></button>
                 </span>
+              
           </div>
           <div class="ui-g-12 ui-md-6 ui-lg-2 dialog-item-pic"  >
               <img onclick="getElementById('file').click()" style="width:100px" title="点击添加图片" alt="点击添加图片" src="assets/img/uploadpic.jpg">
               <input (change)="imgOperate($event)" type="file" multiple="multiple" id="file" name='file' style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
+          </div>
+          <div class="ui-g-12">
+              <span>（上传的课件需要图片格式（支持jpg，png），编辑课件后记得点击上传课件）</span>
           </div>
       </div>
       <div class="ui-g">
@@ -132,6 +132,6 @@
 </div>
   <p-footer>
     <button type="button" pButton icon="fa-check" (click)="update(liveinfo)" label="确认"></button>
-    <button type="button" pButton icon="fa-close" (click)="close()" label="关闭"></button>
+    <!-- <button type="button" pButton icon="fa-close" (click)="close()" label="关闭"></button> -->
   </p-footer>
 </p-dialog>

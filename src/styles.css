@@ -205,12 +205,13 @@ img, a, p, body, html, select, div, label, option, ul, li, dl, dd, span, input, 
     position: fixed;
     z-index: 800;
     height: 100%;
-    background-color: #323a57;
+    background-color: #f4f4f4;
+    border: 1px solid;
   }
   
   /*菜单激活颜色*/
   .active-link {
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(175, 156, 156, 0.5);
   }
   
   body .ui-accordion .ui-accordion-header {
@@ -227,10 +228,11 @@ img, a, p, body, html, select, div, label, option, ul, li, dl, dd, span, input, 
     left: 122px;
   }
   
+  /* 展开列表颜色 */
   .ui-accordion .ui-accordion-content {
     padding: 0 !important;
     border: 0 !important;
-    background-color: #1f283d !important;
+    background-color: #dcdcdc !important;
   
   }
   
@@ -240,35 +242,37 @@ img, a, p, body, html, select, div, label, option, ul, li, dl, dd, span, input, 
     text-align: center;
     height: 40px;
     line-height: 40px;
-    color: #FFFFFF;
+    color: #000;
   }
   
   .ui-accordion .ui-accordion-content a:hover {
     color: #FFFFFF !important;
-    background-color: rgba(0, 0, 0, .5);
+    background-color: rgba(99, 95, 95, 0.205);
   }
   
   body .ui-accordion .ui-accordion-header {
-    background-color: #323a57;
-    color: #FFFFFF;
+    background-color: #f0f0f0;
+    color: #000;
   }
   
   body .ui-accordion .ui-accordion-header:hover {
-    background-color: rgba(0, 0, 0, .5) !important;
+    /* background-color: rgba(197, 189, 189, 0.5) !important; */
+    background-color: rgba(182, 176, 176, 0.5)!important;
+    
     color: #FFFFFF !important;
   }
   
   body .ui-accordion .ui-accordion-header:hover a {
-    color: #FFFFFF !important;
+    color: #f0f0f0 !important;
   }
   
   body .ui-accordion .ui-accordion-header a {
-    color: #FFFFFF;
+    color: #000;
   }
   
   body .ui-accordion .ui-accordion-header.ui-state-active {
-    background-color: #323a57;
-    color: #FFFFFF;
+    background-color: #dcdcdc;
+    color: #000000;
   }
   
   /*menu   end*/

@@ -42,17 +42,32 @@ export class LivelistComponent implements OnInit {
   selectedFiles: TreeNode[];
   tree: any[];
 
+  realname: string = '未登录'; 
+  userpic:string;
+  anchorId:any;
+
   constructor(private httpservice:HttpService,public router: Router,private myService: WorkspaceService) {
     // this.getIllTag();
     this.types = [];
     this.types.push({label: '列表', value: 'list'});
     this.types.push({label: '标签', value: 'title'});
+    if (this.httpservice.storeget('ffys_user_info')) {
+      const userinfo:any = this.httpservice.storeget('ffys_user_info')
+      this.realname = userinfo.name;
+      this.userpic = userinfo.headImgPath;
+      this.anchorId = userinfo.userId;
+    } else {
+      this.router.navigateByUrl("login");
+    }
    }
+
   ngOnInit() {
    this.checklogin()
    this.getlivelist()
+   
   }
-  
+
+  //没有使用
   async getIllTag() {
     try {
       this.tree = await this.getsubjectlist(0)
@@ -137,8 +152,9 @@ export class LivelistComponent implements OnInit {
           pageSize:12,
           total:1
         },
-        anchorId: 480
+        anchorId: this.anchorId
       }
+      debugger
       const doctor:any = await this.httpservice.newpost('api/viodoc/getSomebodyLiveList',JSON.stringify(json))
       var a:any=JSON.parse(doctor._body)
       this.livelist=a.anchorLivinglist
@@ -220,25 +236,30 @@ async GetLiveDetails(e:any){
   async imgOperate(event:any) {
     const files = event.target.files
     if (files.length === 0) return
-    var file = files[0]
-    const readerFile:any = await this.readImageAttr(file)
-    const width = readerFile.width
-    const height = readerFile.height
-    if (/\.(gif|jpg|jpeg|tiff|png)$/.test(file)) {
-      return alert('请上传正确的图片格式')
+    
+    
+    for(let i=0;i<files.length;i++){
+      var file = files[i]
+      const readerFile:any = await this.readImageAttr(file)
+      const width = readerFile.width
+      const height = readerFile.height
+      if (/\.(gif|jpg|jpeg|tiff|png)$/.test(file)) {
+        return alert('请上传正确的图片格式')
+      }
+      let dotIndex = file.name.lastIndexOf('.')
+      const ext = file.name.substring(dotIndex + 1, file.name.length)
+      const form:any = this.uploadImage(file, ext, width, height)
+      try {
+      const data:any = await this.httpservice.request('http://viodoc.tpddns.cn:9500/api/viodoc/uploadPIC', {
+          body:form
+        })
+        var a = JSON.parse(data._body)
+        this.piclist.push(a.picURL);
+      }catch(error){
+            alert(error)
+      }
     }
-    let dotIndex = file.name.lastIndexOf('.')
-    const ext = file.name.substring(dotIndex + 1, file.name.length)
-    const form:any = this.uploadImage(file, ext, width, height)
-    try {
-    const data:any = await this.httpservice.request('http://viodoc.tpddns.cn:9500/api/viodoc/uploadPIC', {
-        body:form
-      })
-      var a = JSON.parse(data._body)
-      this.piclist.push(a.picURL);
-    }catch(error){
-          alert(error)
-    }
+ 
   }
 
  /**

@@ -19,7 +19,7 @@
   top: 62px;
   right: 0px;
   z-index: 1100;
-  color: #FFFFFF;
+  color: #aaa;
   font-size: 22px;
   padding: 7px 11px;
   border-radius: 5px;
@@ -31,15 +31,16 @@
 }
 
 .header {
-  background-color: #5075b6;
+  background-color: #Fafafa;
   padding: 0px 20px 0px 0px;
   height: 60px;
-  color: #FFFFFF;
+  color: #16757f;
   position: fixed;
   top: 0;
   z-index: 900;
   width: 100%;
   min-width: 765px; 
+  border-bottom: 1px solid #ddd;
 }
 
 .header .header-li {
@@ -60,7 +61,7 @@
 
 .header a {
   display: inline-block;
-  color: #FFFFFF;
+  color: #16757f;
   width: 100px;
   line-height: 60px;
   text-align: center;

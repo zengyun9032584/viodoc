@@ -33,12 +33,12 @@
 .liveitem p{
     color: #2399e5;
     padding: 1px;
-    margin: 4px 2px 2px 4px;
+    margin: 8px 2px 2px 4px;
 }
 
 .liveitem h5{
     padding: 1px;
-    margin: 4px 2px 2px 4px;
+    margin: 8px 2px 2px 4px;
 }
 .liveitem .status{
     color: #2399e5;
@@ -46,6 +46,15 @@
     text-align: center;
     border: 1px solid;
     border-radius: 50px; 
+    font-size: 10px;
+}
+.status{
+    color: #2399e5;
+    width:60px;
+    text-align: center;
+    border: 1px solid;
+    border-radius: 50px; 
+    font-size: 10px;
 }
 .liveitem .introduce{
     position: absolute;
@@ -71,6 +80,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin: 8px 2px 2px 2px;
+    word-wrap:break-word;
 }
 
 .dialog-item{
