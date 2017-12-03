@@ -3,7 +3,6 @@ import { Http, Response } from '@angular/http';
 import { Headers, RequestOptions } from '@angular/http';
 import {sha256 }from 'js-sha256';
 
-
 // Statics
 import 'rxjs/add/observable/throw';
 
@@ -23,6 +22,8 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map'; 
+import { encode } from '@angular/router/src/url_tree';
+import { escape } from 'querystring';
 
 @Injectable()
 export class HttpService {
@@ -199,16 +200,48 @@ makeBodyHeader (params = {}, needAuth = true) {
 }
 
 storeset(key, value) {
-    localStorage.setItem(key, JSON.stringify(value))
+ 
+    // const info= encodeURI(JSON.stringify(value))
+    // var expire;
+    // var path = "; path=/"
+    // var domain = "; domain=localhost"
+    // expire = new Date ((new Date ()).getTime () + 12 * 3600000);
+    // expire = "; expires=" + expire.toGMTString ();
+    // document.cookie = key + "=" + info + expire + path + domain;
+    localStorage.setItem(key, value)
     return this
+    
 }
+getcookie(){
+  try{
+    console.log(document.cookie)
+    const cookie = document.cookie;
+    var user=cookie.split("; ffys_user_token=")[0]
+    var data=user.split("=")[1];
+    var userinfo = decodeURI(data)
+    this.storeset("ffys_user_info",userinfo)
+    
+    var token = cookie.split("; ffys_user_token=")[1]
+    var usertoken = decodeURI(token)
+    this.storeset("ffys_user_token",usertoken)
+    debugger
+  }catch(error){
+    return false
+  }
+
+
+}
+
+
 storeget(key) {
     try {
       return JSON.parse(localStorage.getItem(key))
     } catch (e) {
-      return
+      false
     }
+
 }
+
 storeremove (key) {
     localStorage.removeItem(key)
     return this

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 
 import { HttpService } from '../common/http.service';
+import { escape } from 'querystring';
+import { encode } from '@angular/router/src/url_tree';
 
 
 @Component({
@@ -32,27 +34,41 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
   async login () {
-    const verifyResult = this.verify()
-    if (!verifyResult) return
-    try {
-      this.disableSubmit = true
-      const json={
-        header: this.httpservice.makeBodyHeader({}, false),
-        accountName: this.username,
-        pwd: this.password
-      }
-      const doctor:any = await this.httpservice.newpost('api/viodoc/signIn',JSON.stringify(json))
-      debugger
-      const doctorInfo=JSON.parse(doctor._body)
-      this.httpservice.storeset('ffys_user_info', doctorInfo.userInfo)
-      this.httpservice.storeset('ffys_user_token', doctorInfo.token)
+    // const verifyResult = this.verify()
+    // if (!verifyResult) return
+    // try {
+    //   this.disableSubmit = true
+    //   const json={
+    //     header: this.httpservice.makeBodyHeader({}, false),
+    //     accountName: this.username,
+    //     pwd: this.password
+    //   }
+    //   const doctor:any = await this.httpservice.newpost('api/viodoc/signIn',JSON.stringify(json))
+    //   debugger
+    //   const doctorInfo=JSON.parse(doctor._body)
+     
+    //   this.httpservice.storeset('ffys_user_info', doctorInfo.userInfo)
+    //   this.httpservice.storeset('ffys_user_token', doctorInfo.token)
 
-      this.disableSubmit = false
-      this.loginSuccess = true
-      this.redirect()
-    } catch (err) {
-      console.log(err)
-    } 
+    //   this.disableSubmit = false
+    //   this.loginSuccess = true
+    //   this.redirect()
+    // } catch (err) {
+    //   console.log(err)
+    // } 
+const info={
+  a:"q",
+  b:"w",
+  c:"e"
+}
+const token={
+  a:"q",
+  b:"w",
+  c:"e",
+  ss:"ss"
+}
+    this.httpservice.storeset('ffys_user_info', info)
+    this.httpservice.storeset('ffys_user_token', token)
   }
 
   redirect() {

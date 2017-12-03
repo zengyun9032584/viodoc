@@ -24,10 +24,10 @@ import {beforeUrl,UserInfo} from '../common/public-data';
     ]),
     trigger('routerState', [
       state('inactive', style({
-        marginLeft: '170px'
+        marginLeft: '152px'
       })),
       state('active', style({
-        marginLeft: '50px'
+        marginLeft: '42px'
       })),
       transition('inactive => active', animate('200ms ease-in')),
       transition('active => inactive', animate('200ms ease-out'))
@@ -49,11 +49,16 @@ export class WorkspaceComponent implements OnInit {
   private menuUrl = 'assets/data/user-menu.json';
   
 
-  constructor(private myService: WorkspaceService, public router: Router, private http: HttpService) {
+  constructor(private myService: WorkspaceService, 
+              public router: Router, 
+              private http: HttpService) {
+               
+  
   };
 
   ngOnInit() {
     this.getMenu();
+    debugger
     if (this.http.storeget('ffys_user_info')) {
       const userinfo:any = this.http.storeget('ffys_user_info')
       this.realname = userinfo.name;
@@ -126,7 +131,6 @@ export class WorkspaceComponent implements OnInit {
   loginOut() {
     debugger
     try{
-      
       const json={
         body:JSON.stringify({
           header: this.http.makeBodyHeader()
@@ -137,7 +141,7 @@ export class WorkspaceComponent implements OnInit {
       this.realname = '未登录';  
       this.http.storeremove("ffys_user_info")
       this.http.storeremove("ffys_user_token")
-      this.router.navigateByUrl("login");
+      // this.router.navigateByUrl("login");
 
     } catch(err){
       console.log("登出失败"+err)

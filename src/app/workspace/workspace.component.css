@@ -1,8 +1,8 @@
 /*视图框*/
 .router {
   padding-top: 60px;
-  padding-right: 15px;
-  margin-left: 165px;
+  /* padding-right: 15px; */
+  /* margin-left: 165px; */
   overflow-x: auto;
   min-width: 700px;
   min-height: 700px;

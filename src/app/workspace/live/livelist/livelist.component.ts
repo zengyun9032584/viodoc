@@ -51,18 +51,12 @@ export class LivelistComponent implements OnInit {
     this.types = [];
     this.types.push({label: '列表', value: 'list'});
     this.types.push({label: '标签', value: 'title'});
-    if (this.httpservice.storeget('ffys_user_info')) {
-      const userinfo:any = this.httpservice.storeget('ffys_user_info')
-      this.realname = userinfo.name;
-      this.userpic = userinfo.headImgPath;
-      this.anchorId = userinfo.userId;
-    } else {
-      this.router.navigateByUrl("login");
-    }
+
+    this.checklogin()
    }
 
   ngOnInit() {
-   this.checklogin()
+  
    this.getlivelist()
    
   }
@@ -119,9 +113,11 @@ export class LivelistComponent implements OnInit {
  * @stable
 */
   checklogin(){
-    if (this.httpservice.storeget('ffys_user_info')) {
-      const userinfo:any = this.httpservice.storeget('ffys_user_info')
-      this.userId = userinfo.userId;
+    const userinfo:any = this.httpservice.storeget('ffys_user_info')
+      if (userinfo) {
+      this.realname = userinfo.name;
+      this.userpic = userinfo.headImgPath;
+      this.anchorId = userinfo.userId;
     } else {
       this.router.navigateByUrl("login");
     }

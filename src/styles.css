@@ -211,7 +211,8 @@ img, a, p, body, html, select, div, label, option, ul, li, dl, dd, span, input, 
   
   /*菜单激活颜色*/
   .active-link {
-    background-color: rgba(175, 156, 156, 0.5);
+    background-color: rgba(99, 95, 95, 0.205);
+    /* background-color: #595959 */
   }
   
   body .ui-accordion .ui-accordion-header {
@@ -242,32 +243,32 @@ img, a, p, body, html, select, div, label, option, ul, li, dl, dd, span, input, 
     text-align: center;
     height: 40px;
     line-height: 40px;
-    color: #000;
+    color: #595959;
   }
   
   .ui-accordion .ui-accordion-content a:hover {
-    color: #FFFFFF !important;
+    color: #000 !important;
     background-color: rgba(99, 95, 95, 0.205);
   }
   
   body .ui-accordion .ui-accordion-header {
     background-color: #f0f0f0;
-    color: #000;
+    color: #595959;
   }
   
   body .ui-accordion .ui-accordion-header:hover {
     /* background-color: rgba(197, 189, 189, 0.5) !important; */
     background-color: rgba(182, 176, 176, 0.5)!important;
     
-    color: #FFFFFF !important;
+    color: #000 !important;
   }
   
   body .ui-accordion .ui-accordion-header:hover a {
-    color: #f0f0f0 !important;
+    color: #000 !important;
   }
   
   body .ui-accordion .ui-accordion-header a {
-    color: #000;
+    color: #595959;
   }
   
   body .ui-accordion .ui-accordion-header.ui-state-active {

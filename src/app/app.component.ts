@@ -40,11 +40,13 @@ export class AppComponent implements OnInit {
   //   this.ngOnInit();
   // }
 
-  ngOnInit() {
+
     
-      }
-    
-      constructor() {
-    
+      constructor( private http: HttpService) {
+        this.http.getcookie()
       };
+
+      ngOnInit() {
+        
+          }
 }

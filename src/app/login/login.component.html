@@ -5,7 +5,7 @@
       </div>
       <div class="login-form__right" >
         <h3 style=" font-size: 30px;margin-bottom: 20px;font-weight: 500;
-        color: rgba(#000, .7)">登录非凡医品</h3>
+        color: rgba(#000, .7)">登录</h3>
     
         <div class="login-form-item" >
           <input [(ngModel)]="username" type="text" pInputText placeholder="Phone Number">
@@ -13,8 +13,11 @@
           <input [(ngModel)]="password" type="password" pPassword placeholder="User Password">
           <div class="login-form-item--error">{{passwordErrorText}}</div>
         </div>
+        <!-- <div class="login-form-item" >
+          手机号和密码同app一致
+        </div> -->
+
         <div class="login-form-item">
-          
           <button (click)="login()" pButton type="button" label = "登  录"></button>
           <!-- <button class="login-form-item--submit" :disabled="disableSubmit" (click)="login()" type="button">
             {{ disableSubmit ? '登录中...' : '登 录'}}
