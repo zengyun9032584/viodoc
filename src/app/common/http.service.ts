@@ -35,9 +35,9 @@ export class HttpService {
    }
 
    getServerIP() {
-        return 'http://viodoc.tpddns.cn:9500/';
+        // return 'http://viodoc.tpddns.cn:9500/';
     //    return `http://192.168.1.131:9500/`;
-    // return 'http://apisrv.viodoc.com:9500/';
+    return 'http://apisrv.viodoc.com:9500/';
    }
 
 async newget(url: string) {
