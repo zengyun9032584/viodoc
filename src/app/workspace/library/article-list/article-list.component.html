@@ -4,20 +4,33 @@
   开发中
 </div>
 
-<!-- <div class="ui-g">
-  <div class="ui-g-12 ui-md-6 ui-lg-3">
-    <img class="myImg" src="assets/image/timg.jpeg">
-    <br><br>
-    <h3>码农日报 (使用中)</h3>
-  </div>
-  <div class="ui-g-12 ui-md-6 ui-lg-3">    
-    <img class="myImg" src="assets/image/sport.jpg">
-    <br><br>
-    <h3>体坛日报 (制作中)</h3>
-  </div>
-  <div class="ui-g-12 ui-md-6 ui-lg-3">
-      <img class="myImg" src="assets/image/wow.jpg">
-      <br><br>
-      <h3>艾泽拉斯日报 (制作中)</h3>
-  </div>
-</div> -->
+<p-dataList [value]="livelist" [paginator]="true" [rows]="5" *ngIf="selectedType=='list'">
+    <!-- <p-header>
+        List of Cars
+    </p-header> -->
+    <ng-template let-car let-i="index" pTemplate="item">
+        <div class="ui-g ui-fluid car-item">
+            <!-- <div class="ui-g-12 ui-md-3" style="text-align:center">
+                <img src="assets/showcase/images/demo/car/{{car.brand}}.png">
+            </div> -->
+            <div class="ui-g-12 ui-md-9 car-details">
+                <div class="ui-g">
+                    <!-- <div class="ui-g-1 ui-sm-6">标题: </div> -->
+                    <div class="ui-g-11 ui-sm-6">{{car.title}}</div>
+                    
+                    <!-- <div class="ui-g-1 ui-sm-6">主讲人: </div> -->
+                    <div class="ui-g-11 ui-sm-6">{{car.doctorName}}</div>
+                    
+                    <!-- <div class="ui-g-1 ui-sm-6">时间: </div> -->
+                    <div class="ui-g-11 ui-sm-6">{{car.startTime}}</div>
+                    
+                    <!-- <div class="ui-g-1 ui-sm-6">直播状态: </div> -->
+                    <div *ngIf="car.status==0" class="ui-g-11 ui-sm-6">报名中</div>
+                    <div *ngIf="car.status==1" class="ui-g-11 ui-sm-6">正在直播</div>
+                    <div *ngIf="car.status==2" class="ui-g-11 ui-sm-6">直播结束</div>
+                    
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</p-dataList>

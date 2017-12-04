@@ -7,7 +7,7 @@ export const workspaceRoutes = [
     component: WorkspaceComponent,
     children: [
       {
-        path: '', redirectTo: 'livelist', pathMatch: 'full'
+        path: '', redirectTo: 'article-list', pathMatch: 'full'
       },
       {
         path: 'article-list',

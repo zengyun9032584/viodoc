@@ -58,18 +58,7 @@ export class WorkspaceComponent implements OnInit {
 
   ngOnInit() {
     this.getMenu();
-    debugger
-    if (this.http.storeget('ffys_user_info')) {
-      const userinfo:any = this.http.storeget('ffys_user_info')
-      this.realname = userinfo.name;
-      this.userpic = userinfo.headImgPath;
-      if( this.realname===""){
-        this.router.navigateByUrl("login");
-      }
-    } else {
-      this.router.navigateByUrl("login");
-    }
-   
+    this.checklogin()
   }
   /*************************  ********************************/
   informationNumber: any = 18;                      //头部我的消息数量
@@ -124,13 +113,31 @@ export class WorkspaceComponent implements OnInit {
     }
   }
 
+
+ /************************* 显示人员信息 ********************************/
   showLoginWindow() {
     // this.display = true;
   }
 
+
+ /************************* 检查是否登录 ********************************/
+  checklogin(){
+    if (this.http.storeget('ffys_user_info')) {
+      const userinfo:any = this.http.storeget('ffys_user_info')
+      this.realname = userinfo.name;
+      this.userpic = userinfo.headImgPath;
+      if( this.realname===""){
+        this.router.navigateByUrl("login");
+        return
+      }
+    } else {
+      this.router.navigateByUrl("login");
+      return
+    }
+  }
+
   /************************* 退出登录 ********************************/
   loginOut() {
-    debugger
     try{
       const json={
         body:JSON.stringify({

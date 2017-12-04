@@ -44,7 +44,6 @@ export class LivelistComponent implements OnInit {
 
   realname: string = '未登录'; 
   userpic:string;
-  anchorId:any;
 
   constructor(private httpservice:HttpService,public router: Router,private myService: WorkspaceService) {
     // this.getIllTag();
@@ -113,11 +112,14 @@ export class LivelistComponent implements OnInit {
  * @stable
 */
   checklogin(){
-    const userinfo:any = this.httpservice.storeget('ffys_user_info')
-      if (userinfo) {
+    if (this.httpservice.storeget('ffys_user_info')) {
+      const userinfo:any = this.httpservice.storeget('ffys_user_info')
       this.realname = userinfo.name;
       this.userpic = userinfo.headImgPath;
-      this.anchorId = userinfo.userId;
+      this.userId = userinfo.userId;
+      if( this.realname===""){
+        this.router.navigateByUrl("login");
+      }
     } else {
       this.router.navigateByUrl("login");
     }
@@ -148,7 +150,7 @@ export class LivelistComponent implements OnInit {
           pageSize:12,
           total:1
         },
-        anchorId: this.anchorId
+        anchorId: this.userId
       }
       debugger
       const doctor:any = await this.httpservice.newpost('api/viodoc/getSomebodyLiveList',JSON.stringify(json))
@@ -301,8 +303,7 @@ async GetLiveDetails(e:any){
  * @stable
  */
   uploadImage (file, ext, width, height) {
-    let  userId  = this.httpservice.storeget('ffys_user_info')
-    if (!userId) throw new Error('用户id丢失')
+
     const form = new FormData()
     let HJson = this.httpservice.makeBodyHeader()
     let HString = JSON.stringify(HJson)

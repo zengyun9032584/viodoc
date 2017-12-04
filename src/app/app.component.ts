@@ -43,10 +43,9 @@ export class AppComponent implements OnInit {
 
     
       constructor( private http: HttpService) {
-        this.http.getcookie()
+        // this.http.getcookie()
       };
 
       ngOnInit() {
-        debugger
       }
 }
