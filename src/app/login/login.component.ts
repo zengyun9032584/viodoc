@@ -44,31 +44,18 @@ export class LoginComponent implements OnInit {
         pwd: this.password
       }
       const doctor:any = await this.httpservice.newpost('api/viodoc/signIn',JSON.stringify(json))
-      debugger
       const doctorInfo=JSON.parse(doctor._body)
      
-      this.httpservice.storeset('ffys_user_info', doctorInfo.userInfo)
+      this.httpservice.storeset('ffys_user_info', JSON.stringify(doctorInfo.userInfo))
       this.httpservice.storeset('ffys_user_token', doctorInfo.token)
 
       this.disableSubmit = false
       this.loginSuccess = true
+      
       this.redirect()
     } catch (err) {
       console.log(err)
     } 
-// const info={
-//   a:"q",
-//   b:"w",
-//   c:"e"
-// }
-// const token={
-//   a:"q",
-//   b:"w",
-//   c:"e",
-//   ss:"ss"
-// }
-//     this.httpservice.storeset('ffys_user_info', info)
-//     this.httpservice.storeset('ffys_user_token', token)
   }
 
   redirect() {

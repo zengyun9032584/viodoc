@@ -52,7 +52,7 @@ export class WorkspaceComponent implements OnInit {
   constructor(private myService: WorkspaceService, 
               public router: Router, 
               private http: HttpService) {
-               
+             
   
   };
 
@@ -69,6 +69,7 @@ export class WorkspaceComponent implements OnInit {
     } else {
       this.router.navigateByUrl("login");
     }
+   
   }
   /*************************  ********************************/
   informationNumber: any = 18;                      //头部我的消息数量

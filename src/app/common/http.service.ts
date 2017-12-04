@@ -224,7 +224,6 @@ getcookie(){
     var token = cookie.split("; ffys_user_token=")[1]
     var usertoken = decodeURI(token)
     this.storeset("ffys_user_token",usertoken)
-    debugger
   }catch(error){
     return false
   }
