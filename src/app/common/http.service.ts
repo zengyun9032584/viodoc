@@ -216,19 +216,29 @@ getcookie(){
   try{
     console.log(document.cookie)
     const cookie = document.cookie;
-    var user=cookie.split("; ffys_user_token=")[0]
-    var data=user.split("=")[1];
-    var userinfo = decodeURI(data)
-    this.storeset("ffys_user_info",userinfo)
-    
-    var token = cookie.split("; ffys_user_token=")[1]
-    var usertoken = decodeURI(token)
-    this.storeset("ffys_user_token",usertoken)
-    debugger
+    // var cookie = "UM_distinctid=15e0c7fe6af56-009a2b7f7336eb-3f63440c-bf680-15e0c7fe6b02e; cna=IqMmEgDhwD4CAdoZiKpV6gSB; isg=Ap-fouG3OU156z1Iy_dg3iqMLvPprPLa3n93vzHsbc6VwL9COdSD9h2Y9GZF; ffys_user_info=%7B%22headImgPath%22:%22http://www.viodoc.com:7777/viodoc/M00/00/02/rBDLvFn8BVGAS8KpAABTG-eQWEY330.jpg%22,%22name%22:%22%E6%9D%8E%E6%98%8E%E6%98%9F%22,%22nickname%22:%22%22,%22gender%22:0,%22tags%22:%5B%5D,%22userId%22:384,%22other_user_id%22:0,%22relationship%22:0,%22follow_type%22:0,%22userKind%22:1,%22accountName%22:%2218641107703%22%7D; ffys_user_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDM5Nzc5NTAsInN1YiI6IjE4MCJ9.rBgdIAZN3ZlWAGhmsvHZny9tQG5VfgFGY6TCH5ijIcw%22"
+    var item = cookie.split(";");
+    for (let i=0; i<item.length;i++){
+      if (item[i].indexOf("ffys_user_info") >0){
+        var data=item[i].split("=")[1];
+        var userinfo = decodeURI(data)
+        this.storeset("ffys_user_info",userinfo)
+        break
+      }
+    }
+
+    for (let i=0; i<item.length;i++){
+      if(item[i].indexOf("ffys_user_token")>0){
+        var token = item[i].split("=")[1]
+        var usertoken = decodeURI(token)
+        this.storeset("ffys_user_token",usertoken)
+        break
+      }
+    }
+   
   }catch(error){
     return false
   }
-
 
 }
 
