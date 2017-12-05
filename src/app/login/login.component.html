@@ -3,39 +3,51 @@
       <div class="login-form__left">
         <img width="140px" src="../assets/img/login_logo.jpg" alt="">
       </div>
-      <div class="login-form__right" >
+      <div *ngIf="pagestatus==1" class="login-form__right" >
         <h3 style=" font-size: 30px;margin-bottom: 20px;font-weight: 500;
         color: rgba(#000, .7)">登录</h3>
     
         <div class="login-form-item" >
-          <input [(ngModel)]="username" type="text" pInputText placeholder="Phone Number">
+          <input [(ngModel)]="username" type="text" pInputText placeholder="请输入手机号/邮箱">
           <div class="login-form-item--error">{{phoneErrorText}}</div>
-          <input [(ngModel)]="password" type="password" pPassword placeholder="User Password">
+          <input [(ngModel)]="password" type="password" pPassword placeholder="密码">
           <div class="login-form-item--error">{{passwordErrorText}}</div>
         </div>
-        <!-- <div class="login-form-item" >
-          手机号和密码同app一致
-        </div> -->
-
         <div class="login-form-item">
           <button (click)="login()" pButton type="button" label = "登  录"></button>
           <!-- <button class="login-form-item--submit" :disabled="disableSubmit" (click)="login()" type="button">
             {{ disableSubmit ? '登录中...' : '登 录'}}
           </button> -->
         </div>
+        <div class="login-form-item">
+       <ul>
+         <li (click)="changepage(2)">
+           立即注册
+         </li>
+       </ul>
+        </div>
+
       </div>
+      <div *ngIf="pagestatus==2" class="login-form__right" >
+          <h3 style=" font-size: 30px;margin-bottom: 20px;font-weight: 500;color: rgba(#000, .7)">注册</h3>
+          <div class="login-form-item">
+              <p>请手机扫描二维码下载APP，完成注册</p>
+              <div class="qrcode">
+                <img style="width:210px" src="../assets/img/qrcode.png" alt="">
+              </div>
+            </div>
+          <div class="login-form-item">
+         <ul>
+           <li (click)="changepage(1)">
+             立即登录
+           </li>
+         </ul>
+          </div>
+  
+        </div>
 
       <!-- <div class="classlogin-form__right" v-else>
-        <div class="login-form-item unAuthPass">
-          <p>您的账户未通过医生认证，现只能编辑文章，无法发布文章，请尽快下载APP客户端完成实名认证。</p>
-          <div class="qrcode">
-            <img src="../assets/img/qrcode.png" alt="">
-            <p>手机扫描二维码下载APP</p>
-          </div>
-          <button class="login-form-item--submit" @click="$router.push({name: 'content'})" type="button">
-              进入主页
-          </button>
-        </div>
+      
       </div> -->
 
     </div>

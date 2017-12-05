@@ -28,11 +28,25 @@ export class LoginComponent implements OnInit {
   // 失败信息
   passwordErrorText: string;
 
+  pagestatus:any;//1:登录界面， 2：注册界面 3：找回密码
   
   constructor(private httpservice:HttpService, private router:Router) { }
 
   ngOnInit() {
+    this.pagestatus = 1;
   }
+
+  /**
+ *  切换页面
+ *
+ * @stable
+ */
+  changepage(e:any){
+    debugger
+    this.pagestatus = e;
+  }
+
+
   async login () {
     const verifyResult = this.verify()
     if (!verifyResult) return

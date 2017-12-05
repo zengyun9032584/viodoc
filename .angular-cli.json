@@ -26,7 +26,10 @@
             "../node_modules/normalize.css/normalize.css",
             "assets/css/font-awesome.min.css",
             "theme-element.css",
-            "styles.css"
+            "styles.css",
+            "assets/sdk/webim.js",
+            "assets/sdk/json2.js"
+            
         ],
         "scripts": [
           "../node_modules/chart.js/dist/Chart.js"
