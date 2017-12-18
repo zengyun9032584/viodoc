@@ -6,6 +6,8 @@ import { HttpService } from '../../../common/http.service'
 import { WorkspaceService } from '../../workspace.service';
 import { pageAnimation, tagAnimation, LiveData, LiveDetail,TreeNode } from '../../../common/public-data';
 import {SelectItem} from 'primeng/primeng';
+import NProgress from 'nprogress';
+
 
 /**
  *  直播列表组件
@@ -52,6 +54,7 @@ export class LivelistComponent implements OnInit {
     this.types.push({label: '标签', value: 'title'});
 
     this.checklogin()
+    NProgress.start();
    }
 
   ngOnInit() {
@@ -152,14 +155,15 @@ export class LivelistComponent implements OnInit {
         },
         anchorId: this.userId
       }
-      debugger
       const doctor:any = await this.httpservice.newpost('api/viodoc/getSomebodyLiveList',JSON.stringify(json))
       var a:any=JSON.parse(doctor._body)
       this.livelist=a.anchorLivinglist
       // for(let i=0; i<10;i++){
       //   this.livelist.push(a.anchorLivinglist)
+      NProgress.done();
       // }
     } catch (error) {
+      NProgress.done();
       this.msgs = [];
       this.msgs.push({ severity: 'error', summary: '获取直播列表失败', detail: `${error}` });
     } 
@@ -239,12 +243,19 @@ async GetLiveDetails(e:any){
     for(let i=0;i<files.length;i++){
       var file = files[i]
       const readerFile:any = await this.readImageAttr(file)
-      const width = readerFile.width
-      const height = readerFile.height
+      const width = readerFile.width||""
+      const height = readerFile.height||""
       if (/\.(gif|jpg|jpeg|tiff|png)$/.test(file)) {
-        return alert('请上传正确的图片格式')
+        this.msgs = [];
+        this.msgs.push({ severity: 'error', summary: '格式不支持', detail: `` });
+        return 
       }
       let dotIndex = file.name.lastIndexOf('.')
+      if(dotIndex === "gif"){
+        this.msgs = [];
+        this.msgs.push({ severity: 'error', summary: '格式不支持', detail: `` });
+        return 
+      }
       const ext = file.name.substring(dotIndex + 1, file.name.length)
       const form:any = this.uploadImage(file, ext, width, height)
       try {

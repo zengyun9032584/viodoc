@@ -7,19 +7,31 @@
                 "name": "新建文章",
                 "icon": "fa-arrows",
                 "link": "article",
+<<<<<<< HEAD
                 "flag":"1"
+=======
+                "flag":"0"
+>>>>>>> 41e4b01433f672809e1d68147211a1f3fff1e5a3
             },
             {
                 "name": "我的文库",
                 "icon": "fa-arrows",
+<<<<<<< HEAD
                 "link": "article-list",
+=======
+                "link": "http://dr.viodoc.com",
+>>>>>>> 41e4b01433f672809e1d68147211a1f3fff1e5a3
                 "flag":"1"
                 
             },
             {
                 "name": "草稿箱",
                 "icon": "fa-arrows",
+<<<<<<< HEAD
                 "link": "draft",
+=======
+                "link": "http://dr.viodoc.com",
+>>>>>>> 41e4b01433f672809e1d68147211a1f3fff1e5a3
                 "flag":"1"
                 
             }

@@ -4,11 +4,6 @@
   <my-breadcrumb name1="直播管理" name2="直播列表"></my-breadcrumb>
 </div>
 
-<!-- 
-<div  style="position:absolute;right: 20px;top:70px;">
-<p-selectButton  [options]="types" [(ngModel)]="selectedType"></p-selectButton>
-</div> -->
-
 <div class="ui-g content" *ngIf="selectedType=='title'" >
   <div *ngFor="let item of livelist ;let i=index" class="ui-g-12 ui-md-6 ui-lg-3 ">
     <div class="liveitem">
@@ -18,8 +13,6 @@
         <p class="status" *ngIf="item.status==0">报名中</p>
         <p class="status" *ngIf="item.status==1">直播中</p>
         <p class="status" *ngIf="item.status==2">直播结束</p>
-        <!-- <textarea  rows="5" cols="30" [(ngModel)]="item.comment" readonly="readonly" pInputTextarea autoResize="autoResize">
-        </textarea> -->
         <div class="content">{{item.comment}}</div>
         <button (click)="showliveinfo(item,i)" style="border:1px solid #f0f0f0;color:#000;background:#f0f0f0;" pButton type="button" label ="编辑直播"></button>
     </div>
@@ -29,26 +22,13 @@
 </div>
 
 <p-dataList [value]="livelist" [paginator]="true" [rows]="5" *ngIf="selectedType=='list'">
-        <!-- <p-header>
-            List of Cars
-        </p-header> -->
         <ng-template let-car let-i="index" pTemplate="item">
             <div class="ui-g ui-fluid car-item">
-                <!-- <div class="ui-g-12 ui-md-3" style="text-align:center">
-                    <img src="assets/showcase/images/demo/car/{{car.brand}}.png">
-                </div> -->
                 <div class="ui-g-12 ui-md-9 car-details">
                     <div class="ui-g">
-                        <!-- <div class="ui-g-1 ui-sm-6">标题: </div> -->
                         <div class="ui-g-11 ui-sm-6">{{car.title}}</div>
-                        
-                        <!-- <div class="ui-g-1 ui-sm-6">主讲人: </div> -->
                         <div class="ui-g-11 ui-sm-6">{{car.doctorName}}</div>
-                        
-                        <!-- <div class="ui-g-1 ui-sm-6">时间: </div> -->
                         <div class="ui-g-11 ui-sm-6">{{car.startTime}}</div>
-                        
-                        <!-- <div class="ui-g-1 ui-sm-6">直播状态: </div> -->
                         <div *ngIf="car.status==0" class="ui-g-11 ui-sm-6">报名中</div>
                         <div *ngIf="car.status==1" class="ui-g-11 ui-sm-6">正在直播</div>
                         <div *ngIf="car.status==2" class="ui-g-11 ui-sm-6">直播结束</div>
@@ -97,11 +77,6 @@
                 </textarea>
         </div>
     </div>
-    <!-- <div class="ui-g part">
-      <div class="ui-g-12">
-        <h3>报名人数：（{{liveinfo.liveCount}}）</h3> 
-      </div>  
-    </div> -->
   </div>
   
   <div class="dialog-item">

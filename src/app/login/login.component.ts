@@ -28,11 +28,25 @@ export class LoginComponent implements OnInit {
   // 失败信息
   passwordErrorText: string;
 
+  pagestatus:any;//1:登录界面， 2：注册界面 3：找回密码
   
   constructor(private httpservice:HttpService, private router:Router) { }
 
   ngOnInit() {
+    this.pagestatus = 1;
   }
+
+  /**
+ *  切换页面
+ *
+ * @stable
+ */
+  changepage(e:any){
+    debugger
+    this.pagestatus = e;
+  }
+
+
   async login () {
     const verifyResult = this.verify()
     if (!verifyResult) return
@@ -43,6 +57,7 @@ export class LoginComponent implements OnInit {
         accountName: this.username,
         pwd: this.password
       }
+<<<<<<< HEAD
       const doctor:any = await this.httpservice.newpost('api/viodoc/signIn',JSON.stringify(json))
       const doctorInfo=JSON.parse(doctor._body)
      
@@ -52,10 +67,26 @@ export class LoginComponent implements OnInit {
       this.disableSubmit = false
       this.loginSuccess = true
       
+=======
+      debugger
+      const doctor:any = await this.httpservice.newpost('api/viodoc/signIn',JSON.stringify(json))
+      debugger
+      const doctorInfo=JSON.parse(doctor._body)
+     
+      this.httpservice.storeset('ffys_user_info', JSON.stringify(doctorInfo.userInfo))
+      this.httpservice.storeset('ffys_user_token', JSON.stringify(doctorInfo.token))
+
+      this.disableSubmit = false
+      this.loginSuccess = true
+>>>>>>> 41e4b01433f672809e1d68147211a1f3fff1e5a3
       this.redirect()
     } catch (err) {
       console.log(err)
     } 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 41e4b01433f672809e1d68147211a1f3fff1e5a3
   }
 
   redirect() {

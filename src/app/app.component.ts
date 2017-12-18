@@ -39,8 +39,6 @@ export class AppComponent implements OnInit {
   //   this.date = event.target.value.replace(/\-/g,"");
   //   this.ngOnInit();
   // }
-
-
     
       constructor( private http: HttpService) {
         // this.http.getcookie()

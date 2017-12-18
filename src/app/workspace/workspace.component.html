@@ -24,8 +24,8 @@
     <li class="header-li" style="margin-top:10px">
         <img style="width: 40px;overflow: hidden;" (click)="showLoginWindow()" [src]="userpic">
     </li>
-    <li class="header-li" style="width: 150px" >
-      <a class="fa fa-sign-out" (click)="loginOut()" href="http://stgdr.viodoc.com/#/login"></a>
+    <li class="header-li" style="width: 150px">
+      <a class="fa fa-sign-out" (click)="loginOut()" ></a>
     </li>
   </ul>
 </div>
@@ -51,7 +51,7 @@
               <!-- <a *ngIf="children.flag==1" href="{{children.link}}" >{{children.name}}</a> -->
               <a routerLink="{{children.link}}" 
                 routerLinkActive='active-link'
-                pTooltip="{{children.name}}">
+                pTooltip="{{children.name}}" >
             </a>
           </li>
         </div>

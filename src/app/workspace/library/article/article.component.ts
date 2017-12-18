@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { beforeUrl, China, pageAnimation, tagAnimation } from '../../../common/public-data';
 import NProgress from 'nprogress';
 import { HttpService } from '../../../common/http.service';
+import wangEditor from 'yushk'
 
 @Component({
     selector: 'app-data-table',
@@ -14,7 +15,8 @@ import { HttpService } from '../../../common/http.service';
 })
 export class ArticleComponent implements OnInit {
     constructor(private http: HttpService) {
-        NProgress.start();
+        // NProgress.start();
+       
     }
     msgs: any;
     selectTime = new Date();
@@ -28,6 +30,10 @@ export class ArticleComponent implements OnInit {
     selectedItemHref: any;
     selectedItemClass: any;
     selectedItemTags: any;
+    
+    // editor  
+    editor :any;
+    articleTitle:any
 
     ngOnInit() {
         var date = new Date();
@@ -36,7 +42,42 @@ export class ArticleComponent implements OnInit {
         var day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
         this.date = `${date.getFullYear()}${month}${day}`;
         // this.getData();
+
+        this.createEditor()
+       
     }
+
+    createEditor(){
+        var editor
+        var div = document.getElementById('editor')
+        editor = new wangEditor('#editormenu',div)
+        editor.onchange = function() {
+            debugger
+        }
+        editor.customConfig.zIndex = 100
+        editor.customConfig.menus = [
+            'head',  // 标题
+            'bold',  // 粗体
+            'italic',  // 斜体
+            'underline',  // 下划线
+            'strikeThrough',  // 删除线
+            'foreColor',  // 文字颜色
+            'backColor',  // 背景颜色
+            'link',  // 插入链接
+            'list',  // 列表
+            'justify',  // 对齐方式
+            'quote',  // 引用
+            'emoticon',  // 表情
+            // 'image',  // 插入图片
+            'table',  // 表格
+            // 'video',  // 插入视频
+            // 'code',  // 插入代码
+            'undo',  // 撤销
+            'redo'  // 重复
+        ]
+        editor.create()
+    }
+ 
 
     getData() {
         let url = this.http.getServerIP();

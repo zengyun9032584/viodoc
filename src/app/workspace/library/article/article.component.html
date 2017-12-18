@@ -9,10 +9,29 @@
         (onSelect)="selectDate()">
       </p-calendar>
   </div> -->
-  开发中
-  
 </div>
 
+<div class="content">
+    
+  <input id="input" type="text" pInputText [(ngModel)]="articleTitle"> 
+  
+  <div class="my-tool-bar" > 
+      <span (click)="fileInputClick('uploadImg')"><i class="w-e-icon-image"></i> 插入图片</span>
+      <span (click)="fileInputClick('uploadVideo')"><i class="w-e-icon-play"></i> 插入视频</span>
+  </div>
+  <div id="editormenu" class="toolbar">
+  </div>
+  <!-- <div style="padding: 5px 0; color: #ccc">中间隔离带</div> -->
+  <div id="editor" class="editorcontent"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+      <p>请输入内容</p>
+  </div>
+</div>
+
+<!-- <div style="width:100%">
+  <div id="editor" style="height:400px;">
+    <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+  </div>
+</div> -->
 <!-- <app-treedemo></app-treedemo> -->
 <!-- 
 <h1>
