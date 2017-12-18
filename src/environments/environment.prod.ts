@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  serviceUrl:'http://apisrv.viodoc.com:9500/'
 };

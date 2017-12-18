@@ -6,20 +6,20 @@
             {
                 "name": "新建文章",
                 "icon": "fa-arrows",
-                "link": "http://stgdr.viodoc.com",
-                "flag":"1"
+                "link": "article",
+                "flag":"0"
             },
             {
                 "name": "我的文库",
                 "icon": "fa-arrows",
-                "link": "http://stgdr.viodoc.com",
+                "link": "http://dr.viodoc.com",
                 "flag":"1"
                 
             },
             {
                 "name": "草稿箱",
                 "icon": "fa-arrows",
-                "link": "http://stgdr.viodoc.com",
+                "link": "http://dr.viodoc.com",
                 "flag":"1"
                 
             }

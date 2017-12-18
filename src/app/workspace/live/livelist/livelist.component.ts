@@ -6,6 +6,8 @@ import { HttpService } from '../../../common/http.service'
 import { WorkspaceService } from '../../workspace.service';
 import { pageAnimation, tagAnimation, LiveData, LiveDetail,TreeNode } from '../../../common/public-data';
 import {SelectItem} from 'primeng/primeng';
+import NProgress from 'nprogress';
+
 
 /**
  *  直播列表组件
@@ -53,6 +55,7 @@ export class LivelistComponent implements OnInit {
     this.types.push({label: '标签', value: 'title'});
 
     this.checklogin()
+    NProgress.start();
    }
 
   ngOnInit() {
@@ -113,11 +116,14 @@ export class LivelistComponent implements OnInit {
  * @stable
 */
   checklogin(){
-    const userinfo:any = this.httpservice.storeget('ffys_user_info')
-      if (userinfo) {
+    if (this.httpservice.storeget('ffys_user_info')) {
+      const userinfo:any = this.httpservice.storeget('ffys_user_info')
       this.realname = userinfo.name;
       this.userpic = userinfo.headImgPath;
-      this.anchorId = userinfo.userId;
+      this.userId = userinfo.userId;
+      if( this.realname===""){
+        this.router.navigateByUrl("login");
+      }
     } else {
       this.router.navigateByUrl("login");
     }
@@ -148,16 +154,17 @@ export class LivelistComponent implements OnInit {
           pageSize:12,
           total:1
         },
-        anchorId: this.anchorId
+        anchorId: this.userId
       }
-      debugger
       const doctor:any = await this.httpservice.newpost('api/viodoc/getSomebodyLiveList',JSON.stringify(json))
       var a:any=JSON.parse(doctor._body)
       this.livelist=a.anchorLivinglist
       // for(let i=0; i<10;i++){
       //   this.livelist.push(a.anchorLivinglist)
+      NProgress.done();
       // }
     } catch (error) {
+      NProgress.done();
       this.msgs = [];
       this.msgs.push({ severity: 'error', summary: '获取直播列表失败', detail: `${error}` });
     } 
@@ -237,12 +244,19 @@ async GetLiveDetails(e:any){
     for(let i=0;i<files.length;i++){
       var file = files[i]
       const readerFile:any = await this.readImageAttr(file)
-      const width = readerFile.width
-      const height = readerFile.height
+      const width = readerFile.width||""
+      const height = readerFile.height||""
       if (/\.(gif|jpg|jpeg|tiff|png)$/.test(file)) {
-        return alert('请上传正确的图片格式')
+        this.msgs = [];
+        this.msgs.push({ severity: 'error', summary: '格式不支持', detail: `` });
+        return 
       }
       let dotIndex = file.name.lastIndexOf('.')
+      if(dotIndex === "gif"){
+        this.msgs = [];
+        this.msgs.push({ severity: 'error', summary: '格式不支持', detail: `` });
+        return 
+      }
       const ext = file.name.substring(dotIndex + 1, file.name.length)
       const form:any = this.uploadImage(file, ext, width, height)
       try {
@@ -301,8 +315,7 @@ async GetLiveDetails(e:any){
  * @stable
  */
   uploadImage (file, ext, width, height) {
-    let  userId  = this.httpservice.storeget('ffys_user_info')
-    if (!userId) throw new Error('用户id丢失')
+
     const form = new FormData()
     let HJson = this.httpservice.makeBodyHeader()
     let HString = JSON.stringify(HJson)

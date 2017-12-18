@@ -1,10 +1,10 @@
-<my-gotop></my-gotop>
+<!-- <my-gotop></my-gotop> -->
 <p-growl [(value)]="msgs" [sticky]="true"></p-growl>
 
 <div class="header">
   <ul>
-      <li class="header-li" style="margin-left:5%;margin-top:6px;">
-          <img src="assets/img/header.jpg">
+      <li class="header-li" >
+          <img style="width:110%" src="assets/img/header.jpg">
       </li>
       <!-- <li class="header-li" style="margin-left:5%;margin-top:6px;">
           <img src="assets/img/logo.png">
@@ -14,7 +14,7 @@
       </li>
       <li style="margin-top:2%;margin-left:4%;font-size:20px" class="header-li">
           每个医生都可以拥有自己的诊所
-        </li> -->
+      </li> -->
   </ul>
   <ul style="float: right">
     <li class="header-li">
@@ -25,7 +25,7 @@
         <img style="width: 40px;overflow: hidden;" (click)="showLoginWindow()" [src]="userpic">
     </li>
     <li class="header-li" style="width: 150px">
-      <a class="fa fa-sign-out" (click)="loginOut()" href="http://stgdr.viodoc.com/#/login"></a>
+      <a class="fa fa-sign-out" (click)="loginOut()" ></a>
     </li>
   </ul>
 </div>
@@ -51,7 +51,7 @@
               <a *ngIf="children.flag==1" href="{{children.link}}" >{{children.name}}</a>
               <a  *ngIf="children.flag==0" routerLink="{{children.link}}" 
                 routerLinkActive='active-link'
-                pTooltip="{{children.name}}">
+                pTooltip="{{children.name}}" >
             </a>
           </li>
         </div>

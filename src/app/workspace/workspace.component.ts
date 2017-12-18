@@ -58,17 +58,7 @@ export class WorkspaceComponent implements OnInit {
 
   ngOnInit() {
     this.getMenu();
-    debugger
-    if (this.http.storeget('ffys_user_info')) {
-      const userinfo:any = this.http.storeget('ffys_user_info')
-      this.realname = userinfo.name;
-      this.userpic = userinfo.headImgPath;
-      if( this.realname===""){
-        this.router.navigateByUrl("login");
-      }
-    } else {
-      this.router.navigateByUrl("login");
-    }
+    this.checklogin()
   }
   /*************************  ********************************/
   informationNumber: any = 18;                      //头部我的消息数量
@@ -123,31 +113,49 @@ export class WorkspaceComponent implements OnInit {
     }
   }
 
+
+ /************************* 显示人员信息 ********************************/
   showLoginWindow() {
     // this.display = true;
   }
 
+
+ /************************* 检查是否登录 ********************************/
+  checklogin(){
+    if (this.http.storeget('ffys_user_info')) {
+      const userinfo:any = this.http.storeget('ffys_user_info')
+      this.realname = userinfo.name;
+      this.userpic = userinfo.headImgPath;
+      if( this.realname===""){
+        this.router.navigateByUrl("login");
+        return
+      }
+    } else {
+      this.router.navigateByUrl("login");
+      return
+    }
+  }
+
   /************************* 退出登录 ********************************/
   loginOut() {
-    debugger
     try{
-      const json={
-        body:JSON.stringify({
-          header: this.http.makeBodyHeader()
-        })
-      }
-      debugger
-      this.http.newpost('api/viodoc/signOut', JSON.stringify(json))
-      this.realname = '未登录';  
+    //   const json={
+    //     body:JSON.stringify({
+    //       header: this.http.makeBodyHeader()
+    //     })
+    //   }
+    //   debugger
+    //   this.http.newpost('api/viodoc/signOut', JSON.stringify(json))
+    //   this.realname = '未登录';  
       this.http.storeremove("ffys_user_info")
       this.http.storeremove("ffys_user_token")
       // this.router.navigateByUrl("login");
+      location.href='http://dr.viodoc.com/#/login'
 
     } catch(err){
       console.log("登出失败"+err)
     }
 
   }
-
   
 }

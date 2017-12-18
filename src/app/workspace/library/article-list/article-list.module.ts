@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule} from "@angular/router";
 import {
   GrowlModule,
+  DataListModule,
 } from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule} from "@angular/http";
@@ -20,7 +21,7 @@ import {MyBreadcrumbModule} from "../../../components/my-breadcrumb/my-breadcrum
     ReactiveFormsModule,
 
     GrowlModule,
-
+    DataListModule,
     MyBreadcrumbModule,
     RouterModule.forChild([
       { path:'',component:ArticleListComponent}

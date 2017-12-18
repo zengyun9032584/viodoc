@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { HttpClient,HttpErrorResponse,HttpHeaders,HttpParams } from '@angular/common/http'
+
 import { Headers, RequestOptions } from '@angular/http';
 import {sha256 }from 'js-sha256';
-
+import { environment } from '../../environments/environment';
 // Statics
 import 'rxjs/add/observable/throw';
 
@@ -22,22 +24,24 @@ import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/map'; 
+// 遇到错误自动请求
+import 'rxjs/add/operator/retry';
 import { encode } from '@angular/router/src/url_tree';
 import { escape } from 'querystring';
+import { error } from 'util';
 
 @Injectable()
 export class HttpService {
     token:any;
     userId:any;
 
-  constructor(private http: Http) {
+  constructor(private http: Http,private httpClient: HttpClient) {
     this.http = http;
    }
 
    getServerIP() {
-        return 'http://viodoc.tpddns.cn:9500/';
-    //    return `http://192.168.1.131:9500/`;
-    // return 'http://apisrv.viodoc.com:9500/';
+     console.log(environment.serviceUrl)
+    return environment.serviceUrl;
    }
 
 async newget(url: string) {
@@ -70,7 +74,6 @@ request(url,config){
         'Accept': 'application/json, text/plain, */*'
       }, config && config.headers))
       // headers.append('UserId', 'shopid=12312')
-      debugger
       let reqInit = {
         headers: headers,
         method: config.method || 'POST',
@@ -84,6 +87,43 @@ request(url,config){
                     .catch(this.handleError)
 
 }
+
+
+ag5get(url:any){
+
+  this.httpClient
+  //{observe:'response'},
+  //{ responseType : 'text'}
+  .get<any>(url,{})
+// 请求失败 重复请求
+  .retry(3)
+  .subscribe(
+    resp=>{},
+    (err: HttpErrorResponse) => {
+      if (err.error instanceof Error) {
+        console.log('An error occurred:', err.error.message);
+      }else{
+        console.log(`Backend returned code ${err.status}, body was: ${err.error}`);
+      }
+    },
+  )
+}
+
+ag5post(url:any,body:any){
+
+  // const body={}
+  const headers = new HttpHeaders().set('','');
+  const params = new HttpParams().set('','')
+  const option={
+    headers:headers,
+    params:params,
+    
+  }
+  this.httpClient
+  .post('/api/items/add', body, option)
+  .subscribe();
+}
+
 
 get(url: string): Promise<any> {
     let options = new RequestOptions({ withCredentials:false });
@@ -102,7 +142,6 @@ post(url: string, jsonBody: any): Promise<any> {
       }, jsonBody && jsonBody.headers))
     // let headers = new Headers({ 'Accept': 'application/json, text/plain, */*'});
     // let headers = new Headers({'Content-Type': false});
-    debugger
     let options = new RequestOptions({ headers: headers,withCredentials:false });
     return this.http.post(url, jsonBody, options)
                     .toPromise()
@@ -168,8 +207,6 @@ private handleError(error: any): Promise<any> {
 makeBodyHeader (params = {}, needAuth = true) {
     this.token = this.storeget('ffys_user_token') || null
     this.userId = this.storeget('ffys_user_info') && this.storeget('ffys_user_info').userId || null
-    if (!this.userId && needAuth) throw new Error('用户丢失,请按 F5 刷新')
-    if (!this.token && needAuth) throw new Error('用户token丢失,请按 F5 刷新')
     const timeStamp = new Date().getTime()
     const nonce = this.generateUUID()
     const signature = sha256(`049ddf35f8f43f0058176da1c9c462b3fcffaa3b3822767dd28c60618e76da70${timeStamp}${nonce}`)
@@ -200,7 +237,6 @@ makeBodyHeader (params = {}, needAuth = true) {
 }
 
 storeset(key, value) {
- 
     // const info= encodeURI(JSON.stringify(value))
     // var expire;
     // var path = "; path=/"
@@ -216,29 +252,29 @@ getcookie(){
   try{
     console.log(document.cookie)
     const cookie = document.cookie;
-    // var cookie = "UM_distinctid=15e0c7fe6af56-009a2b7f7336eb-3f63440c-bf680-15e0c7fe6b02e; cna=IqMmEgDhwD4CAdoZiKpV6gSB; isg=Ap-fouG3OU156z1Iy_dg3iqMLvPprPLa3n93vzHsbc6VwL9COdSD9h2Y9GZF; ffys_user_info=%7B%22headImgPath%22:%22http://www.viodoc.com:7777/viodoc/M00/00/02/rBDLvFn8BVGAS8KpAABTG-eQWEY330.jpg%22,%22name%22:%22%E6%9D%8E%E6%98%8E%E6%98%9F%22,%22nickname%22:%22%22,%22gender%22:0,%22tags%22:%5B%5D,%22userId%22:384,%22other_user_id%22:0,%22relationship%22:0,%22follow_type%22:0,%22userKind%22:1,%22accountName%22:%2218641107703%22%7D; ffys_user_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDM5Nzc5NTAsInN1YiI6IjE4MCJ9.rBgdIAZN3ZlWAGhmsvHZny9tQG5VfgFGY6TCH5ijIcw%22"
-    var item = cookie.split(";");
-    for (let i=0; i<item.length;i++){
-      if (item[i].indexOf("ffys_user_info") >0){
-        var data=item[i].split("=")[1];
+    // const cookie = "ffys_user_info=%7B%22headImgPath%22:%22http://viodoc.tpddns.cn:18080/viodoc/M00/00/14/wKgBylovRRyAGm_7AABzWSVMFLs724.jpg%22,%22name%22:%22%E6%99%A8%E9%80%B8%22,%22nickname%22:%22%22,%22gender%22:0,%22tags%22:%5B%5D,%22userId%22:522,%22other_user_id%22:0,%22relationship%22:0,%22follow_type%22:0,%22userKind%22:1,%22accountName%22:%2218641107703%22%7D; ffys_user_token=%22eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDQ2Nzc2MzUsInN1YiI6IjIwYSJ9.IwEAw908IgXZ70By-6_P_Jgsnt6tscdtooAPjF7O7AQ%22"
+    var cookielist = cookie.split(";");
+    for (let i=0;i<cookielist.length;i++){
+      if(cookielist[i].split("=")[0].indexOf("ffys_user_info")>-1){
+        var data=cookielist[i].split("=")[1];
         var userinfo = decodeURI(data)
         this.storeset("ffys_user_info",userinfo)
         break
-      }
+      }   
     }
-
-    for (let i=0; i<item.length;i++){
-      if(item[i].indexOf("ffys_user_token")>0){
-        var token = item[i].split("=")[1]
-        var usertoken = decodeURI(token)
+    
+    for (let i=0;i<cookielist.length;i++){
+      if(cookielist[i].split("=")[0].indexOf("ffys_user_token") >-1){
+        var data=cookielist[i].split("=")[1];
+        var usertoken = decodeURI(data)
         this.storeset("ffys_user_token",usertoken)
         break
-      }
+      }   
     }
-   
   }catch(error){
     return false
   }
+
 
 }
 
