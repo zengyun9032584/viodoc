@@ -30,7 +30,11 @@ export class ArticleComponent implements OnInit {
     selectedItemHref: any;
     selectedItemClass: any;
     selectedItemTags: any;
+    
+    // editor  
     editor :any;
+    articleTitle:any
+
     ngOnInit() {
         var date = new Date();
         date = new Date(date.getTime()-1000*60*60*24);
