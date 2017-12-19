@@ -14,18 +14,15 @@ import {appRoutes} from './app.routes';
 import {Preload} from './preloading';
 import {WorkspaceService} from './workspace/workspace.service';
 import { LoginComponent } from './login/login.component';
-// import { PageNotFoundComponent} from "./not-found.component";
 
 import {ChipsModule, PasswordModule,ButtonModule} from 'primeng/primeng';
-import { TreedemoComponent } from './treedemo/treedemo.component';
 import {NoopInterceptor } from './common/http.interceptor'
+import {TreeModule} from 'primeng/primeng';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    // PageNotFoundComponent
-    // TreedemoComponent,
    
   ],
   imports: [
@@ -35,6 +32,8 @@ import {NoopInterceptor } from './common/http.interceptor'
     HttpClientModule,
     HttpModule,
     BrowserAnimationsModule,
+
+    TreeModule,
     RouterModule.forRoot(
       appRoutes,
       { preloadingStrategy: Preload }
@@ -53,7 +52,6 @@ import {NoopInterceptor } from './common/http.interceptor'
     {provide: HTTP_INTERCEPTORS,useClass: NoopInterceptor,multi: true,}
   ],
   // exports:[
-  //   TreedemoComponent,
   // ],
   bootstrap: [AppComponent]
 })

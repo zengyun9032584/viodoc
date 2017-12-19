@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { beforeUrl, China, pageAnimation, tagAnimation } from '../../../common/public-data';
+import { beforeUrl, China, pageAnimation, tagAnimation,TreeNode } from '../../../common/public-data';
 import NProgress from 'nprogress';
 import { HttpService } from '../../../common/http.service';
+import { WorkspaceService } from '../../../workspace/workspace.service';
+
 import wangEditor from 'yushk'
 
 @Component({
@@ -14,7 +16,7 @@ import wangEditor from 'yushk'
     ]
 })
 export class ArticleComponent implements OnInit {
-    constructor(private http: HttpService) {
+    constructor(private http: HttpService, private myService: WorkspaceService,) {
         // NProgress.start();
        
     }
@@ -33,7 +35,21 @@ export class ArticleComponent implements OnInit {
     
     // editor  
     editor :any;
-    articleTitle:any
+    articleTitle:any;
+    editorContent:any;
+
+// tree
+treeUrl = 'assets/data/tree.json';
+treedata: any[];
+msg:any;
+
+files = new Array<TreeNode>();
+selectedFiles= new Array<TreeNode>();
+tree: any[];
+tagtree=false;
+
+date7:any;
+showpreview = false;
 
     ngOnInit() {
         var date = new Date();
@@ -41,13 +57,17 @@ export class ArticleComponent implements OnInit {
         var month = date.getMonth() >= 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1);
         var day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
         this.date = `${date.getFullYear()}${month}${day}`;
-        // this.getData();
 
         this.createEditor()
-       
+        this.gettree()
     }
-
+/**
+ *  生成editor
+ *
+ * @stable
+*/
     createEditor(){
+        const _this=this
         var editor
         var div = document.getElementById('editor')
         editor = new wangEditor('#editormenu',div)
@@ -66,7 +86,7 @@ export class ArticleComponent implements OnInit {
             'link',  // 插入链接
             'list',  // 列表
             'justify',  // 对齐方式
-            'quote',  // 引用
+            // 'quote',  // 引用
             'emoticon',  // 表情
             // 'image',  // 插入图片
             'table',  // 表格
@@ -75,84 +95,100 @@ export class ArticleComponent implements OnInit {
             'undo',  // 撤销
             'redo'  // 重复
         ]
+        editor.customConfig.onchange=(html)=>{
+            debugger
+        _this.editorContent = html
+        debugger
+        }
         editor.create()
+        
     }
- 
-
-    getData() {
-        let url = this.http.getServerIP();
-        this.http.get(`${url}/api/daily?date=${this.date}`).then(
-            success => {
-                if(success.error === ''){
-                    this.items = success.items;
-                    this.isEmpty = 'success';
-                } else {
-                    this.isEmpty = 'empty';
-                    this.items = [];
-                }
-                debugger;
-                NProgress.done();
-            }
-        ).catch(
-            err => {
-                // alert(err);
-                this.isEmpty = 'empty';
-                this.items = [];
-                NProgress.done();
-            }
-        )
+/**
+ *  upload pic video
+ *
+ * @stable
+*/
+    fileInputClick (ref) {
+        var node:any = document.getElementById(ref)
+        node.value = ""
+        node.click();
     }
-
-    showLoginWindow() {
-        this.display = true;
+    
+    imgOperate(e:any){
+        debugger
     }
-
-    selectDate() {
-        debugger;
-        var month = this.selectTime.getMonth() >= 9 ? this.selectTime.getMonth() + 1 : '0' + (this.selectTime.getMonth() + 1);
-        var day = this.selectTime.getDate() > 9 ? this.selectTime.getDate() : '0' + this.selectTime.getDate();
-        this.date = `${this.selectTime.getFullYear()}${month}${day}`;
-        this.getData();
+    videoOperate(e:any){
+        debugger
     }
-
-    collect(index: any) {
-        if (sessionStorage.getItem('userToken')) {
-            this.selectedItemName = this.items[index].name;
-            this.selectedItemHref = this.items[index].href;
-            this.selectedItemClass = "";
-            this.selectedItemTags = "";
-            this.showLoginWindow();
-        } else {
+    
+/**
+ *  tree
+ *
+ * @stable
+*/
+    gettree(){
+        this.myService.getMenu(this.treeUrl)
+        .then(
+          menus => {
+            const a:any = menus
+            this.files= a.data
+          },
+          error => {
             this.msgs = [];
-            this.msgs.push({severity:'warn', summary:'未登录', detail:'收藏功能在账号登陆后才可使用！'});    
-        }
-    }
-
-    postCollect() {
-        let postBody = {
-            name: this.selectedItemName,
-            href: this.selectedItemHref,
-            class: this.selectedItemClass,
-            tags: this.selectedItemTags,
-            user: sessionStorage.getItem('realname')
-        }
-        let url = this.http.getServerIP();
-        debugger;
-        this.http.post(`${url}/api/collect`, JSON.stringify(postBody)).then(
-            success => {
-                this.msgs = [];
-                if (success.info === 'collect successed!') {
-                    this.msgs.push({ severity: 'success', summary: '收藏成功', detail: `收藏成功！` });
-                } else {
-                    this.msgs.push({ severity: 'warn', summary: '收藏失败', detail: `${success.error}` });
-                }
-                this.display = false;
-            }
-        ).catch(
-            error => {
-                this.msgs.push({ severity: 'error', summary: 'error Message', detail: `${error}` });
-                this.display = false;
-            }
+            this.msgs.push({ severity: 'error', summary: '获取树文件失败', detail: `${error}` });
+          }
         )
+        .then(() => {
+          if (this.files) {
+            sessionStorage.setItem('menu111', JSON.stringify(this.files));
+          }
+        });
+      }
+
+showtagtree(){
+    this.tagtree = true;
+  }
+
+  closetag(){
+    this.tagtree = false
+  }
+  nodeSelect(event: any) {
+    if(this.selectedFiles.length<3){
+      for(let i=0;i<this.selectedFiles.length;i++){
+        if(event.node.label===this.selectedFiles[i].label){
+         return
+        }
+      }
+      this.selectedFiles.push(event.node);
+      
     }
+  }
+
+  del(event:any){
+    for(let i=0;i<this.selectedFiles.length;i++){
+      if(event.label===this.selectedFiles[i].label){
+        this.selectedFiles.splice(i,1)
+      }
+    }
+  }
+
+  /**
+ *  get preview html
+ *
+ * @stable
+*/
+getPrewviewHtml(){
+    var data = document.getElementById('preview-html')
+
+
+
+
+    var html:any = document.getElementsByClassName('preview-layer')
+    html[0].style.display = 'block';
+}
+closePreview(){
+    var html:any = document.getElementsByClassName('preview-layer')
+    html[0].style.display = 'none';
+}
+
 }

@@ -26,12 +26,13 @@ import {
   InputTextareaModule,// InputTextarea
   OverlayPanelModule,
   TooltipModule,
+  TreeModule,
+
 } from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule} from "@angular/http";
 import {MyBreadcrumbModule} from "../../../components/my-breadcrumb/my-breadcrumb";
 import {ArticleComponent} from "./article.component";
-import { TreedemoComponent } from '../../../treedemo/treedemo.component';
 
 
 
@@ -57,6 +58,8 @@ import { TreedemoComponent } from '../../../treedemo/treedemo.component';
     PaginatorModule,
     TooltipModule,
     OverlayPanelModule,
+    TreeModule,
+  
 
     MyBreadcrumbModule,
 
@@ -66,7 +69,6 @@ import { TreedemoComponent } from '../../../treedemo/treedemo.component';
   ],
   declarations: [
     ArticleComponent,
-    // TreedemoComponent
   ],
   exports:[RouterModule]
 })

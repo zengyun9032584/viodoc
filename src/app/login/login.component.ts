@@ -57,17 +57,6 @@ export class LoginComponent implements OnInit {
         accountName: this.username,
         pwd: this.password
       }
-<<<<<<< HEAD
-      const doctor:any = await this.httpservice.newpost('api/viodoc/signIn',JSON.stringify(json))
-      const doctorInfo=JSON.parse(doctor._body)
-     
-      this.httpservice.storeset('ffys_user_info', JSON.stringify(doctorInfo.userInfo))
-      this.httpservice.storeset('ffys_user_token', doctorInfo.token)
-
-      this.disableSubmit = false
-      this.loginSuccess = true
-      
-=======
       debugger
       const doctor:any = await this.httpservice.newpost('api/viodoc/signIn',JSON.stringify(json))
       debugger
@@ -78,15 +67,10 @@ export class LoginComponent implements OnInit {
 
       this.disableSubmit = false
       this.loginSuccess = true
->>>>>>> 41e4b01433f672809e1d68147211a1f3fff1e5a3
       this.redirect()
     } catch (err) {
       console.log(err)
     } 
-<<<<<<< HEAD
-=======
-
->>>>>>> 41e4b01433f672809e1d68147211a1f3fff1e5a3
   }
 
   redirect() {

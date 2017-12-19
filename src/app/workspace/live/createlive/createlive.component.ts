@@ -1,6 +1,5 @@
 import { ViewChild, Component, OnInit } from '@angular/core';
 import { pageAnimation, tagAnimation, LiveData, TreeNode } from '../../../common/public-data';
-// import {TreeNode} from 'primeng/primeng';
 import { HttpService } from '../../../common/http.service';
 import { WorkspaceService } from '../../../workspace/workspace.service';
 import { NgModule } from '@angular/core/src/metadata/ng_module';
@@ -37,7 +36,6 @@ export class CreateliveComponent implements OnInit {
   date7:any;
   
   constructor(private httpservice: HttpService, private myService: WorkspaceService, ) {
-    // this.getIllTag();
     this.gettree()
   }
 

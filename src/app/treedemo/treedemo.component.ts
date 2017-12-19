@@ -3,7 +3,6 @@ import { HttpService } from '../common/http.service';
 import { WorkspaceService } from '../workspace/workspace.service';
 import { pageAnimation, tagAnimation, LiveData,TreeNode } from '../common/public-data';
 
-
 @Component({
   selector: 'app-treedemo',
   templateUrl: './treedemo.component.html',
@@ -21,12 +20,15 @@ export class TreedemoComponent implements OnInit {
   files: TreeNode[];
   selectedFiles: TreeNode[];
 
-  ngOnInit() {
-    // this.gettree()
-  }
-
+ 
   constructor(private httpservice: HttpService,private myService: WorkspaceService, ) {}
   
+  ngOnInit() {
+    this.gettree()
+    debugger
+  }
+
+
   gettree(){
     debugger
     this.myService.getMenu(this.treeUrl)
@@ -50,10 +52,8 @@ export class TreedemoComponent implements OnInit {
 
   nodeSelect(event:any) {
     //event.node = selected node
-    debugger
   }
   onNodeUnselect(e:any){
-    debugger
   }
 
 

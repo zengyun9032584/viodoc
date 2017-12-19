@@ -27,12 +27,8 @@ export class ArticleListComponent implements OnInit {
   currentPage= 1
 
   articleList=[]
-<<<<<<< HEAD
-
-=======
   selectedType:any
   
->>>>>>> 41e4b01433f672809e1d68147211a1f3fff1e5a3
   constructor(private httpservice:HttpService,
               public router: Router,
               private myService: WorkspaceService) {

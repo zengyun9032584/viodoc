@@ -263,11 +263,6 @@ getcookie(){
       }   
     }
     
-<<<<<<< HEAD
-    var token = cookie.split("; ffys_user_token=")[1]
-    var usertoken = decodeURI(token)
-    this.storeset("ffys_user_token",usertoken)
-=======
     for (let i=0;i<cookielist.length;i++){
       if(cookielist[i].split("=")[0].indexOf("ffys_user_token") >-1){
         var data=cookielist[i].split("=")[1];
@@ -276,7 +271,6 @@ getcookie(){
         break
       }   
     }
->>>>>>> 41e4b01433f672809e1d68147211a1f3fff1e5a3
   }catch(error){
     return false
   }

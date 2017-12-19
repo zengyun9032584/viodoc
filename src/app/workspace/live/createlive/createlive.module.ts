@@ -27,7 +27,6 @@ import {
   } from 'primeng/primeng';
 
   import {MyBreadcrumbModule} from "../../../components/my-breadcrumb/my-breadcrumb";
-  import { TreedemoComponent } from '../../../treedemo/treedemo.component';
   
 
 
@@ -39,9 +38,6 @@ import {
     CommonModule,
     ReactiveFormsModule,
 
-    // TreedemoComponent, // tree demo
-
-    
     GrowlModule,
     ButtonModule,         // 按钮
     PanelModule,
@@ -66,7 +62,6 @@ import {
   ],
   declarations: [
     CreateliveComponent,
-    TreedemoComponent
   ],
   exports:[RouterModule]
 })
