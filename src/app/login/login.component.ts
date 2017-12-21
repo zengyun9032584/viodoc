@@ -53,7 +53,7 @@ export class LoginComponent implements OnInit {
     try {
       this.disableSubmit = true
       const json={
-        header: this.httpservice.makeBodyHeader({}, false),
+        header: this.httpservice.makeBodyHeader({}),
         accountName: this.username,
         pwd: this.password
       }

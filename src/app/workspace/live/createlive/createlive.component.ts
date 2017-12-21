@@ -36,7 +36,8 @@ export class CreateliveComponent implements OnInit {
   date7:any;
   
   constructor(private httpservice: HttpService, private myService: WorkspaceService, ) {
-    this.gettree()
+    // this.gettree()
+    this.getIllTag()
   }
 
   ngOnInit() {
@@ -71,7 +72,7 @@ export class CreateliveComponent implements OnInit {
 
   async getsubjectlist(id: any) {
     const json = {
-      header: this.httpservice.makeBodyHeader({}, false),
+      header: this.httpservice.makeBodyHeader({}),
       parentId: new Number(id)
     }
     try {

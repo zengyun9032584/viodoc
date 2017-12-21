@@ -93,7 +93,10 @@
           </div>
           <div class="ui-g-12 ui-md-6 ui-lg-2 dialog-item-pic"  >
               <img onclick="getElementById('file').click()" style="width:100px" title="点击添加图片" alt="点击添加图片" src="assets/img/uploadpic.jpg">
-              <input (change)="imgOperate($event)" type="file" multiple="multiple" id="file" name='file' style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
+              <input (change)="imgOperate($event)"
+               accept="image/jpeg,image/jpg,image/png,image/svg"  
+               type="file" multiple="multiple" id="file" name='file'
+               style="height:0;width:0;z-index: -1; position: absolute;left: 10px;top: 5px;"/>
           </div>
           <div class="ui-g-12">
               <span>（上传的课件需要图片格式（支持jpg，png），编辑课件后记得点击上传课件）</span>

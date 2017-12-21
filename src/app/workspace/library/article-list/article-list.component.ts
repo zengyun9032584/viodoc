@@ -69,14 +69,13 @@ export class ArticleListComponent implements OnInit {
         pageNo: this.currentPage,
         pageSize: this.size
           }
-        var res = await this.httpservice.newpost('api/viodoc/getPublishedArticleList', {
-        body: JSON.stringify({
-          header: this.httpservice.makeBodyHeader({}, false),
-          userId: String(this.userId),
+        var res = await this.httpservice.newpost('api/viodoc/getPublishedArticleList', 
+       JSON.stringify({
+          header: this.httpservice.makeBodyHeader({}),
+          userID: String(this.userId),
           page: page
         })
-      })
-
+      )
       debugger
     } catch (error) {
       this.msgs = [];

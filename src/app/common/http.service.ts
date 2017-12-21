@@ -40,7 +40,7 @@ export class HttpService {
    }
 
    getServerIP() {
-     console.log(environment.serviceUrl)
+    console.log(environment.serviceUrl)
     return environment.serviceUrl;
    }
 
@@ -53,7 +53,7 @@ async newget(url: string) {
 };
 
 async newpost(url: string,json:any){
-    url = this.getServerIP()+url;
+  url = this.getServerIP()+url;
     console.log("http POST"+url)
     let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
     let options = new RequestOptions({ headers: headers,withCredentials:false });
@@ -204,7 +204,7 @@ private handleError(error: any): Promise<any> {
     return Promise.reject(errMsg);
 }
 
-makeBodyHeader (params = {}, needAuth = true) {
+makeBodyHeader (params = {}) {
     this.token = this.storeget('ffys_user_token') || null
     this.userId = this.storeget('ffys_user_info') && this.storeget('ffys_user_info').userId || null
     const timeStamp = new Date().getTime()

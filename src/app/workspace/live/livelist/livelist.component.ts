@@ -1,6 +1,8 @@
 
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRoute, Router, 
+  ActivatedRouteSnapshot,
+   RouterState, RouterStateSnapshot } from '@angular/router';
 import { debug, error } from 'util';
 import { HttpService } from '../../../common/http.service'
 import { WorkspaceService } from '../../workspace.service';
@@ -147,7 +149,7 @@ export class LivelistComponent implements OnInit {
   async getlivelist () {
     try {
       const json={
-        header: this.httpservice.makeBodyHeader({}, false),
+        header: this.httpservice.makeBodyHeader({}),
         page: {
           pageNo:1,
           pageSize:12,
@@ -178,7 +180,7 @@ export class LivelistComponent implements OnInit {
 async GetLiveDetails(e:any){
   try {
     const json={
-      header: this.httpservice.makeBodyHeader({}, false),
+      header: this.httpservice.makeBodyHeader({}),
       liveId: e.liveId
     }
     const data:any = await this.httpservice.newpost('api/viodoc/getLiveDetails',JSON.stringify(json))
@@ -200,7 +202,7 @@ async GetLiveDetails(e:any){
     try {
       const id:Number = new Number(e.liveId)
       const json={
-        header: this.httpservice.makeBodyHeader({}, false),
+        header: this.httpservice.makeBodyHeader({}),
         liveId: id
       }
       const data:any = await this.httpservice.newpost('api/viodoc/getLivePIC',JSON.stringify(json))
@@ -221,7 +223,7 @@ async GetLiveDetails(e:any){
  */
   async getsubjectlist(id:any){
     const json={
-      header:this.httpservice.makeBodyHeader({}, false),
+      header:this.httpservice.makeBodyHeader({}),
       parentId: new Number(id)
     }
     try{
@@ -245,17 +247,7 @@ async GetLiveDetails(e:any){
       const readerFile:any = await this.readImageAttr(file)
       const width = readerFile.width||""
       const height = readerFile.height||""
-      if (/\.(gif|jpg|jpeg|tiff|png)$/.test(file)) {
-        this.msgs = [];
-        this.msgs.push({ severity: 'error', summary: '格式不支持', detail: `` });
-        return 
-      }
       let dotIndex = file.name.lastIndexOf('.')
-      if(dotIndex === "gif"){
-        this.msgs = [];
-        this.msgs.push({ severity: 'error', summary: '格式不支持', detail: `` });
-        return 
-      }
       const ext = file.name.substring(dotIndex + 1, file.name.length)
       const form:any = this.uploadImage(file, ext, width, height)
       try {
@@ -344,7 +336,7 @@ async GetLiveDetails(e:any){
  */
   async uploadlivepiclist(id:Number){
     const json={
-      header:this.httpservice.makeBodyHeader({}, false),
+      header:this.httpservice.makeBodyHeader({}),
       liveId:new Number(id),
       picUrl:this.piclist
     }
@@ -367,7 +359,7 @@ async GetLiveDetails(e:any){
  */
 async uploadliveinfo(e:LiveDetail){
   const json={
-    header:this.httpservice.makeBodyHeader({}, false),
+    header:this.httpservice.makeBodyHeader({}),
     // type:e.tags,
     comment:e.comment,
     pic:e.pic,

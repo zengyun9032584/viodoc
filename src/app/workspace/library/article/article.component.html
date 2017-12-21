@@ -11,41 +11,48 @@
 </div>
 
 <div class="content">
-    
-  <input id="input" type="text" pInputText [(ngModel)]="articleTitle"  placeholder="文章标题"> 
+    <div class="content-top">
+        <input id="input" type="text" pInputText [(ngModel)]="articleTitle"  placeholder="文章标题"> 
+        <div id="editormenu" class="toolbar">
+                <div class="my-tool-bar " > 
+                    <span (click)="fileInputClick('uploadImg')"><i class="w-e-icon-image"></i> 插入图片</span>
+                    <span (click)="fileInputClick('uploadVideo')"><i class="w-e-icon-play"></i> 插入视频</span>
+                </div>
+                <input id="uploadImg" type="file" hidden
+                (change)="imgOperate($event)"
+                accept="image/jpeg,image/jpg,image/png,image/svg" />
+                <input id="uploadVideo" type="file" (change)="videoOperate($event)" hidden accept="video/*" />
+                
+        </div>
+    </div>
   
+<div class="content-left">
+
+
+  <!-- <div style="padding: 5px 0; color: #ccc">中间隔离带</div> -->
+  
+  <div id="editor" class="editorcontent"> <!--可使用 min-height 实现编辑区域自动增加高度-->
+</div>
+
+<div class="content-right">
   <div  pInputText (click)="showtagtree()" style = "margin-bottom:10px" >文章标签： 
     <span *ngFor="let file of selectedFiles">{{file.label}} 
             <i class="fa fa-times" aria-hidden="true" (click)="del(file)"></i>
     </span>
   </div>
-  <div  *ngIf="tagtree" style = "margin-bottom:10px;">
-      <span (click)="closetag()">x</span>
+  <div   style = "margin-bottom:10px;">
+      <span (click)="closetag()">
+            <i class="fa fa-times fa-2x" aria-hidden="true"></i>
+      </span>
       <p-tree [value]="files" selectionMode="multiple" 
           (onNodeSelect)="nodeSelect($event)" >
       </p-tree>
      
   </div>
-  
-
-  <div id="editormenu" class="toolbar">
-      <div class="my-tool-bar " > 
-          <span (click)="fileInputClick('uploadImg')"><i class="w-e-icon-image"></i> 插入图片</span>
-          <span (click)="fileInputClick('uploadVideo')"><i class="w-e-icon-play"></i> 插入视频</span>
-      </div>
-      <input id="uploadImg" type="file" hidden
-      (change)="imgOperate($event)"
-      accept="image/gif,image/jpeg,image/jpg,image/png,image/svg" />
-      <input id="uploadVideo" type="file" (change)="videoOperate($event)" hidden accept="video/*" />
-      
-  </div>
-  <!-- <div style="padding: 5px 0; color: #ccc">中间隔离带</div> -->
-  <div id="editor" class="editorcontent"> <!--可使用 min-height 实现编辑区域自动增加高度-->
-      <p>请输入内容</p>
-  </div>
+</div>
   <div class = "footer" >
-    <button pButton type="button" (click)="count()" label="保 存"></button>
-    <button pButton type="button" (click)="count()" label="发 布"></button>
+    <button pButton type="button" (click)="saveAsDraft()" label="保存"></button>
+    <button pButton type="button" (click)="saveAsDeploy()" label="发 布"></button>
     <button pButton type="button" (click)="getPrewviewHtml()" label="预 览"></button>
   </div>
 
@@ -55,7 +62,7 @@
     </span>
         <div class="preview-bg"></div>
         <div class="preview-phone">
-            <iframe id="preview-html" name="preview-html" src="assets/html/preview-h5.html"></iframe>
+            <iframe id="preview-html" name="preview-html" src="assets/html/preview.html"></iframe>
         </div>
     </div>
 
