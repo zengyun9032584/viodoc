@@ -67,20 +67,33 @@
     float: right;
 }
 .tag{
-    height:25px;
+    display: block;
     border-bottom: 1px solid #ddd;
+    padding: 10px 0px 10px 0px;
+    border-top: 1px solid #ddd;
 }
-.tag span{
-    font-size: 12px;
+.tag li{
+    font-size: 14px;
     border-radius: 10px;
+    color: #fff;
     border: 1px solid #4f76b6;
-    color: #4f76b6;
+    background-color: #788eb1;
     padding: 2px 10px;
     /* margin-right: 10px; */
     margin-bottom: 3px;
-    white-space: nowrap;
+    /* white-space: nowrap; */
+    display: inline-block;
 }
-
+.taglist{
+    background-color: rgb(145, 187, 206);
+    border: 1px solid;
+    width: 65%;
+    position: relative;
+    color: #fff
+}
+.taglist li:hover{
+    background-color: #ccc
+}
 
 /**预览页面**/
 div.preview-layer{

@@ -34,6 +34,7 @@ import { error } from 'util';
 export class HttpService {
     token:any;
     userId:any;
+    nodelist =new Array<any>()
 
   constructor(private http: Http,private httpClient: HttpClient) {
     this.http = http;
@@ -42,7 +43,7 @@ export class HttpService {
    getServerIP() {
     console.log(environment.serviceUrl)
     return environment.serviceUrl;
-    // return  'http://192.168.1.131:9500/'
+    // return  'http://192.168.1.202:9500/'
    }
 
 async newget(url: string) {
@@ -293,4 +294,24 @@ storeremove (key) {
     localStorage.removeItem(key)
     return this
   }
+
+  traverse(e: any[], file:any ,list) {
+    // this.nodelist =[]
+    if(e.length){
+      for (let i = 0; i < e.length; i++) {
+        if ( e[i].label.indexOf(file)>-1 ){
+          list.push(e[i])
+        }
+        if(e[i].children){
+          this.traverse(e[i].children, file,list)
+        }else{
+
+        }
+      }
+    }
+  
+    return list 
+}
+
+
 }

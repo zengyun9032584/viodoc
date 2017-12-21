@@ -1,6 +1,6 @@
 body,ul,li,a,img,p,h1,h2,h3,h4,input,form,button{padding:0;margin:0;border:0;list-style: none;}
 
-body{margin: 0 auto;padding-top: 0px; font-family:"微软雅黑",Arial;position: relative;word-break:break-all;max-width: 640px;min-width: 320px;background: #ededed;}
+body{margin: 0 auto;padding-top: 0px; font-family:"微软雅黑",Arial;position: relative;word-break:break-all;max-width: 640px;min-width: 320px;background: #fff;}
 
 .article-detail--tag {
   display: flex;
@@ -25,19 +25,20 @@ body{margin: 0 auto;padding-top: 0px; font-family:"微软雅黑",Arial;position:
 
 .article-detail h3 {
   text-align: left;
-  margin-bottom: 10px;
+  margin-bottom: 26px;
 }
 
 .article-detail .author {
   text-align: left;
-    overflow: hidden; 
-    text-overflow: ellipsis; 
+    overflow: hidden;
+    text-overflow: ellipsis;
     -o-text-overflow: ellipsis;
     white-space:nowrap;
     width:240px;
     height:24px;
     display:inline-block;
 }
+
 
 .article-detail article {
   word-break: break-all;
@@ -54,11 +55,26 @@ body{margin: 0 auto;padding-top: 0px; font-family:"微软雅黑",Arial;position:
 .article-detail img{
   position: relative;
   float: left;
-  border-radius:10px; 
-  margin-left: 20px;
-}
+  border-radius:10px;
+
+ }
 
 .article-detail {
     padding: 15px;
-    margin-top: 5px;
+    margin-top: 15px;
   }
+.article-image{
+margin:30px 0px 30px 0px;
+display:inline-block;
+
+}
+.article-video{
+margin: 30px 0px 30px 0px;
+display: inline-block;
+}
+.article-font{
+margin:5px 5px 10px 5px;
+line-height:36px;
+font-size:16px;
+display:inline-block;
+}

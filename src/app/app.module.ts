@@ -9,6 +9,7 @@ import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { HttpService } from './common/http.service';
+import { FuzzySearchPipe } from './common/fuzzy-search.pipe'
 
 import {appRoutes} from './app.routes';
 import {Preload} from './preloading';
@@ -45,6 +46,7 @@ import {TreeModule} from 'primeng/primeng';
     
   ],
   providers: [
+    FuzzySearchPipe,
     HttpService,
     WorkspaceService,
     Preload,

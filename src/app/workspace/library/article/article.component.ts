@@ -17,11 +17,6 @@ import { parseHtmlToJson } from '../../../common/assist'
     ]
 })
 export class ArticleComponent implements OnInit {
-    constructor(private http: HttpService, private myService: WorkspaceService, public router: Router) {
-        // NProgress.start();
-        this.checklogin()
-
-    }
     msgs: any;
     selectTime = new Date();
     date: any;
@@ -46,6 +41,8 @@ export class ArticleComponent implements OnInit {
     treeUrl = 'assets/data/tree.json';
     treedata: any[];
     msg: any;
+    searchtag=''
+    taglist = new Array<any>()
 
     files = new Array<TreeNode>();
     selectedFiles = new Array<TreeNode>();
@@ -57,17 +54,20 @@ export class ArticleComponent implements OnInit {
     realname: any
     userpic: any
     userId: any
+    jobTitle
 
     // preview html
     previewhtml: any
 
-    ngOnInit() {
-        var date = new Date();
-        date = new Date(date.getTime() - 1000 * 60 * 60 * 24);
-        var month = date.getMonth() >= 9 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1);
-        var day = date.getDate() > 9 ? date.getDate() : '0' + date.getDate();
-        this.date = `${date.getFullYear()}${month}${day}`;
 
+    constructor(private http: HttpService, private myService: WorkspaceService, public router: Router) {
+        // NProgress.start();
+        this.checklogin()
+        this.getProfile(this.userId)
+    }
+    
+
+    ngOnInit() {
         this.createEditor()
         // this.gettree()
         this.getIllTag()
@@ -216,7 +216,7 @@ export class ArticleComponent implements OnInit {
                     body: form
                 })
                 var a = JSON.parse(data._body)
-                this.editor.cmd.do('insertHTML', `<p><img class="article-image" src=${a.picURL} owidth=${width} oheight=${height}></p>`)
+                this.editor.cmd.do('insertHTML', `<p class="article-image"><img  src=${a.picURL} owidth=${width} oheight=${height}></p>`)
             } catch (error) {
                 this.msgs = [];
                 this.msgs.push({ severity: 'error', summary: '上传图片失败', detail: `${error}` });
@@ -237,7 +237,7 @@ export class ArticleComponent implements OnInit {
                 const height = readerFile.height
                 var video = JSON.parse(data._body)
                 this.editor.cmd.do('insertHTML',
-                    `<p><video class="article-video" src=${video.videoURL} poster=${video.videoPICURL} controls owidth=${width} oheight=${height}></video></p>`)
+                    `<p class="article-video" ><video  src=${video.videoURL} poster=${video.videoPICURL} controls owidth=${width} oheight=${height}></video></p>`)
             })
         } catch (err) {
             this.msgs = [];
@@ -287,19 +287,38 @@ export class ArticleComponent implements OnInit {
     }
 
     nodeSelect(event: any) {
+       
         if (this.selectedFiles.length < 3) {
-            for (let i = 0; i < this.selectedFiles.length; i++) {
-                if (event.node.label === this.selectedFiles[i].label) {
-                    return
+            if(event.node){
+                for (let i = 0; i < this.selectedFiles.length; i++) {
+                        if (event.node.label === this.selectedFiles[i].label) {
+                            return
+                        }
+                    }
+                this.selectedFiles.push(event.node);
+            }else{
+                for (let i = 0; i < this.selectedFiles.length; i++) {
+                    if (event.label === this.selectedFiles[i].label) {
+                        return
+                    }
                 }
-            }
-            this.selectedFiles.push(event.node);
+                    this.selectedFiles.push(event);
+                }
+           
         }else{
             this.msgs = [];
             this.msgs.push({ severity: 'warning', summary: '只能选择3个标签', detail: `` });
         }
+        this.searchtag = '';
+        this.taglist = [];
     }
-
+    searchActicletag(){
+        debugger
+        this.taglist=[]
+        if(this.searchtag){
+        this.taglist = this.http.traverse(this.files,this.searchtag,this.taglist)
+        }
+    }
 
     del(event: any) {
         for (let i = 0; i < this.selectedFiles.length; i++) {
@@ -314,7 +333,8 @@ export class ArticleComponent implements OnInit {
      *
      * @stable
     */
-    getPrewviewHtml() {
+    getPrewviewHtml(e:any) {
+        debugger
         // this.display = true;
         var data: any = document.getElementById('preview-html')
         data.contentWindow.document.getElementById('title').innerText = this.articleTitle
@@ -324,15 +344,17 @@ export class ArticleComponent implements OnInit {
         }
         data.contentWindow.document.getElementById('title').innerText = this.articleTitle
         data.contentWindow.document.getElementById('authorAvatar').src = this.userpic;
-        data.contentWindow.document.getElementById('authorName').innerText += '胡建平';
-        data.contentWindow.document.getElementById('jobTitle').innerText += '神经科主任';
+        data.contentWindow.document.getElementById('authorName').innerText += this.realname;
+        data.contentWindow.document.getElementById('jobTitle').innerText += this.jobTitle;
         data.contentWindow.document.getElementById('articletag').innerHTML += str;
         data.contentWindow.document.getElementById('content').innerHTML += this.editorContent
 
         var html: any = document.getElementsByClassName('preview-layer')
         this.previewhtml = `<!DOCTYPE html> <html> <head>${data.contentWindow.document.head.innerHTML}</head> <body> ${data.contentWindow.document.body.innerHTML} </body> </html>`
         console.log(this.previewhtml)
-        html[0].style.display = 'block';
+        if(e===1){
+            html[0].style.display = 'block';
+        }
     }
 
 
@@ -376,8 +398,8 @@ export class ArticleComponent implements OnInit {
 
     async saveAsDeploy() {
         try {
-            this.getPrewviewHtml()
-            let tags = ['111']
+            this.getPrewviewHtml(2)
+            let tags = ['1','111']
             // for(let i=0;i<this.selectedFiles.length;i++){
             //     tags.push(String (this.selectedFiles[i].data))
             // }
@@ -485,6 +507,25 @@ export class ArticleComponent implements OnInit {
 
         }
     }
+
+    getProfile (userId) {
+        return this.http.newpost('api/viodoc/getProfile', 
+          JSON.stringify({
+            header: {
+              userId: Number(userId)
+            },
+            userId: Number(userId)
+          })
+        ).then(data => {
+          if (!data) {
+            throw new Error('无效的用户Id')
+          }
+          const  a: any = data
+          this.jobTitle = JSON.parse(a._body).drInfo.jobTitle
+          return data
+        })
+      }
+
 
 
 }

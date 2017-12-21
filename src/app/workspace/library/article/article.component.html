@@ -25,11 +25,22 @@
 
     <div class="content-right ui-g-3" >
         <div  class="tag" >标签:
-            <span *ngFor="let file of selectedFiles">{{file.label}} 
+            <li *ngFor="let file of selectedFiles">{{file.label}} 
                     <i class="fa fa-times" aria-hidden="true" (click)="del(file)"></i>
-            </span>
-        </div>
-        <div style = "">
+            </li>
+        </div> 
+        
+        <div>
+                    <input pInputText style="width:65%" (keyup)="searchActicletag()" [(ngModel)]="searchtag" />
+                    <button pButton type="button" (click)="searchActicletag()" label="搜索"></button>
+                    <ul class="taglist" *ngIf="taglist.length>0">
+                        <li (click)="nodeSelect(node)" *ngFor="let node of taglist "> {{node.label}}</li>
+                    </ul>
+            </div>
+      
+      
+       
+        <div>
             <p-tree [value]="files" selectionMode="multiple" 
                 (onNodeSelect)="nodeSelect($event)" >
             </p-tree>
@@ -41,7 +52,7 @@
     
     <button  class ="save"  pButton type="button" (click)="saveAsDraft()" label="保 存"></button>
    
-    <button pButton type="button" (click)="getPrewviewHtml()" label="预 览"></button>
+    <button  style="width:100px;" pButton type="button" (click)="getPrewviewHtml(1)" label="预 览"></button>
   </div>
 
     <div  class="preview-layer">
