@@ -16,7 +16,7 @@ export class DraftComponent implements OnInit {
   items: any;
   selectedItem: any;
   keywordNgModel = '';
-
+  selectedType='draft';
   display = false;
   dialogHeader = '';
   selectedItemID: any;
@@ -24,16 +24,18 @@ export class DraftComponent implements OnInit {
   selectedItemHref: any;
   selectedItemClass: any;
   selectedItemTags: any;
+  draftList = new Array<any>();
 
   constructor(private http: HttpService) { }
 
   ngOnInit() {
-    // this.getData();
+    this.getData();
   }
 
   getData() {
     let url = this.http.getServerIP();
     let user = sessionStorage.getItem('realname');
+    debugger;
     if (user) {
       this.http.get(`${url}/api/collect?user=${user}`).then(
         success => {

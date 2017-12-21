@@ -4,6 +4,7 @@ import { RouterModule} from "@angular/router";
 import {
   GrowlModule,
   DataListModule,
+  ButtonModule,
 } from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule} from "@angular/http";
@@ -19,7 +20,7 @@ import {MyBreadcrumbModule} from "../../../components/my-breadcrumb/my-breadcrum
     JsonpModule,
     CommonModule,
     ReactiveFormsModule,
-
+    ButtonModule,
     GrowlModule,
     DataListModule,
     MyBreadcrumbModule,

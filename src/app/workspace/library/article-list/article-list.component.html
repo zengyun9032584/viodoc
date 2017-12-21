@@ -1,36 +1,61 @@
 <p-growl [(value)]="msgs" life="2000"></p-growl>
 <div [@pageAnimation]="'in'">
   <my-breadcrumb name1="我的文库" name2="文章列表"></my-breadcrumb>
-  开发中
+  <!-- <label class="mr15">关键字</label> -->
+    <input type="text" class="search" pInputText placeholder="请填写关键字" [(ngModel)]="keywordNgModel"/>
+  <!-- <button pButton type="button" class="ui-button-secondary" label="清空搜索" -->
+          <!-- (click)="keywordNgModel=''"></button> -->
+  <button pButton type="button" label="搜索"></button>
+  <!-- <br/><br/> -->
 </div>
 
-<p-dataList [value]="livelist" [paginator]="true" [rows]="5" *ngIf="selectedType=='list'">
-    <!-- <p-header>
-        List of Cars
-    </p-header> -->
+
+<div  *ngIf="selectedType=='list'">
+ <div *ngFor="let item of articleList;let i=index" class="ui-g-12">
+  <div class="articleitem">
+    <div class="ui-g">
+      <div class="ui-g-6">
+          <div class="title">{{item.title}}</div>
+      </div>
+      <div class="ui-g-6">
+          <div class="time">{{item.publishDatetime}}</div>
+      </div>
+    </div>
+    <div class="ui-g">
+        <div>
+            <div class="label">{{item.tag}}</div>
+        </div>
+    </div>
+    <div class="ui-g">
+        <div class="content">{{item.breviary}}</div>
+        <button  type="button" pButton icon="fa-close" label="删除" (click)="deleteArticle(item.articleID)"></button>
+    </div>
+  </div>
+ </div> 
+</div>
+
+
+<!-- <p-dataList [value]="artileLists" [paginator]="true" [rows]="5" *ngIf="selectedType=='list'">
+    <p-header>
+        文章列表
+    </p-header>
     <ng-template let-car let-i="index" pTemplate="item">
-        <div class="ui-g ui-fluid car-item">
-            <!-- <div class="ui-g-12 ui-md-3" style="text-align:center">
+        <div class="ui-g ui-fluid articleLists-item">
+            <div class="ui-g-12 ui-md-3" style="text-align:center">
                 <img src="assets/showcase/images/demo/car/{{car.brand}}.png">
-            </div> -->
-            <div class="ui-g-12 ui-md-9 car-details">
+            </div>
+            <div class="ui-g-12 ui-md-9 articleLists-details">
                 <div class="ui-g">
-                    <!-- <div class="ui-g-1 ui-sm-6">标题: </div> -->
-                    <div class="ui-g-11 ui-sm-6">{{car.title}}</div>
+                    <div class="ui-g-1 ui-sm-6">标题: </div>
+                    <div class="ui-g-11 ui-sm-6">{{articleLists.title}}</div>
                     
-                    <!-- <div class="ui-g-1 ui-sm-6">主讲人: </div> -->
-                    <div class="ui-g-11 ui-sm-6">{{car.doctorName}}</div>
+                    <div class="ui-g-1 ui-sm-6">作者: </div>
+                    <div class="ui-g-11 ui-sm-6">{{articleLists.doctorName}}</div>
                     
-                    <!-- <div class="ui-g-1 ui-sm-6">时间: </div> -->
-                    <div class="ui-g-11 ui-sm-6">{{car.startTime}}</div>
-                    
-                    <!-- <div class="ui-g-1 ui-sm-6">直播状态: </div> -->
-                    <div *ngIf="car.status==0" class="ui-g-11 ui-sm-6">报名中</div>
-                    <div *ngIf="car.status==1" class="ui-g-11 ui-sm-6">正在直播</div>
-                    <div *ngIf="car.status==2" class="ui-g-11 ui-sm-6">直播结束</div>
-                    
+                    <div class="ui-g-1 ui-sm-6">时间: </div>
+                    <div class="ui-g-11 ui-sm-6">{{articleLists.startTime}}</div>
                 </div>
             </div>
         </div>
     </ng-template>
-</p-dataList>
+</p-dataList> -->

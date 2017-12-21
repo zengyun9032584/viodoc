@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStat
 
 import { HttpService } from '../../../common/http.service'
 import { WorkspaceService } from '../../workspace.service';
+// import { articleList, articleData } from 'app/workspace/library/article-list/article-list.module';
 
 @Component({
   selector: 'article-list',
@@ -26,9 +27,8 @@ export class ArticleListComponent implements OnInit {
   total= 0
   currentPage= 1
 
-  articleList=[]
-  selectedType:any
-  
+  selectedType='list';
+  articleList = new Array<any>();
   constructor(private httpservice:HttpService,
               public router: Router,
               private myService: WorkspaceService) {
@@ -69,14 +69,15 @@ export class ArticleListComponent implements OnInit {
         pageNo: this.currentPage,
         pageSize: this.size
           }
-        var res = await this.httpservice.newpost('api/viodoc/getPublishedArticleList', {
-        body: JSON.stringify({
+        var res:any = await this.httpservice.newpost('api/viodoc/getPublishedArticleList', 
+          JSON.stringify({
           header: this.httpservice.makeBodyHeader({}, false),
           userId: String(this.userId),
-          page: page
+          page: page//从后台获取数据
         })
-      })
-
+      )
+      var a:any = JSON.parse(res._body)//解析从后台获取的数据
+      this.articleList = a.articleList;//将获取到的数据放入自定义的数组当中
       debugger
     } catch (error) {
       this.msgs = [];
@@ -105,13 +106,14 @@ export class ArticleListComponent implements OnInit {
   // 删除已发布文章
   deleteArticle (articleID) {
     // let { userId } = this.httpservice.storeget('ffys_user_info') || {}
-
-    return this.httpservice.newpost('api/viodoc/deleteArticle', {
-      body: JSON.stringify({
+    debugger
+    return this.httpservice.newpost('api/viodoc/deleteArticle', 
+       JSON.stringify({
         header: this.httpservice.makeBodyHeader(),
         userId: String(this.userId),
         articleID: Number(articleID)
       })
-    })
+    )
+    
   }
 }

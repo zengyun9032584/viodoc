@@ -1,7 +1,6 @@
 <p-growl [(value)]="msgs" life="2000"></p-growl>
 <div [@pageAnimation]="'in'">
   <my-breadcrumb name1="我的文库" name2="草稿箱"></my-breadcrumb>
-  开发中
 </div>
 <!-- <label class="mr15">关键字</label>
 <input type="text" pInputText class="mr20" placeholder="请填写关键字" [(ngModel)]="keywordNgModel"/>
@@ -9,14 +8,40 @@
 <button pButton type="button" class="ui-button-secondary" label="清空搜索"
         (click)="keywordNgModel=''"></button>
 <button pButton type="button" label="搜索"></button>
-<br/><br/>
+<br/><br/> -->
 
+<div *ngIf="selectedType=='draft'">
+  <div *ngFor="let item of draftList;let i=index" class="ui-g-12">
+    <div class="dtaftitem">
+      <div class="ui-g">
+        <div class="ui-g-6">
+            <div class="title">{{item.title}}</div>
+        </div>
+        <div class="ui-g-6">
+            <div class="time">{{item.time}}</div>
+        </div>
+      </div>
+      <div class="ui-g">
+          <div>
+              <div class="label">{{item.label}}</div>
+          </div>
+      </div>
+      <div class="ui-g">
+          <div class="content">{{item.content}}</div>
+          <button class="change">编辑</button>
+          <button class="del">删除</button>
+      </div>
+    </div>
+  </div>  
+</div>
+
+<!-- 
 <p-dataTable [value]="items" selectionMode="single" [(selection)]="selectedItem" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true" [tableStyle]="{'font-size':'16px'}">
     <p-header>
-      <h2>我的收藏</h2>
+      <h2>我的草稿</h2>
     </p-header>
     <p-column field="name" header="文章名称" [sortable]="true"></p-column>
-    <p-column field="updatedAt" header="收藏时间" [sortable]="true" [style]="{'width':'150px'}">
+    <p-column field="updatedAt" header="编辑时间" [sortable]="true" [style]="{'width':'150px'}">
       <ng-template let-col let-collection="rowData" pTemplate="body">
           {{collection[col.field] | date:"y/MM/dd HH:mm"}}
       </ng-template>
@@ -31,8 +56,8 @@
         </div>
       </ng-template>
     </p-column>
-</p-dataTable>
-
+</p-dataTable> -->
+<!-- 
 <p-dialog [header]="dialogHeader" [(visible)]="display" modal="modal" width="600" [responsive]="true" [positionTop]="'150'">
   <div class="ui-g ui-fluid">
     <div class="ui-g-12 ui-md-12">
@@ -70,4 +95,4 @@
     <button type="button" pButton icon="fa-check" (click)="confirm()" [label]="dialogHeader"></button>
     <button type="button" pButton icon="fa-close" (click)="display=false" label="取消"></button>
   </p-footer>
-</p-dialog> -->
+</p-dialog>  -->
