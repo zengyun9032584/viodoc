@@ -122,6 +122,7 @@ export class ArticleComponent implements OnInit {
             'undo',  // 撤销
             'redo'  // 重复
         ]
+
         editor.customConfig.onchange = (html) => {
 
             _this.editorContent = html
@@ -139,7 +140,6 @@ export class ArticleComponent implements OnInit {
         if (error) {
             return
         }
-        debugger
         this.editForm.richJson = resJsonList
     }
 
@@ -216,7 +216,7 @@ export class ArticleComponent implements OnInit {
                     body: form
                 })
                 var a = JSON.parse(data._body)
-                this.editor.cmd.do('insertHTML', `<p><img src=${a.picURL} owidth=${width} oheight=${height}></p>`)
+                this.editor.cmd.do('insertHTML', `<p><img class="article-image" src=${a.picURL} owidth=${width} oheight=${height}></p>`)
             } catch (error) {
                 this.msgs = [];
                 this.msgs.push({ severity: 'error', summary: '上传图片失败', detail: `${error}` });
@@ -225,7 +225,6 @@ export class ArticleComponent implements OnInit {
 
     }
     videoOperate(e: any) {
-        debugger
         const files = e.target.files
         if (!files.length) return
         const file = files[0]
@@ -237,9 +236,8 @@ export class ArticleComponent implements OnInit {
                 const width = readerFile.width
                 const height = readerFile.height
                 var video = JSON.parse(data._body)
-                debugger
                 this.editor.cmd.do('insertHTML',
-                    `<p><video src=${video.videoURL} poster=${video.videoPICURL} controls owidth=${width} oheight=${height}></video></p>`)
+                    `<p><video class="article-video" src=${video.videoURL} poster=${video.videoPICURL} controls owidth=${width} oheight=${height}></video></p>`)
             })
         } catch (err) {
             this.msgs = [];
@@ -288,14 +286,6 @@ export class ArticleComponent implements OnInit {
             });
     }
 
-    showtagtree() {
-        this.tagtree = true;
-    }
-
-    closetag() {
-        this.tagtree = false
-    }
-
     nodeSelect(event: any) {
         if (this.selectedFiles.length < 3) {
             for (let i = 0; i < this.selectedFiles.length; i++) {
@@ -304,6 +294,9 @@ export class ArticleComponent implements OnInit {
                 }
             }
             this.selectedFiles.push(event.node);
+        }else{
+            this.msgs = [];
+            this.msgs.push({ severity: 'warning', summary: '只能选择3个标签', detail: `` });
         }
     }
 
@@ -400,7 +393,6 @@ export class ArticleComponent implements OnInit {
                         htmlUrl: htmlUrl
                 } = this.editForm
             let params = { title, content: JSON.stringify(articleContent), breviary, tag, htmlUrl }
-            debugger
             await this.saveAndPublish(params)
             this.msgs = [];
             this.msgs.push({ severity: 'scuucess', summary: '发布成功', detail: `` });

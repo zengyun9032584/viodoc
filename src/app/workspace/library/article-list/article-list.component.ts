@@ -64,7 +64,6 @@ export class ArticleListComponent implements OnInit {
 */
   async getArticleList () {
     try {
-      debugger
       const page = {
         pageNo: this.currentPage,
         pageSize: this.size
@@ -76,7 +75,6 @@ export class ArticleListComponent implements OnInit {
           page: page
         })
       )
-      debugger
     } catch (error) {
       this.msgs = [];
       this.msgs.push({ severity: 'error', summary: '获取文章列表失败', detail: `${error}` });

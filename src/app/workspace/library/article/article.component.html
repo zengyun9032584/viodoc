@@ -1,58 +1,46 @@
 <p-growl [(value)]="msgs" life="2000"></p-growl>
 <div [@pageAnimation]="'in'">
   <my-breadcrumb name1="我的文库" name2="创建文章"></my-breadcrumb>
-
-  <!-- <div class="search-area">
-    <label class="mr15">选择日期</label>
-      <p-calendar [showIcon]="true" [inputStyle]="{'width':'100px'}" [style]="{'margin-right':'35px'}" [(ngModel)]="selectTime"
-        (onSelect)="selectDate()">
-      </p-calendar>
-  </div> -->
 </div>
 
-<div class="content">
-    <div class="content-top">
+<div class="content ">
+    <div class="content-top ui-g">
         <input id="input" type="text" pInputText [(ngModel)]="articleTitle"  placeholder="文章标题"> 
-        <div id="editormenu" class="toolbar">
+        <div id="editormenu" class="toolbar ui-g-12">
                 <div class="my-tool-bar " > 
-                    <span (click)="fileInputClick('uploadImg')"><i class="w-e-icon-image"></i> 插入图片</span>
-                    <span (click)="fileInputClick('uploadVideo')"><i class="w-e-icon-play"></i> 插入视频</span>
+                    <span (click)="fileInputClick('uploadImg')"><i class="w-e-icon-image"></i> </span>
+                    <span (click)="fileInputClick('uploadVideo')"><i class="w-e-icon-play"></i></span>
                 </div>
                 <input id="uploadImg" type="file" hidden
                 (change)="imgOperate($event)"
-                accept="image/jpeg,image/jpg,image/png,image/svg" />
+                accept="image/jpeg,image/jpg,image/png,image/svg"/>
                 <input id="uploadVideo" type="file" (change)="videoOperate($event)" hidden accept="video/*" />
                 
         </div>
     </div>
   
-<div class="content-left">
+<div class="ui-g" >
+    <div id="editor" class="editorcontent content-left ui-g-9 "> <!--可使用 min-height 实现编辑区域自动增加高度-->
+    </div>
 
-
-  <!-- <div style="padding: 5px 0; color: #ccc">中间隔离带</div> -->
-  
-  <div id="editor" class="editorcontent"> <!--可使用 min-height 实现编辑区域自动增加高度-->
-</div>
-
-<div class="content-right">
-  <div  pInputText (click)="showtagtree()" style = "margin-bottom:10px" >文章标签： 
-    <span *ngFor="let file of selectedFiles">{{file.label}} 
-            <i class="fa fa-times" aria-hidden="true" (click)="del(file)"></i>
-    </span>
-  </div>
-  <div   style = "margin-bottom:10px;">
-      <span (click)="closetag()">
-            <i class="fa fa-times fa-2x" aria-hidden="true"></i>
-      </span>
-      <p-tree [value]="files" selectionMode="multiple" 
-          (onNodeSelect)="nodeSelect($event)" >
-      </p-tree>
-     
-  </div>
+    <div class="content-right ui-g-3" >
+        <div  class="tag" >标签:
+            <span *ngFor="let file of selectedFiles">{{file.label}} 
+                    <i class="fa fa-times" aria-hidden="true" (click)="del(file)"></i>
+            </span>
+        </div>
+        <div style = "">
+            <p-tree [value]="files" selectionMode="multiple" 
+                (onNodeSelect)="nodeSelect($event)" >
+            </p-tree>
+        </div>
+    </div>
 </div>
   <div class = "footer" >
-    <button pButton type="button" (click)="saveAsDraft()" label="保存"></button>
-    <button pButton type="button" (click)="saveAsDeploy()" label="发 布"></button>
+    <button   class ="publish" pButton type="button" (click)="saveAsDeploy()" label="发 布 文 章"></button>
+    
+    <button  class ="save"  pButton type="button" (click)="saveAsDraft()" label="保 存"></button>
+   
     <button pButton type="button" (click)="getPrewviewHtml()" label="预 览"></button>
   </div>
 
@@ -66,6 +54,5 @@
         </div>
     </div>
 
-</div>
 
 

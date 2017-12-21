@@ -42,6 +42,7 @@ export class HttpService {
    getServerIP() {
     console.log(environment.serviceUrl)
     return environment.serviceUrl;
+    // return  'http://192.168.1.131:9500/'
    }
 
 async newget(url: string) {

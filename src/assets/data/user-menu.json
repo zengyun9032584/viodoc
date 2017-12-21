@@ -12,14 +12,14 @@
             {
                 "name": "我的文库",
                 "icon": "fa-arrows",
-                "link": "http://dr.viodoc.com",
+                "link": "article-list",
                 "flag":"1"
                 
             },
             {
                 "name": "草稿箱",
                 "icon": "fa-arrows",
-                "link": "http://dr.viodoc.com",
+                "link": "draft",
                 "flag":"1"
                 
             }
