@@ -64,13 +64,15 @@ export class ArticleComponent implements OnInit {
         // NProgress.start();
         this.checklogin()
         this.getProfile(this.userId)
+      
     }
     
-
+    
     ngOnInit() {
         this.createEditor()
-        // this.gettree()
-        this.getIllTag()
+        this.http.currentSelectedPoint().subscribe((value: any)=>{
+            this.files = value
+        });
     }
 
     /**
@@ -236,6 +238,7 @@ export class ArticleComponent implements OnInit {
                 const width = readerFile.width
                 const height = readerFile.height
                 var video = JSON.parse(data._body)
+                debugger
                 this.editor.cmd.do('insertHTML',
                     `<p class="article-video" ><video  src=${video.videoURL} poster=${video.videoPICURL} controls owidth=${width} oheight=${height}></video></p>`)
             })
@@ -260,30 +263,6 @@ export class ArticleComponent implements OnInit {
         return this.http.request('http://viodoc.tpddns.cn:9500/api/viodoc/uploadVideo', {
             body: form
         })
-    }
-
-    /**
-     *  tree
-     *
-     * @stable
-    */
-    gettree() {
-        this.myService.getMenu(this.treeUrl)
-            .then(
-            menus => {
-                const a: any = menus
-                this.files = a.data
-            },
-            error => {
-                this.msgs = [];
-                this.msgs.push({ severity: 'error', summary: '获取树文件失败', detail: `${error}` });
-            }
-            )
-            .then(() => {
-                if (this.files) {
-                    sessionStorage.setItem('menu111', JSON.stringify(this.files));
-                }
-            });
     }
 
     nodeSelect(event: any) {
@@ -313,7 +292,6 @@ export class ArticleComponent implements OnInit {
         this.taglist = [];
     }
     searchActicletag(){
-        debugger
         this.taglist=[]
         if(this.searchtag){
         this.taglist = this.http.traverse(this.files,this.searchtag,this.taglist)
@@ -334,7 +312,6 @@ export class ArticleComponent implements OnInit {
      * @stable
     */
     getPrewviewHtml(e:any) {
-        debugger
         // this.display = true;
         var data: any = document.getElementById('preview-html')
         data.contentWindow.document.getElementById('title').innerText = this.articleTitle
@@ -463,49 +440,6 @@ export class ArticleComponent implements OnInit {
                 articleDetail: articleDetail
             })
         )
-    }
-
-
-    async getIllTag() {
-        try {
-            this.tree = await this.getsubjectlist(0)
-            this.traverse(this.tree, this.files)
-        } catch (error) {
-            this.msgs = [];
-            this.msgs.push({ severity: 'error', summary: '获取标签列表失败', detail: `${error}` });
-        }
-    }
-
-    async traverse(e: any[], file: TreeNode[]) {
-        for (let i = 0; i < e.length; i++) {
-            var data = new TreeNode()
-            data.label = e[i].nodeName
-            data.data = e[i].nodeId
-            data.children = new Array<TreeNode>();
-            e[i].chilren = await this.getsubjectlist(e[i].nodeId)
-            file[i] = data
-            if (e[i].chilren.length > 0) {
-                this.traverse(e[i].chilren, file[i].children)
-            } else {
-                break
-            }
-        }
-    }
-
-
-    async getsubjectlist(id: any) {
-        const json = {
-            header: this.http.makeBodyHeader({}),
-            parentId: new Number(id)
-        }
-        try {
-            const data: any = await this.http.newpost('api/viodoc/getSubjectTreeNode', JSON.stringify(json))
-            var a = JSON.parse(data._body)
-            var tree = a.subjectNode;
-            return tree
-        } catch (error) {
-
-        }
     }
 
     getProfile (userId) {

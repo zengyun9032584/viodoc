@@ -30,15 +30,36 @@ import { encode } from '@angular/router/src/url_tree';
 import { escape } from 'querystring';
 import { error } from 'util';
 
+import {Subject} from "rxjs/Subject";
+import {Observable} from "rxjs/Observable";
+
 @Injectable()
 export class HttpService {
     token:any;
     userId:any;
     nodelist =new Array<any>()
+    private tree = new Array<any>();
+    public files = new Array<any>();
+
+
+    private selectdata:Subject<any> = new Subject<any>();
+
+  
 
   constructor(private http: Http,private httpClient: HttpClient) {
     this.http = http;
+    this.getIllTag();
    }
+
+   public setSelectedPoint(data: any): void {
+    this.selectdata.next(data);
+
+}
+
+  public currentSelectedPoint(): Observable<any> {
+      return this.selectdata.asObservable();
+  }
+
 
    getServerIP() {
     console.log(environment.serviceUrl)
@@ -313,5 +334,48 @@ storeremove (key) {
     return list 
 }
 
+async getIllTag() {
+  try {
+      this.tree = await this.getsubjectlist(0)
+      await this.gettraverse(this.tree, this.files)
+      this.setSelectedPoint(this.files)
+  } catch (error) {
+     
+    // this.msgs = [];
+      // this.msgs.push({ severity: 'error', summary: '获取标签列表失败', detail: `${error}` });
+  }
+}
+
+async gettraverse(e: any[], file: any[]) {
+  for (let i = 0; i < e.length; i++) {
+      var data:any = {};
+      data.label = e[i].nodeName
+      data.data = e[i].nodeId
+      data.children = new Array<any>();
+      e[i].chilren = await this.getsubjectlist(e[i].nodeId)
+      file[i] = data
+      if (e[i].chilren.length > 0) {
+          this.gettraverse(e[i].chilren, file[i].children)
+      } else {
+          break
+      }
+  }
+}
+
+
+async getsubjectlist(id: any) {
+  const json = {
+      header: this.makeBodyHeader({}),
+      parentId: new Number(id)
+  }
+  try {
+      const data: any = await this.newpost('api/viodoc/getSubjectTreeNode', JSON.stringify(json))
+      var a = JSON.parse(data._body)
+      var tree = a.subjectNode;
+      return tree
+  } catch (error) {
+
+  }
+}
 
 }
