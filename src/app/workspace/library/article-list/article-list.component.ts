@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, ActivatedRouteSnapshot, RouterState, RouterStat
 
 import { HttpService } from '../../../common/http.service'
 import { WorkspaceService } from '../../workspace.service';
+import { parseHtmlToJson,previewHtml } from '../../../common/assist'
 
 @Component({
   selector: 'article-list',
@@ -22,12 +23,12 @@ export class ArticleListComponent implements OnInit {
   userpic:string;
   userId:any;
 
-  size=10
-  total= 0
+  size=20
   currentPage= 1
 
   articleList=[]
-  selectedType:any
+  showArticle = []
+  selectedType="list"
   
   constructor(private httpservice:HttpService,
               public router: Router,
@@ -37,7 +38,7 @@ export class ArticleListComponent implements OnInit {
                }
 
   ngOnInit() {
-    this.getArticleList();
+    this. getArticleList()
   }
 
 /**
@@ -64,22 +65,38 @@ export class ArticleListComponent implements OnInit {
 */
   async getArticleList () {
     try {
-      const page = {
-        pageNo: this.currentPage,
-        pageSize: this.size
-          }
-        var res = await this.httpservice.newpost('api/viodoc/getPublishedArticleList', 
-       JSON.stringify({
-          header: this.httpservice.makeBodyHeader({}),
-          userID: String(this.userId),
-          page: page
-        })
+        var res:any = await this.httpservice.newpost('api/viodoc/getAllPublishedArticleList', 
+        JSON.stringify({
+            header: this.httpservice.makeBodyHeader({}),
+            userID: String(this.userId),
+          })
       )
+      this.articleList = JSON.parse(res._body).articleList
+      this.showArticle = JSON.parse(res._body).articleList
     } catch (error) {
       this.msgs = [];
       this.msgs.push({ severity: 'error', summary: '获取文章列表失败', detail: `${error}` });
-    
+      return 0
     }
+  }
+
+  searchActicle(e:any){
+    var searchdata=[]
+    if(e.keyCode ===13){
+      this.articleList.forEach((pre,index)=>{
+       
+        if(pre.title.indexOf(e.target.value)>-1 
+        || pre.authorName.indexOf(e.target.value)>-1
+        || pre.jobTitle.indexOf(e.target.value)>-1 ){
+          searchdata.push(pre)
+        }
+      })
+      this.showArticle = searchdata
+    }
+    if(e.target.value===''){
+      this.showArticle = this.articleList
+    }
+  
   }
 
 /**
@@ -88,27 +105,78 @@ export class ArticleListComponent implements OnInit {
  * @stable
 */
      // 获取已发布文章详情
-  getPublishedArticleContent (articleID) {
-    // let { userId } = Store.get('ffys_user_info') || {}
-    // if (!userId) throw new Error('用户id丢失')
-    return this.httpservice.newpost('api/viodoc/getPublishedArticleContent', {
-      body: JSON.stringify({
-        header: this.httpservice.makeBodyHeader(),
-        articleID: Number(articleID)
-      })
-    })
+  async getPublishedArticleContent (articleID) {
+    try{
+      const res:any = await  this.httpservice.newpost('api/viodoc/getPublishedArticleContent',
+        JSON.stringify({
+          header: this.httpservice.makeBodyHeader(),
+          articleID: Number(articleID)
+        })
+      )
+      debugger
+      const a = JSON.parse(res._body).articleDetail
+      this.getPrewviewHtml(a)
+    } catch(err){
+      this.msgs = [];
+      this.msgs.push({ severity: 'error', summary: '获取文章详情失败', detail: `${err}` });
+    }
+
   }
 
   // 删除已发布文章
-  deleteArticle (articleID) {
-    // let { userId } = this.httpservice.storeget('ffys_user_info') || {}
-
-    return this.httpservice.newpost('api/viodoc/deleteArticle', {
-      body: JSON.stringify({
-        header: this.httpservice.makeBodyHeader(),
-        userId: String(this.userId),
-        articleID: Number(articleID)
-      })
-    })
+  async deleteArticle (articleID) {
+    try{
+      await this.httpservice.newpost('api/viodoc/deleteArticle', 
+        JSON.stringify({
+          header: this.httpservice.makeBodyHeader(),
+          userId: String(this.userId),
+          articleID: Number(articleID)
+        })
+      )
+      this.getArticleList()
+    } catch(err){
+      this.msgs = [];
+      this.msgs.push({ severity: 'error', summary: '获取文章列表失败', detail: `${err}` });
+    }
   }
+
+  /**
+     *  get preview html
+     *
+     * @stable
+    */
+    getPrewviewHtml(e:any) {
+      // this.display = true;
+      debugger
+      var data: any = document.getElementById('preview-html')
+      data.contentWindow.document.getElementById('title').innerText = e.title
+      var str = '';
+      for (let i = 0; i <e.tag.length; i++) {
+          str += `<span>${e.tag[i]}</span>`
+      }
+      data.contentWindow.document.getElementById('title').innerText =  e.title
+      data.contentWindow.document.getElementById('authorAvatar').src = e.authorAvatarURL;
+      data.contentWindow.document.getElementById('authorName').innerText += e.authorName;
+      data.contentWindow.document.getElementById('jobTitle').innerText += e.jobTitle;
+      data.contentWindow.document.getElementById('articletag').innerHTML += str;
+      data.contentWindow.document.getElementById('content').innerHTML += previewHtml(JSON.parse(e.articleContent))
+
+      var html: any = document.getElementsByClassName('preview-layer')
+      html[0].style.display = 'block';
+  }
+
+
+  closePreview() {
+      var html: any = document.getElementsByClassName('preview-layer')
+      html[0].style.display = 'none';
+      var data: any = document.getElementById('preview-html')
+      data.contentWindow.document.getElementById('title').innerText = ''
+      data.contentWindow.document.getElementById('authorAvatar').src = '';
+      data.contentWindow.document.getElementById('authorName').innerText = '';
+      data.contentWindow.document.getElementById('jobTitle').innerText = '';
+      data.contentWindow.document.getElementById('articletag').innerHTML = '';
+      data.contentWindow.document.getElementById('content').innerHTML = '';
+  }
+
+
 }

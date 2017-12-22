@@ -1,73 +1,44 @@
 <p-growl [(value)]="msgs" life="2000"></p-growl>
 <div [@pageAnimation]="'in'">
   <my-breadcrumb name1="我的文库" name2="草稿箱"></my-breadcrumb>
-  开发中
+  <input  (keyup)="searchActicle($event)" pInputText type="text" id="searcharticle" />
 </div>
-<!-- <label class="mr15">关键字</label>
-<input type="text" pInputText class="mr20" placeholder="请填写关键字" [(ngModel)]="keywordNgModel"/>
 
-<button pButton type="button" class="ui-button-secondary" label="清空搜索"
-        (click)="keywordNgModel=''"></button>
-<button pButton type="button" label="搜索"></button>
-<br/><br/>
+<div class="content ">
+  <p-dataList [value]="showdraftList" [paginator]="true" [rows]="5" *ngIf="showdraftList.length>0">
+          <!-- <p-header>
+              List of Cars
+          </p-header> -->
+          <ng-template let-car let-i="index" pTemplate="item">
+              <div class="ui-g ui-fluid car-item">
+                  <!-- <div class="ui-g-12 ui-md-3" style="text-align:center">
+                      <img width="50px" [src]="car.authorAvatarURL">
+                  </div> -->
+                  <div class="ui-g-12 ui-md-12 car-details">
+                      <!-- <div class="ui-g"> -->
+                          <div [title]="car.title"  class="ui-g-10 ui-sm-6 title breviary" (click)="titleClick(car.articleId)" >{{car.title}}</div>
+                          <div  class="ui-g-2 ui-sm-6">{{car.saveTime}}</div>
+                          <div class="ui-g-10 ui-sm-6" >
+                              <span class="tag" *ngFor="let tag of car.tag" >{{tag}}</span>
+                          </div>
+                          <!-- <div class="ui-g-10 ui-sm-6 breviary" >{{car.breviary}}</div> -->
+                          <div class="ui-g-2 ui-sm-6 edit">
+                            <button pButton type="button" (click)="editDraft(car.articleId)" label="编辑"></button>
+                            <button pButton type="button" (click)="deleteArtilce(car.articleId)" label="删除"></button>
+                          </div>
+                      </div>
+                  <!-- </div> -->
+              </div>
+          </ng-template>
+      </p-dataList>
+</div>
 
-<p-dataTable [value]="items" selectionMode="single" [(selection)]="selectedItem" (onRowSelect)="onRowSelect($event)" [paginator]="true" rows="15" [responsive]="true" [tableStyle]="{'font-size':'16px'}">
-    <p-header>
-      <h2>我的收藏</h2>
-    </p-header>
-    <p-column field="name" header="文章名称" [sortable]="true"></p-column>
-    <p-column field="updatedAt" header="收藏时间" [sortable]="true" [style]="{'width':'150px'}">
-      <ng-template let-col let-collection="rowData" pTemplate="body">
-          {{collection[col.field] | date:"y/MM/dd HH:mm"}}
-      </ng-template>
-    </p-column>
-    <p-column field="class" header="分类" [sortable]="true" [style]="{'width':'150px'}"></p-column>
-    <p-column field="tags" header="标签" [sortable]="true" [style]="{'width':'250px'}"></p-column>
-    <p-column styleClass="col-button" header="操作" [style]="{'width':'150px'}">
-      <ng-template let-col let-collection="rowData" pTemplate="body">
-        <div id="handle-button">
-          <button pButton type="button" label="编辑" (click)="editShow(collection)" class="ui-button-success"></button>
-          <button pButton type="button" label="删除" (click)="deleteShow(collection)" class="ui-button-danger"></button>
-        </div>
-      </ng-template>
-    </p-column>
-</p-dataTable>
-
-<p-dialog [header]="dialogHeader" [(visible)]="display" modal="modal" width="600" [responsive]="true" [positionTop]="'150'">
-  <div class="ui-g ui-fluid">
-    <div class="ui-g-12 ui-md-12">
-      <div class="ui-inputgroup">
-        <span class="ui-inputgroup-addon" style="padding-top:7px;">文章名称</span>
-        <input type="text" pInputText [(ngModel)]="selectedItemName" placeholder="请输入名称">
-      </div>
-    </div>
+<div  class="preview-layer">
+  <span class="close" (click)="closePreview()" >
+  <i class="fa fa-times fa-5x" aria-hidden="true"></i>
+</span>
+  <div class="preview-bg"></div>
+  <div class="preview-phone">
+      <iframe id="preview-html" name="preview-html" src="assets/html/preview.html"></iframe>
   </div>
-  <div class="ui-g ui-fluid">
-    <div class="ui-g-12 ui-md-12">
-      <div class="ui-inputgroup">
-        <span class="ui-inputgroup-addon" style="padding-top:7px;">文章地址</span>
-        <input type="text" pInputText [(ngModel)]="selectedItemHref" placeholder="请输入名称">
-      </div>
-    </div>
-  </div>
-  <div class="ui-g ui-fluid">
-    <div class="ui-g-12 ui-md-12">
-      <div class="ui-inputgroup">
-        <span class="ui-inputgroup-addon" style="padding-top:7px;">文章分类</span>
-        <input type="text" pInputText [(ngModel)]="selectedItemClass" placeholder="请输入分类">
-      </div>
-    </div>
-  </div>
-  <div class="ui-g ui-fluid">
-    <div class="ui-g-12 ui-md-12">
-      <div class="ui-inputgroup">
-        <span class="ui-inputgroup-addon" style="padding-top:7px;">文章标签</span>
-        <input type="text" pInputText [(ngModel)]="selectedItemTags" placeholder="请输入标签">
-      </div>
-    </div>
-  </div>
-  <p-footer>
-    <button type="button" pButton icon="fa-check" (click)="confirm()" [label]="dialogHeader"></button>
-    <button type="button" pButton icon="fa-close" (click)="display=false" label="取消"></button>
-  </p-footer>
-</p-dialog> -->
+</div>

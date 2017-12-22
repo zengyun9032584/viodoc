@@ -31,12 +31,12 @@
         </div> 
         
         <div>
-                    <input pInputText style="width:65%" (keyup)="searchActicletag()" [(ngModel)]="searchtag" />
-                    <button pButton type="button" (click)="searchActicletag()" label="搜索"></button>
-                    <ul class="taglist" *ngIf="taglist.length>0">
-                        <li (click)="nodeSelect(node)" *ngFor="let node of taglist "> {{node.label}}</li>
-                    </ul>
-            </div>
+            <input pInputText style="width:65%" (keyup)="searchActicletag()" [(ngModel)]="searchtag" />
+            <button pButton type="button" (click)="searchActicletag()" label="搜索"></button>
+            <ul class="taglist" *ngIf="taglist.length>0">
+                <li (click)="nodeSelect(node)" *ngFor="let node of taglist "> {{node.label}}</li>
+            </ul>
+        </div>
       
       
        
@@ -50,7 +50,7 @@
   <div class = "footer" >
     <button   class ="publish" pButton type="button" (click)="saveAsDeploy()" label="发 布 文 章"></button>
     
-    <button  class ="save"  pButton type="button" (click)="saveAsDraft()" label="保 存"></button>
+    <button  class ="save"  pButton type="button" (click)="saveAsDraft()" label="保 存 草 稿"></button>
    
     <button  style="width:100px;" pButton type="button" (click)="getPrewviewHtml(1)" label="预 览"></button>
   </div>

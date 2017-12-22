@@ -3,9 +3,10 @@ import { beforeUrl, China, pageAnimation, tagAnimation, TreeNode } from '../../.
 import NProgress from 'nprogress';
 import { HttpService } from '../../../common/http.service';
 import { WorkspaceService } from '../../../workspace/workspace.service';
-import { Router } from '@angular/router'
+import { Router,, ActivatedRoute, ParamMap } from '@angular/router'
 import wangEditor from 'yushk'
-import { parseHtmlToJson } from '../../../common/assist'
+import { parseHtmlToJson, previewHtml } from '../../../common/assist'
+import 'rxjs/add/operator/switchMap';
 
 @Component({
     selector: 'app-data-table',
@@ -26,7 +27,7 @@ export class ArticleComponent implements OnInit {
     editor: any;
     articleTitle = "详细介绍如何预防感冒";
     editorContent: any;
-
+    setEditorContent = ''
     editForm = {
         title: '',
         richText: '',
@@ -60,20 +61,32 @@ export class ArticleComponent implements OnInit {
     previewhtml: any
 
 
-    constructor(private http: HttpService, private myService: WorkspaceService, public router: Router) {
+    constructor(private http: HttpService, 
+        private myService: WorkspaceService,
+         public router: Router,
+         private route: ActivatedRoute,
+        ) {
         // NProgress.start();
         this.checklogin()
-        this.getProfile(this.userId)
+        //  读取文章id
+        let id = this.route.snapshot.paramMap.get('id')
+        const reg=/^[0-9]*$/
+        if(id.match(reg)&& id !=='0'){
+          this.getDraftDetail(id)
+        } 
       
     }
     
     
-    ngOnInit() {
-        this.createEditor()
-        this.http.currentSelectedPoint().subscribe((value: any)=>{
-            this.files = value
-        });
+   ngOnInit() {
+    this.getProfile(this.userId)
+    this.http.currentSelectedPoint().subscribe((value: any)=>{
+        this.files = value
+    });
+        
     }
+
+
 
     /**
  *  检查是否登录，登录信息存储在localstorage
@@ -127,22 +140,36 @@ export class ArticleComponent implements OnInit {
 
         editor.customConfig.onchange = (html) => {
 
-            _this.editorContent = html
+            // _this.editorContent = html
             var json = editor.txt.getJSON()
             var jsonStr = JSON.stringify(json)
             _this.getjson(html)
         }
+        // 创建编辑器
         editor.create()
+        // 编辑文章 设置编辑器内容
+        if(this.setEditorContent!==''){
+            this.editorContent = this.setEditorContent
+            editor.txt.html(this.setEditorContent)
+        }
         this.editor = editor
     }
+
+    /**
+    *  读取编辑器内内容,解析为json
+    *
+    * @stable
+    */
     getjson(html: any) {
         const { error, errorText, resJsonList } = parseHtmlToJson(html)
         console.log(error)
         console.log(errorText)
-        if (error) {
-            return
+        if(error){
+            this.msgs = [];
+            this.msgs.push({ severity: 'error', summary: '格式错误', detail: `${errorText}` });
         }
         this.editForm.richJson = resJsonList
+        this.editorContent=previewHtml(resJsonList)
     }
 
     /**
@@ -238,7 +265,6 @@ export class ArticleComponent implements OnInit {
                 const width = readerFile.width
                 const height = readerFile.height
                 var video = JSON.parse(data._body)
-                debugger
                 this.editor.cmd.do('insertHTML',
                     `<p class="article-video" ><video  src=${video.videoURL} poster=${video.videoPICURL} controls owidth=${width} oheight=${height}></video></p>`)
             })
@@ -316,6 +342,7 @@ export class ArticleComponent implements OnInit {
         var data: any = document.getElementById('preview-html')
         data.contentWindow.document.getElementById('title').innerText = this.articleTitle
         var str = '';
+        // this.selectedFiles = ['1','111']
         for (let i = 0; i < this.selectedFiles.length; i++) {
             str += `<span>${this.selectedFiles[i].label}</span>`
         }
@@ -334,7 +361,11 @@ export class ArticleComponent implements OnInit {
         }
     }
 
-
+    /**
+     *  get preview html
+     *
+     * @stable
+    */
     closePreview() {
         var html: any = document.getElementsByClassName('preview-layer')
         html[0].style.display = 'none';
@@ -347,23 +378,30 @@ export class ArticleComponent implements OnInit {
         data.contentWindow.document.getElementById('content').innerHTML = '';
     }
 
+    /**
+     *  保存草稿
+     *
+     * @stable
+    */
     async saveAsDraft() {
         try {
-            let tags = []
-            for (let i = 0; i < this.selectedFiles.length; i++) {
-                tags.push(String(this.selectedFiles[i].data))
-            }
+            // let tags = []
+            // for (let i = 0; i < this.selectedFiles.length; i++) {
+            //     tags.push(String(this.selectedFiles[i].data))
+            // }
+            let tags = ['1','111']
             this.editForm.title = this.articleTitle
             this.editForm.selectedCategoryIds = tags
             await this.verify()
             const {
-            title: articleTitle,
+                title: title,
                 richJson: editorContent,
                 summary: breviary,
                 selectedCategoryIds: tag
-        } = this.editForm
-            let params = { articleTitle, content: JSON.stringify(editorContent), breviary, tag }
+            } = this.editForm
+            let params = { title, content: JSON.stringify(editorContent), breviary, tag }
             await this.saveArticle(params)
+            debugger
             this.msgs = [];
             this.msgs.push({ severity: 'scuucess', summary: '保存为草稿成功', detail: `` });
             this.router.navigateByUrl("workspace/draft")
@@ -394,6 +432,7 @@ export class ArticleComponent implements OnInit {
             let params = { title, content: JSON.stringify(articleContent), breviary, tag, htmlUrl }
             await this.saveAndPublish(params)
             this.msgs = [];
+            debugger
             this.msgs.push({ severity: 'scuucess', summary: '发布成功', detail: `` });
             this.router.navigateByUrl("workspace/article-list")
         } catch (e) {
@@ -409,15 +448,49 @@ export class ArticleComponent implements OnInit {
             summary,
             selectedCategoryIds
         } = this.editForm
-        if (!title) {
-            throw new Error('请输入标题')
+        try{
+            if (!title) {
+                throw new Error('请输入标题')
+            }
+            if (!richJson) {
+                throw new Error('请输入文章内容')
+            }
+            debugger
+            if (selectedCategoryIds.length === 0) {
+                throw new Error('请输选择文章标签')
+            }
+        }catch(err){
+            this.msgs = [];
+            this.msgs.push({ severity: 'error', summary: '发布失败', detail: `${err}` });
         }
-        if (!richJson) {
-            throw new Error('请输入文章内容')
+        
+    }
+     // 获取草稿详情
+    async getDraftDetail (articleID) {
+        try{
+            const data:any = await this.http.newpost('api/viodoc/getArticleContent', 
+            JSON.stringify({
+             header: this.http.makeBodyHeader(),
+             articleID: Number(articleID)
+           })
+         )
+         debugger
+         const content = JSON.parse(data._body).articleDetail.content;
+         this.articleTitle = JSON.parse(data._body).articleDetail.title;
+         var tag = JSON.parse(data._body).articleDetail.tag
+         for (let i=0; i<tag.length;i++){
+             var a:any ={label:tag[i]}
+             this.selectedFiles.push(a)
+             debugger
+         }
+         this.setEditorContent = previewHtml(JSON.parse(content))
+         this.createEditor()
+        }catch(error){
+            this.msgs = [];
+            this.msgs.push({ severity: 'error', summary: '获取草稿失败', detail: `${error}` });
+            this.createEditor()
         }
-        if (selectedCategoryIds.length === 0) {
-            throw new Error('请输入文章内容')
-        }
+             
     }
 
     // 保存为草稿

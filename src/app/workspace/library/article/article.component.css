@@ -85,14 +85,19 @@
     display: inline-block;
 }
 .taglist{
-    background-color: rgb(145, 187, 206);
-    border: 1px solid;
+    /* background-color: rgb(145, 187, 206); */
+    border: 1px solid #ddd;
     width: 65%;
     position: relative;
-    color: #fff
+    color: #494949;
+    margin-bottom:20px
 }
 .taglist li:hover{
     background-color: #ccc
+}
+.taglist li{
+ line-height: 20px;
+    /* background-color: #ccc */
 }
 
 /**预览页面**/

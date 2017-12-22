@@ -1,36 +1,47 @@
 <p-growl [(value)]="msgs" life="2000"></p-growl>
 <div [@pageAnimation]="'in'">
-  <my-breadcrumb name1="我的文库" name2="文章列表"></my-breadcrumb>
-  开发中
+  <my-breadcrumb name1="我的文库" name2="文章列表">
+     
+  </my-breadcrumb>
+  <!-- <span  >sasdasd</span>  -->
+  <input  (keyup)="searchActicle($event)" pInputText type="text" id="searcharticle" />
 </div>
 
-<p-dataList [value]="livelist" [paginator]="true" [rows]="5" *ngIf="selectedType=='list'">
-    <!-- <p-header>
-        List of Cars
-    </p-header> -->
-    <ng-template let-car let-i="index" pTemplate="item">
-        <div class="ui-g ui-fluid car-item">
-            <!-- <div class="ui-g-12 ui-md-3" style="text-align:center">
-                <img src="assets/showcase/images/demo/car/{{car.brand}}.png">
-            </div> -->
-            <div class="ui-g-12 ui-md-9 car-details">
-                <div class="ui-g">
-                    <!-- <div class="ui-g-1 ui-sm-6">标题: </div> -->
-                    <div class="ui-g-11 ui-sm-6">{{car.title}}</div>
-                    
-                    <!-- <div class="ui-g-1 ui-sm-6">主讲人: </div> -->
-                    <div class="ui-g-11 ui-sm-6">{{car.doctorName}}</div>
-                    
-                    <!-- <div class="ui-g-1 ui-sm-6">时间: </div> -->
-                    <div class="ui-g-11 ui-sm-6">{{car.startTime}}</div>
-                    
-                    <!-- <div class="ui-g-1 ui-sm-6">直播状态: </div> -->
-                    <div *ngIf="car.status==0" class="ui-g-11 ui-sm-6">报名中</div>
-                    <div *ngIf="car.status==1" class="ui-g-11 ui-sm-6">正在直播</div>
-                    <div *ngIf="car.status==2" class="ui-g-11 ui-sm-6">直播结束</div>
-                    
+<div class="content ">
+    <p-dataList [value]="showArticle" [paginator]="true" [rows]="5" *ngIf="articleList.length>0">
+            <!-- <p-header>
+                List of Cars
+            </p-header> -->
+            <ng-template let-car let-i="index" pTemplate="item">
+                <div class="ui-g ui-fluid car-item">
+                    <!-- <div class="ui-g-12 ui-md-3" style="text-align:center">
+                        <img width="50px" [src]="car.authorAvatarURL">
+                    </div> -->
+                    <div class="ui-g-12 ui-md-12 car-details">
+                        <!-- <div class="ui-g"> -->
+                            <div  [title]="car.title" class="ui-g-10 ui-sm-6 title breviary" (click)="getPublishedArticleContent(car.articleID)" >{{car.title}}</div>
+                            <div  class="ui-g-2 ui-sm-6">{{car.publishDatetime}}</div>
+                            <div class="ui-g-11 ui-sm-6" >
+                                <span class="tag" *ngFor="let tag of car.tag" >{{tag}}</span>
+                            </div>
+                            
+                            <div class="ui-g-10 ui-sm-6 breviary" >{{car.breviary}}</div>
+                            <div class="ui-g-2 ui-sm-6 edit">
+                                    <button pButton type="button" (click)="deleteArticle(car.articleID)" label="删除"></button>
+                            </div>
+                        </div>
+                    <!-- </div> -->
                 </div>
-            </div>
-        </div>
-    </ng-template>
-</p-dataList>
+            </ng-template>
+        </p-dataList>
+</div>
+
+<div  class="preview-layer">
+    <span class="close" (click)="closePreview()" >
+    <i class="fa fa-times fa-5x" aria-hidden="true"></i>
+</span>
+    <div class="preview-bg"></div>
+    <div class="preview-phone">
+        <iframe id="preview-html" name="preview-html" src="assets/html/preview.html"></iframe>
+    </div>
+</div>

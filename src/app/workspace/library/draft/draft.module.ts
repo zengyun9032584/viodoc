@@ -6,7 +6,8 @@ import {
     DataTableModule,
     InputTextModule,
     DialogModule,
-    ButtonModule
+    ButtonModule,
+    DataListModule
 } from 'primeng/primeng';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HttpModule, JsonpModule} from "@angular/http";
@@ -23,6 +24,8 @@ import {MyBreadcrumbModule} from "../../../components/my-breadcrumb/my-breadcrum
     CommonModule,
     ReactiveFormsModule,
 
+
+    DataListModule,
     GrowlModule,
     DataTableModule,
     InputTextModule,

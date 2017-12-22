@@ -6,7 +6,7 @@
             {
                 "name": "新建文章",
                 "icon": "fa-arrows",
-                "link": "article",
+                "link": "article/0",
                 "flag":"0"
             },
             {

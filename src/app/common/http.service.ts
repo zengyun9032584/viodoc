@@ -55,7 +55,6 @@ export class HttpService {
     this.selectdata.next(data);
 
 }
-
   public currentSelectedPoint(): Observable<any> {
       return this.selectdata.asObservable();
   }

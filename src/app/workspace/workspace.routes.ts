@@ -15,7 +15,7 @@ export const workspaceRoutes = [
         data: {preload: true}
       },
       {
-        path: 'article',
+        path: `article/:id`,
         loadChildren: './library/article/article.module#ArticleModule',
         data: {preload: true}
       },

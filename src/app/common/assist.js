@@ -139,10 +139,13 @@ export const parseHtmlToJson = (originHtml) => {
     const { type } = maketTypeAndAttribute(pnode)
 
     let warpContent = pnode.replace('<p>', '')
+        warpContent = warpContent.replace('<br>', '')
+    if(type ===1){
+      warpContent = warpContent.replace(/<(.*?)>|&nbsp;/g,'')
+    }
     let contentValue = htmlDecode(warpContent)
     let owidth = ''
     let oheight = ''
-
     const imgList = warpContent.match(/<img[^>]+>/g) || []
     if (imgList.length) {
       if (imgList.length > 1) {
@@ -156,8 +159,8 @@ export const parseHtmlToJson = (originHtml) => {
         errorText = ''
         const { width, height, src } = lowGetImgAttribute(imgList[0])
         contentValue = src
-        owidth = width
-        oheight = height
+        owidth = width||''
+        oheight = height||''
       }
     }
     const videoList = warpContent.match(/<video[^]+<\/video>/g) || []
@@ -225,13 +228,13 @@ export const previewHtml = (ariticleArray) => {
     return ''
   }
   const makeP = (section) => {
-    return `<p>${section.content}</p>`
+    return `<p class="article-font"> ${section.content}</p>`
   }
   const makeImg = (section) => {
-    return `<p><img src=${section.content} owidth=${section.width} oheight=${section.height}></p>`
+    return `<p><img class ="article-image" src=${section.content} owidth=${section.width} oheight=${section.height}></p>`
   }
   const makeVideo = (section) => {
-    return `<p><video src=${section.content} controls poster=${section.videoImg} owidth=${section.width} oheight=${section.height}></video></p>`
+    return `<p><video class ="article-video" src=${section.content} controls poster=${section.videoImg} owidth=${section.width} oheight=${section.height}></video></p>`
   }
   const generateHtml = (section) => {
     const EnumType = {
