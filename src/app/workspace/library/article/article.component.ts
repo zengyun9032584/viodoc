@@ -3,9 +3,9 @@ import { beforeUrl, China, pageAnimation, tagAnimation, TreeNode } from '../../.
 import NProgress from 'nprogress';
 import { HttpService } from '../../../common/http.service';
 import { WorkspaceService } from '../../../workspace/workspace.service';
-import { Router,, ActivatedRoute, ParamMap } from '@angular/router'
+import { Router, ActivatedRoute, ParamMap } from '@angular/router'
 import wangEditor from 'yushk'
-import { parseHtmlToJson, previewHtml } from '../../../common/assist'
+import { parseHtmlToJson, previewHtml, parseJsonHtml } from '../../../common/assist'
 import 'rxjs/add/operator/switchMap';
 
 @Component({
@@ -25,7 +25,7 @@ export class ArticleComponent implements OnInit {
 
     // editor  
     editor: any;
-    articleTitle = "详细介绍如何预防感冒";
+    articleTitle = '';
     editorContent: any;
     setEditorContent = ''
     editForm = {
@@ -58,8 +58,11 @@ export class ArticleComponent implements OnInit {
     jobTitle
 
     // preview html
-    previewhtml: any
+    previewhtmldata: any
 
+    //editor 草稿
+    contentId='';
+    articleId = '';
 
     constructor(private http: HttpService, 
         private myService: WorkspaceService,
@@ -69,21 +72,24 @@ export class ArticleComponent implements OnInit {
         // NProgress.start();
         this.checklogin()
         //  读取文章id
-        let id = this.route.snapshot.paramMap.get('id')
-        const reg=/^[0-9]*$/
-        if(id.match(reg)&& id !=='0'){
-          this.getDraftDetail(id)
-        } 
+      
       
     }
     
     
    ngOnInit() {
+    let id = this.route.snapshot.paramMap.get('id')
+    const reg=/^[0-9]*$/
+    if(id.match(reg)&& id !=='0'){
+      this.getDraftDetail(id)
+    }else{
+        this.createEditor();
+    } 
     this.getProfile(this.userId)
+    this.files = this.http.files;
     this.http.currentSelectedPoint().subscribe((value: any)=>{
-        this.files = value
+        this.files = value;
     });
-        
     }
 
 
@@ -139,8 +145,6 @@ export class ArticleComponent implements OnInit {
         ]
 
         editor.customConfig.onchange = (html) => {
-
-            // _this.editorContent = html
             var json = editor.txt.getJSON()
             var jsonStr = JSON.stringify(json)
             _this.getjson(html)
@@ -149,7 +153,7 @@ export class ArticleComponent implements OnInit {
         editor.create()
         // 编辑文章 设置编辑器内容
         if(this.setEditorContent!==''){
-            this.editorContent = this.setEditorContent
+            
             editor.txt.html(this.setEditorContent)
         }
         this.editor = editor
@@ -245,7 +249,7 @@ export class ArticleComponent implements OnInit {
                     body: form
                 })
                 var a = JSON.parse(data._body)
-                this.editor.cmd.do('insertHTML', `<p class="article-image"><img  src=${a.picURL} owidth=${width} oheight=${height}></p>`)
+                this.editor.cmd.do('insertHTML', `<p><img  src=${a.picURL} owidth=${width} oheight=${height}></p>`)
             } catch (error) {
                 this.msgs = [];
                 this.msgs.push({ severity: 'error', summary: '上传图片失败', detail: `${error}` });
@@ -266,7 +270,7 @@ export class ArticleComponent implements OnInit {
                 const height = readerFile.height
                 var video = JSON.parse(data._body)
                 this.editor.cmd.do('insertHTML',
-                    `<p class="article-video" ><video  src=${video.videoURL} poster=${video.videoPICURL} controls owidth=${width} oheight=${height}></video></p>`)
+                    `<p><video  src=${video.videoURL} poster=${video.videoPICURL} controls owidth=${width} oheight=${height}></video></p>`)
             })
         } catch (err) {
             this.msgs = [];
@@ -338,11 +342,10 @@ export class ArticleComponent implements OnInit {
      * @stable
     */
     getPrewviewHtml(e:any) {
-        // this.display = true;
         var data: any = document.getElementById('preview-html')
         data.contentWindow.document.getElementById('title').innerText = this.articleTitle
         var str = '';
-        // this.selectedFiles = ['1','111']
+        // this.selectedFiles = [{label:'头部'},{label:'编的'}]
         for (let i = 0; i < this.selectedFiles.length; i++) {
             str += `<span>${this.selectedFiles[i].label}</span>`
         }
@@ -352,10 +355,10 @@ export class ArticleComponent implements OnInit {
         data.contentWindow.document.getElementById('jobTitle').innerText += this.jobTitle;
         data.contentWindow.document.getElementById('articletag').innerHTML += str;
         data.contentWindow.document.getElementById('content').innerHTML += this.editorContent
-
+       
         var html: any = document.getElementsByClassName('preview-layer')
-        this.previewhtml = `<!DOCTYPE html> <html> <head>${data.contentWindow.document.head.innerHTML}</head> <body> ${data.contentWindow.document.body.innerHTML} </body> </html>`
-        console.log(this.previewhtml)
+        this.previewhtmldata = `<!DOCTYPE html> <html> <head>${data.contentWindow.document.head.innerHTML}</head> <body> ${data.contentWindow.document.body.innerHTML} </body> </html>`
+        console.log(this.previewhtmldata)
         if(e===1){
             html[0].style.display = 'block';
         }
@@ -376,6 +379,7 @@ export class ArticleComponent implements OnInit {
         data.contentWindow.document.getElementById('jobTitle').innerText = '';
         data.contentWindow.document.getElementById('articletag').innerHTML = '';
         data.contentWindow.document.getElementById('content').innerHTML = '';
+        data.contentWindow.document.getElementById('appfunc').innerHTML = '';
     }
 
     /**
@@ -385,23 +389,36 @@ export class ArticleComponent implements OnInit {
     */
     async saveAsDraft() {
         try {
-            // let tags = []
-            // for (let i = 0; i < this.selectedFiles.length; i++) {
-            //     tags.push(String(this.selectedFiles[i].data))
-            // }
-            let tags = ['1','111']
+            let tags = []
+            for (let i = 0; i < this.selectedFiles.length; i++) {
+                tags.push(String(this.selectedFiles[i].data))
+            }
             this.editForm.title = this.articleTitle
             this.editForm.selectedCategoryIds = tags
-            await this.verify()
+
+            if( this.verify() ){
+                return
+            } 
             const {
                 title: title,
                 richJson: editorContent,
                 summary: breviary,
                 selectedCategoryIds: tag
             } = this.editForm
-            let params = { title, content: JSON.stringify(editorContent), breviary, tag }
+            var params
+            if(this.contentId===''){
+                params =  { title, 
+                    content: JSON.stringify(editorContent), 
+                    breviary, tag,
+                    articleId:Number(this.articleId) }
+                
+            }else{
+                params ={ title, 
+                    content: JSON.stringify(editorContent), 
+                    breviary, tag,
+                    articleId:Number(this.articleId) }
+            }
             await this.saveArticle(params)
-            debugger
             this.msgs = [];
             this.msgs.push({ severity: 'scuucess', summary: '保存为草稿成功', detail: `` });
             this.router.navigateByUrl("workspace/draft")
@@ -411,33 +428,51 @@ export class ArticleComponent implements OnInit {
         }
     }
 
+    /**
+ *  保存 并发布
+ *
+ * @stable
+*/
     async saveAsDeploy() {
         try {
             this.getPrewviewHtml(2)
-            let tags = ['1','111']
-            // for(let i=0;i<this.selectedFiles.length;i++){
-            //     tags.push(String (this.selectedFiles[i].data))
-            // }
+            let tags = []
+            for(let i=0;i<this.selectedFiles.length;i++){
+                tags.push(String (this.selectedFiles[i].data))
+            }
             this.editForm.title = this.articleTitle
             this.editForm.selectedCategoryIds = tags
-            this.editForm.htmlUrl = this.previewhtml
-            await this.verify()
+            this.editForm.htmlUrl = this.previewhtmldata
+            if( this.verify() ){
+                return
+            } 
             const {
                     title,
-                        richJson: articleContent,
-                        summary: breviary,
-                        selectedCategoryIds: tag,
-                        htmlUrl: htmlUrl
+                    richJson: articleContent,
+                    summary: breviary,
+                    selectedCategoryIds: tag,
+                    htmlUrl: htmlUrl
                 } = this.editForm
-            let params = { title, content: JSON.stringify(articleContent), breviary, tag, htmlUrl }
+                var params
+                //新建文章
+                if(this.contentId===''){
+                    params = { title, content: JSON.stringify(articleContent),
+                        breviary, tag, htmlUrl,
+                        articleId:Number(this.articleId) }
+                }else{
+                // 编辑保存文章    
+                    params = { title, content: JSON.stringify(articleContent),
+                        breviary, tag, htmlUrl,contentId:this.contentId,
+                        articleId:Number(this.articleId) }
+                }
             await this.saveAndPublish(params)
             this.msgs = [];
-            debugger
             this.msgs.push({ severity: 'scuucess', summary: '发布成功', detail: `` });
             this.router.navigateByUrl("workspace/article-list")
         } catch (e) {
             this.msgs = [];
             this.msgs.push({ severity: 'error', summary: '发布失败', detail: `${e}` });
+            return
         }
     }
 
@@ -455,13 +490,13 @@ export class ArticleComponent implements OnInit {
             if (!richJson) {
                 throw new Error('请输入文章内容')
             }
-            debugger
             if (selectedCategoryIds.length === 0) {
                 throw new Error('请输选择文章标签')
             }
         }catch(err){
             this.msgs = [];
             this.msgs.push({ severity: 'error', summary: '发布失败', detail: `${err}` });
+            return 1
         }
         
     }
@@ -474,23 +509,28 @@ export class ArticleComponent implements OnInit {
              articleID: Number(articleID)
            })
          )
-         debugger
          const content = JSON.parse(data._body).articleDetail.content;
          this.articleTitle = JSON.parse(data._body).articleDetail.title;
-         var tag = JSON.parse(data._body).articleDetail.tag
+         var tag = JSON.parse(data._body).articleDetail.subject
          for (let i=0; i<tag.length;i++){
-             var a:any ={label:tag[i]}
+             var a:any ={label:tag[i].nodeName,data:tag[i].nodeId}
              this.selectedFiles.push(a)
-             debugger
          }
-         this.setEditorContent = previewHtml(JSON.parse(content))
+         this.contentId = JSON.parse(data._body).articleDetail.contentId
+         this.articleId = JSON.parse(data._body).articleDetail.articleId
+
+         // 获取设置预览 html
+         this.setEditorContent = parseJsonHtml(JSON.parse(content))
+         this.editorContent = previewHtml(JSON.parse(content))
+         // 获取发布html
+         this.editForm.richJson = JSON.parse(content);
+         //创建编辑器
          this.createEditor()
         }catch(error){
             this.msgs = [];
             this.msgs.push({ severity: 'error', summary: '获取草稿失败', detail: `${error}` });
             this.createEditor()
         }
-             
     }
 
     // 保存为草稿
@@ -536,3 +576,42 @@ export class ArticleComponent implements OnInit {
 
 
 }
+
+// function  IsApp(e:any){
+//     var add
+//     if(e.collection){
+//         add = '../../../assets/img/addbefore.jpg';
+//     }else{
+//         add = '../../../assets/img/add.jpg';
+//     }
+//     var appitem = `
+//     <div style="display:inline-block;vertical-align:middle; float:left; " >
+//      <img width="30px" height:="30px" src='../../../assets/img/see.jpg'>
+//      <span style="position:relative;top:-10px" >${e.browse}</span>
+//     </div>
+//     <div style="display: inline-block;vertical-align:middle " >
+//      <img width="30px" height:="30px" src='../../../assets/img/like.jpg'>
+//      <span  style="position:relative;top:-10px" >${e.like}</span>
+//     </div>
+//     <div style="display:inline-block;vertical-align:middle; float:right " >
+//      <img width="30px" height:="30px" src=${add}>
+//     </div>
+//     <div> 
+//     <button style="
+//     width: 120px;
+//     height: 30px;
+//     margin: 20px 10px;
+//     font-size: 14px;
+//     color:#fff;
+//     background-color:#2399e5;
+//     border-radius: 20px;">赞&nbsp赏</button>
+//     </div>
+//      `
+//     var oDiv = document.createElement('div');
+//     oDiv.id = 'appfunc'
+//     oDiv.setAttribute('style','padding:15px;text-align:center')
+//     oDiv.innerHTML = appitem;
+//     data.contentWindow.document.body.appendChild(oDiv);
+// }
+// var info = {browse:3333,like:1111,collection:false}
+// IsApp(info)

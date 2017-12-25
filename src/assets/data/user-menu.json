@@ -7,7 +7,7 @@
                 "name": "新建文章",
                 "icon": "fa-arrows",
                 "link": "article/0",
-                "flag":"0"
+                "flag":"1"
             },
             {
                 "name": "我的文库",
@@ -32,7 +32,7 @@
             {
                 "name": "直播列表",
                 "link": "livelist",
-                "flag":"0"
+                "flag":"1"
             },
             {
                 "name":"创建直播",

@@ -1,7 +1,7 @@
 <div class="login-page">
     <div class="login-form">
       <div class="login-form__left">
-        <img width="140px" src="../assets/img/login_logo.jpg" alt="">
+        <img width="140px" height="160px" src="../assets/img/login_logo.jpg" alt="">
       </div>
       <div *ngIf="pagestatus==1" class="login-form__right" >
         <h3 style=" font-size: 30px;margin-bottom: 20px;font-weight: 500;
@@ -23,13 +23,13 @@
             {{ disableSubmit ? '登录中...' : '登 录'}}
           </button> -->
         </div>
-        <div class="login-form-item">
+        <!-- <div class="login-form-item">
        <ul>
          <li (click)="changepage(2)">
            立即注册
          </li>
        </ul>
-        </div>
+        </div> -->
 
       </div>
       <div *ngIf="pagestatus==2" class="login-form__right" >

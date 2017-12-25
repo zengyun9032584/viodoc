@@ -41,10 +41,8 @@ export class HttpService {
     private tree = new Array<any>();
     public files = new Array<any>();
 
-
     private selectdata:Subject<any> = new Subject<any>();
 
-  
 
   constructor(private http: Http,private httpClient: HttpClient) {
     this.http = http;
@@ -339,7 +337,6 @@ async getIllTag() {
       await this.gettraverse(this.tree, this.files)
       this.setSelectedPoint(this.files)
   } catch (error) {
-     
     // this.msgs = [];
       // this.msgs.push({ severity: 'error', summary: '获取标签列表失败', detail: `${error}` });
   }

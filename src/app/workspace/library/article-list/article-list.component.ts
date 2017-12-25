@@ -113,7 +113,6 @@ export class ArticleListComponent implements OnInit {
           articleID: Number(articleID)
         })
       )
-      debugger
       const a = JSON.parse(res._body).articleDetail
       this.getPrewviewHtml(a)
     } catch(err){
@@ -146,8 +145,6 @@ export class ArticleListComponent implements OnInit {
      * @stable
     */
     getPrewviewHtml(e:any) {
-      // this.display = true;
-      debugger
       var data: any = document.getElementById('preview-html')
       data.contentWindow.document.getElementById('title').innerText = e.title
       var str = '';

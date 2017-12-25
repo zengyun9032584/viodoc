@@ -139,10 +139,11 @@ export const parseHtmlToJson = (originHtml) => {
     const { type } = maketTypeAndAttribute(pnode)
 
     let warpContent = pnode.replace('<p>', '')
-        warpContent = warpContent.replace('<br>', '')
-    if(type ===1){
-      warpContent = warpContent.replace(/<(.*?)>|&nbsp;/g,'')
-    }
+        warpContent = warpContent.replace(/<br>|&nbsp;/g,'')
+    // if(type ===1){
+    //   warpContent = warpContent.replace(/<(.*?)>|&nbsp;/g,'')
+    // }
+    debugger
     let contentValue = htmlDecode(warpContent)
     let owidth = ''
     let oheight = ''
@@ -159,8 +160,8 @@ export const parseHtmlToJson = (originHtml) => {
         errorText = ''
         const { width, height, src } = lowGetImgAttribute(imgList[0])
         contentValue = src
-        owidth = width||''
-        oheight = height||''
+        owidth = width
+        oheight = height
       }
     }
     const videoList = warpContent.match(/<video[^]+<\/video>/g) || []
@@ -235,6 +236,44 @@ export const previewHtml = (ariticleArray) => {
   }
   const makeVideo = (section) => {
     return `<p><video class ="article-video" src=${section.content} controls poster=${section.videoImg} owidth=${section.width} oheight=${section.height}></video></p>`
+  }
+  const generateHtml = (section) => {
+    const EnumType = {
+      text: 1, img: 2, video: 3
+    }
+    let res = ''
+    switch (section.contentType) {
+      case EnumType.text:
+        res = makeP(section)
+        break
+      case EnumType.img:
+        res = makeImg(section)
+        break
+      case EnumType.video:
+        res = makeVideo(section)
+        break
+    }
+    return res
+  }
+  return ariticleArray.reduce((accurate, node, cc) => {
+    accurate += generateHtml(node)
+    return accurate
+  }, '')
+}
+
+
+export const parseJsonHtml = (ariticleArray) => {
+  if (!Array.isArray(ariticleArray)) {
+    return ''
+  }
+  const makeP = (section) => {
+    return `<p> ${section.content}</p>`
+  }
+  const makeImg = (section) => {
+    return `<p><img src=${section.content} owidth=${section.width} oheight=${section.height}></p>`
+  }
+  const makeVideo = (section) => {
+    return `<p><video src=${section.content} controls poster=${section.videoImg} owidth=${section.width} oheight=${section.height}></video></p>`
   }
   const generateHtml = (section) => {
     const EnumType = {

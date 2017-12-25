@@ -37,7 +37,7 @@ export class CreateliveComponent implements OnInit {
   
   constructor(private httpservice: HttpService, private myService: WorkspaceService, ) {
     // this.gettree()
-    this.getIllTag()
+    // this.getIllTag()
   }
 
   ngOnInit() {

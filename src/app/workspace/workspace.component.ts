@@ -139,23 +139,21 @@ export class WorkspaceComponent implements OnInit {
   /************************* 退出登录 ********************************/
   loginOut() {
     try{
-    //   const json={
-    //     body:JSON.stringify({
-    //       header: this.http.makeBodyHeader()
-    //     })
-    //   }
-    //   debugger
-    //   this.http.newpost('api/viodoc/signOut', JSON.stringify(json))
-    //   this.realname = '未登录';  
+      const json={
+        body:JSON.stringify({
+          header: this.http.makeBodyHeader()
+        })
+      }
+      debugger
+      this.http.newpost('api/viodoc/signOut', JSON.stringify(json))
+      this.realname = '未登录';  
       this.http.storeremove("ffys_user_info")
       this.http.storeremove("ffys_user_token")
-      // this.router.navigateByUrl("login");
-      location.href='http://dr.viodoc.com/#/login'
-
+      this.router.navigateByUrl("login");
+      // location.href='http://dr.viodoc.com/#/login'
     } catch(err){
       console.log("登出失败"+err)
     }
-
   }
   
 }

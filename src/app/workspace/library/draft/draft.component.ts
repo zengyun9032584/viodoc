@@ -64,7 +64,6 @@ checklogin(){
 //搜索文章
   searchActicle(e:any){
     var searchdata=[]
-    debugger
     if(e.keyCode ===13){
       this.draftList.forEach((pre,index)=>{
         if(pre.title.indexOf(e.target.value)>-1 ){

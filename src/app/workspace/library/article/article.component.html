@@ -29,7 +29,6 @@
                     <i class="fa fa-times" aria-hidden="true" (click)="del(file)"></i>
             </li>
         </div> 
-        
         <div>
             <input pInputText style="width:65%" (keyup)="searchActicletag()" [(ngModel)]="searchtag" />
             <button pButton type="button" (click)="searchActicletag()" label="搜索"></button>
@@ -37,8 +36,6 @@
                 <li (click)="nodeSelect(node)" *ngFor="let node of taglist "> {{node.label}}</li>
             </ul>
         </div>
-      
-      
        
         <div>
             <p-tree [value]="files" selectionMode="multiple" 
