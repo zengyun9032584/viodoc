@@ -143,7 +143,6 @@ export const parseHtmlToJson = (originHtml) => {
     // if(type ===1){
     //   warpContent = warpContent.replace(/<(.*?)>|&nbsp;/g,'')
     // }
-    debugger
     let contentValue = htmlDecode(warpContent)
     let owidth = ''
     let oheight = ''
@@ -154,7 +153,9 @@ export const parseHtmlToJson = (originHtml) => {
         errorText = '一行只允许有一张图片'
       } else if (warpContent.replace(imgList[0], '').trim().length) {
         error = true
-        errorText = '图片不允许和文字等内容同行'
+        debugger
+        // warpContent=''
+        errorText = '图片不允许和文字等内容同行,插入图片后请输入回车'
       } else {
         error = false
         errorText = ''
@@ -171,7 +172,7 @@ export const parseHtmlToJson = (originHtml) => {
         errorText = '一行只允许有一个视频'
       } else if (warpContent.replace(videoList[0], '').trim().length) {
         error = true
-        errorText = '视频不允许和文字等内容同行'
+        errorText = '视频不允许和文字等内容同行,插入图片后请输入回车'
       } else {
         error = false
         errorText = ''

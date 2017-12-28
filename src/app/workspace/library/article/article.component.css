@@ -136,7 +136,7 @@ div.preview-layer .preview-phone{
 	position: relative;
 	width: 410px;
 	height: 840px;
-	background: url(/assets/image/iphone-bg.png) no-repeat no-repeat;
+	background: url(/assets/img/iphone-bg.png) no-repeat no-repeat;
 	z-index: 9999;
 }
 

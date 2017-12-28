@@ -72,7 +72,7 @@ export class ArticleComponent implements OnInit {
         // NProgress.start();
         this.checklogin()
         //  读取文章id
-      
+        this.http.getIllTag();
       
     }
     
@@ -131,11 +131,11 @@ export class ArticleComponent implements OnInit {
             'strikeThrough',  // 删除线
             'foreColor',  // 文字颜色
             'backColor',  // 背景颜色
-            'link',  // 插入链接
+            // 'link',  // 插入链接
             'list',  // 列表
             'justify',  // 对齐方式
             // 'quote',  // 引用
-            'emoticon',  // 表情
+            // 'emoticon',  // 表情
             // 'image',  // 插入图片
             'table',  // 表格
             // 'video',  // 插入视频
@@ -296,18 +296,21 @@ export class ArticleComponent implements OnInit {
     }
 
     nodeSelect(event: any) {
-       
         if (this.selectedFiles.length < 3) {
             if(event.node){
                 for (let i = 0; i < this.selectedFiles.length; i++) {
-                        if (event.node.label === this.selectedFiles[i].label) {
+                        if (event.node.data === this.selectedFiles[i].data) {
+                            this.msgs = [];
+                            this.msgs.push({ severity: 'warning', summary: '已经选过了,老铁', detail: `` });
                             return
                         }
                     }
                 this.selectedFiles.push(event.node);
             }else{
                 for (let i = 0; i < this.selectedFiles.length; i++) {
-                    if (event.label === this.selectedFiles[i].label) {
+                    if (event.data === this.selectedFiles[i].data) {
+                        this.msgs = [];
+                        this.msgs.push({ severity: 'warning', summary: '已经选过了,老铁', detail: `` });
                         return
                     }
                 }
@@ -326,6 +329,7 @@ export class ArticleComponent implements OnInit {
         if(this.searchtag){
         this.taglist = this.http.traverse(this.files,this.searchtag,this.taglist)
         }
+        debugger
     }
 
     del(event: any) {
@@ -379,7 +383,6 @@ export class ArticleComponent implements OnInit {
         data.contentWindow.document.getElementById('jobTitle').innerText = '';
         data.contentWindow.document.getElementById('articletag').innerHTML = '';
         data.contentWindow.document.getElementById('content').innerHTML = '';
-        data.contentWindow.document.getElementById('appfunc').innerHTML = '';
     }
 
     /**
@@ -435,15 +438,19 @@ export class ArticleComponent implements OnInit {
 */
     async saveAsDeploy() {
         try {
-            this.getPrewviewHtml(2)
+            
+            document.getElementById('pushbtn').setAttribute('disabled',"true")
             let tags = []
             for(let i=0;i<this.selectedFiles.length;i++){
                 tags.push(String (this.selectedFiles[i].data))
             }
             this.editForm.title = this.articleTitle
             this.editForm.selectedCategoryIds = tags
+            this.getPrewviewHtml(2)
             this.editForm.htmlUrl = this.previewhtmldata
+            
             if( this.verify() ){
+                document.getElementById("pushbtn").removeAttribute("disabled");
                 return
             } 
             const {
@@ -467,11 +474,14 @@ export class ArticleComponent implements OnInit {
                 }
             await this.saveAndPublish(params)
             this.msgs = [];
+            document.getElementById("pushbtn").removeAttribute("disabled");
             this.msgs.push({ severity: 'scuucess', summary: '发布成功', detail: `` });
             this.router.navigateByUrl("workspace/article-list")
         } catch (e) {
             this.msgs = [];
+            debugger
             this.msgs.push({ severity: 'error', summary: '发布失败', detail: `${e}` });
+         
             return
         }
     }
@@ -484,9 +494,16 @@ export class ArticleComponent implements OnInit {
             selectedCategoryIds
         } = this.editForm
         try{
-            if (!title) {
+            debugger
+            var regx = /^[\u4E00-\u9FA5A-Za-z0-9,?.]+$/
+            var reg = /^[ ]+$/
+            if (!title || reg.test(title)) {
                 throw new Error('请输入标题')
             }
+            // if( reg.test(title) ) {
+            //     debugger
+            //     throw new Error('标题格式错误')
+            // }
             if (!richJson) {
                 throw new Error('请输入文章内容')
             }
@@ -495,6 +512,7 @@ export class ArticleComponent implements OnInit {
             }
         }catch(err){
             this.msgs = [];
+            this.closePreview()
             this.msgs.push({ severity: 'error', summary: '发布失败', detail: `${err}` });
             return 1
         }
@@ -577,41 +595,3 @@ export class ArticleComponent implements OnInit {
 
 }
 
-// function  IsApp(e:any){
-//     var add
-//     if(e.collection){
-//         add = '../../../assets/img/addbefore.jpg';
-//     }else{
-//         add = '../../../assets/img/add.jpg';
-//     }
-//     var appitem = `
-//     <div style="display:inline-block;vertical-align:middle; float:left; " >
-//      <img width="30px" height:="30px" src='../../../assets/img/see.jpg'>
-//      <span style="position:relative;top:-10px" >${e.browse}</span>
-//     </div>
-//     <div style="display: inline-block;vertical-align:middle " >
-//      <img width="30px" height:="30px" src='../../../assets/img/like.jpg'>
-//      <span  style="position:relative;top:-10px" >${e.like}</span>
-//     </div>
-//     <div style="display:inline-block;vertical-align:middle; float:right " >
-//      <img width="30px" height:="30px" src=${add}>
-//     </div>
-//     <div> 
-//     <button style="
-//     width: 120px;
-//     height: 30px;
-//     margin: 20px 10px;
-//     font-size: 14px;
-//     color:#fff;
-//     background-color:#2399e5;
-//     border-radius: 20px;">赞&nbsp赏</button>
-//     </div>
-//      `
-//     var oDiv = document.createElement('div');
-//     oDiv.id = 'appfunc'
-//     oDiv.setAttribute('style','padding:15px;text-align:center')
-//     oDiv.innerHTML = appitem;
-//     data.contentWindow.document.body.appendChild(oDiv);
-// }
-// var info = {browse:3333,like:1111,collection:false}
-// IsApp(info)

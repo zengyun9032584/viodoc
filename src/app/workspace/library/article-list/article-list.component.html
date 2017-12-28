@@ -1,9 +1,7 @@
-<p-growl [(value)]="msgs" life="2000"></p-growl>
+<p-growl [(value)]="msgs" life="5000"></p-growl>
 <div [@pageAnimation]="'in'">
   <my-breadcrumb name1="我的文库" name2="文章列表">
-     
   </my-breadcrumb>
-  <!-- <span  >sasdasd</span>  -->
   <input  (keyup)="searchActicle($event)" pInputText type="text" id="searcharticle" />
 </div>
 

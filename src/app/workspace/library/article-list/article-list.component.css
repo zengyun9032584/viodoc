@@ -40,8 +40,8 @@
 }
 #searcharticle{
     float: right;
-    margin-top: -4%;
-    margin-right: 3%;
+    margin-top: -46px;
+    margin-right: 50px;
     width: 20%;
 }
 
@@ -81,7 +81,7 @@ div.preview-layer .preview-phone{
 	position: relative;
 	width: 410px;
 	height: 840px;
-	background: url(/assets/image/iphone-bg.png) no-repeat no-repeat;
+	background: url(/assets/img/iphone-bg.png) no-repeat no-repeat;
 	z-index: 9999;
 }
 

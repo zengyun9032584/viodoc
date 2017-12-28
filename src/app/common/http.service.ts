@@ -334,7 +334,7 @@ storeremove (key) {
 async getIllTag() {
   try {
       this.tree = await this.getsubjectlist(0)
-      await this.gettraverse(this.tree, this.files)
+      await this.gettraverse(this.tree, this.files,{label:'',data:'',parent:0})
       this.setSelectedPoint(this.files)
   } catch (error) {
     // this.msgs = [];
@@ -342,16 +342,17 @@ async getIllTag() {
   }
 }
 
-async gettraverse(e: any[], file: any[]) {
+async gettraverse(e: any[], file: any[],parent) {
   for (let i = 0; i < e.length; i++) {
       var data:any = {};
       data.label = e[i].nodeName
       data.data = e[i].nodeId
+      data.parent = parent
       data.children = new Array<any>();
       e[i].chilren = await this.getsubjectlist(e[i].nodeId)
       file[i] = data
       if (e[i].chilren.length > 0) {
-          this.gettraverse(e[i].chilren, file[i].children)
+          this.gettraverse(e[i].chilren, file[i].children,file[i])
       } else {
           break
       }
