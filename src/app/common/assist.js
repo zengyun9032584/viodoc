@@ -132,14 +132,15 @@ export const parseHtmlToJson = (originHtml) => {
   const resJsonList = []
   let error = false
   let errorText = ''
-  let processHtml = copyHtml.split('</p>')
+  let reg =/<br>|<[/]p>/
+  let processHtml = copyHtml.split(reg)
   processHtml.forEach(ptext => {
     let pnode = ptext
     let videoImg = ''
     const { type } = maketTypeAndAttribute(pnode)
 
     let warpContent = pnode.replace('<p>', '')
-        warpContent = warpContent.replace(/<br>|&nbsp;/g,'')
+        // warpContent = warpContent.replace(/<br>|&nbsp;/g,'')
     // if(type ===1){
     //   warpContent = warpContent.replace(/<(.*?)>|&nbsp;/g,'')
     // }

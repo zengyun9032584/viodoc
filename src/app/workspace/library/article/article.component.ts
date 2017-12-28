@@ -26,7 +26,7 @@ export class ArticleComponent implements OnInit {
     // editor  
     editor: any;
     articleTitle = '';
-    editorContent: any;
+    editorContent='';
     setEditorContent = ''
     editForm = {
         title: '',
@@ -124,24 +124,24 @@ export class ArticleComponent implements OnInit {
         editor = new wangEditor('#editormenu', div)
         editor.customConfig.zIndex = 100
         editor.customConfig.menus = [
-            'head',  // 标题
-            'bold',  // 粗体
-            'italic',  // 斜体
-            'underline',  // 下划线
-            'strikeThrough',  // 删除线
-            'foreColor',  // 文字颜色
-            'backColor',  // 背景颜色
+            // 'head',  // 标题
+            // 'bold',  // 粗体
+            // 'italic',  // 斜体
+            // 'underline',  // 下划线
+            // 'strikeThrough',  // 删除线
+            // 'foreColor',  // 文字颜色
+            // 'backColor',  // 背景颜色
             // 'link',  // 插入链接
-            'list',  // 列表
-            'justify',  // 对齐方式
+            // 'list',  // 列表
+            // 'justify',  // 对齐方式
             // 'quote',  // 引用
             // 'emoticon',  // 表情
             // 'image',  // 插入图片
-            'table',  // 表格
+            // 'table',  // 表格
             // 'video',  // 插入视频
             // 'code',  // 插入代码
-            'undo',  // 撤销
-            'redo'  // 重复
+            // 'undo',  // 撤销
+            // 'redo'  // 重复
         ]
 
         editor.customConfig.onchange = (html) => {
@@ -460,6 +460,11 @@ export class ArticleComponent implements OnInit {
                     selectedCategoryIds: tag,
                     htmlUrl: htmlUrl
                 } = this.editForm
+                debugger
+                for(let i=0 ;i<articleContent.length;i++){
+                    articleContent[i].content = articleContent[i].content.replace(/<(.*?)>/g,'')
+                }
+                debugger
                 var params
                 //新建文章
                 if(this.contentId===''){
@@ -479,7 +484,6 @@ export class ArticleComponent implements OnInit {
             this.router.navigateByUrl("workspace/article-list")
         } catch (e) {
             this.msgs = [];
-            debugger
             this.msgs.push({ severity: 'error', summary: '发布失败', detail: `${e}` });
          
             return
@@ -494,22 +498,17 @@ export class ArticleComponent implements OnInit {
             selectedCategoryIds
         } = this.editForm
         try{
-            debugger
             var regx = /^[\u4E00-\u9FA5A-Za-z0-9,?.]+$/
             var reg = /^[ ]+$/
             if (!title || reg.test(title)) {
                 throw new Error('请输入标题')
             }
-            // if( reg.test(title) ) {
-            //     debugger
-            //     throw new Error('标题格式错误')
-            // }
             if (!richJson) {
                 throw new Error('请输入文章内容')
             }
-            if (selectedCategoryIds.length === 0) {
-                throw new Error('请输选择文章标签')
-            }
+            // if (selectedCategoryIds.length === 0) {
+            //     throw new Error('请输选择文章标签')
+            // }
         }catch(err){
             this.msgs = [];
             this.closePreview()
