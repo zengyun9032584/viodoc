@@ -115,23 +115,6 @@ export class CreateliveComponent implements OnInit {
     }
   }
 
-
-  // async getsubjectall() {
-  //   const json = {
-  //     header: this.httpservice.makeBodyHeader({}, false)
-  //   }
-  //   try {
-  //     const data: any = await this.httpservice.newpost('api/viodoc/getSubjectList', JSON.stringify(json))
-  //     var a = JSON.parse(data._body)
-  //     var tree = a.subjects;
-  //     debugger
-  //     return tree
-  //   } catch (error) {
-
-  //   }
-  // }
-
-
   gettree(){
     this.myService.getMenu(this.treeUrl)
     .then(

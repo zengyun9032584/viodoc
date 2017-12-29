@@ -32,6 +32,7 @@ import { error } from 'util';
 
 import {Subject} from "rxjs/Subject";
 import {Observable} from "rxjs/Observable";
+import { async } from '@angular/core/testing';
 
 @Injectable()
 export class HttpService {
@@ -47,6 +48,7 @@ export class HttpService {
   constructor(private http: Http,private httpClient: HttpClient) {
     this.http = http;
     this.getIllTag();
+    // this.getsubjectall()
    }
 
    public setSelectedPoint(data: any): void {
@@ -336,14 +338,16 @@ storeremove (key) {
 }
 
 async getIllTag() {
-  try {
-      this.tree = await this.getsubjectlist(0)
-      await this.gettraverse(this.tree, this.files,{label:'',data:'',parent:0})
-      this.setSelectedPoint(this.files)
-  } catch (error) {
-    // this.msgs = [];
-      // this.msgs.push({ severity: 'error', summary: '获取标签列表失败', detail: `${error}` });
-  }
+  // try {
+  //     const a = await this.getsubjectlist(0)
+  //     debugger
+  //     await this.gettraverse(a, this.files,{label:'',data:'',parent:0})
+  //     debugger
+  //     this.setSelectedPoint(this.files)
+  // } catch (error) {
+  //   // this.msgs = [];
+  //     // this.msgs.push({ severity: 'error', summary: '获取标签列表失败', detail: `${error}` });
+  // }
 }
 
 async gettraverse(e: any[], file: any[],parent) {
@@ -354,11 +358,13 @@ async gettraverse(e: any[], file: any[],parent) {
       data.parent = parent
       data.children = new Array<any>();
       e[i].chilren = await this.getsubjectlist(e[i].nodeId)
+      // data.children = e[i].chilren;
+      debugger
       file[i] = data
       if (e[i].chilren.length > 0) {
-          this.gettraverse(e[i].chilren, file[i].children,file[i])
+         this.gettraverse(e[i].chilren, file[i].children,file[i])
       } else {
-          break
+          continue
       }
   }
 }
@@ -378,5 +384,21 @@ async getsubjectlist(id: any) {
 
   }
 }
+
+  async getsubjectall() {
+    const json = {
+      header: this.makeBodyHeader({}),
+    }
+    try {
+      const data: any = await this.newpost('api/viodoc/getSubjectList', JSON.stringify(json))
+      var a = JSON.parse(data._body)
+      var tree = a.subjects;
+      debugger
+      return tree
+    } catch (error) {
+
+    }
+  }
+
 
 }
