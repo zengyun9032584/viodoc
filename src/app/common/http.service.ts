@@ -59,9 +59,11 @@ export class HttpService {
 
 
    getServerIP() {
-    console.log(environment.serviceUrl)
-    return environment.serviceUrl;
-    // return  'http://192.168.1.202:9500/'
+    // console.log(environment.serviceUrl)
+    // return environment.serviceUrl;
+    console.log('http://apisrv.viodoc.com:9500/')
+    
+    return  'http://apisrv.viodoc.com:9500/'
    }
 
 async newget(url: string) {
@@ -73,7 +75,7 @@ async newget(url: string) {
 };
 
 async newpost(url: string,json:any){
-  url = this.getServerIP()+url;
+    url = this.getServerIP()+url;
     console.log("http POST"+url)
     let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
     let options = new RequestOptions({ headers: headers,withCredentials:false });
@@ -101,6 +103,8 @@ request(url,config){
       }
   
     //   const reqUrl = `${url.includes('http') ? url : this.baseUrl + url}`
+    url = this.getServerIP()+url;
+    console.log("http request"+url)
     return this.http.request(url, reqInit)
                     .toPromise()
                     .then(response=>response)

@@ -251,7 +251,7 @@ async GetLiveDetails(e:any){
       const ext = file.name.substring(dotIndex + 1, file.name.length)
       const form:any = this.uploadImage(file, ext, width, height)
       try {
-      const data:any = await this.httpservice.request('http://viodoc.tpddns.cn:9500/api/viodoc/uploadPIC', {
+      const data:any = await this.httpservice.request('api/viodoc/uploadPIC', {
           body:form
         })
         var a = JSON.parse(data._body)

@@ -71,8 +71,6 @@ export class ArticleComponent implements OnInit {
         ) {
         // NProgress.start();
         this.checklogin()
-        //  读取文章id
-        this.http.getIllTag();
       
     }
     
@@ -86,10 +84,15 @@ export class ArticleComponent implements OnInit {
         this.createEditor();
     } 
     this.getProfile(this.userId)
-    this.files = this.http.files;
+ 
+
     this.http.currentSelectedPoint().subscribe((value: any)=>{
         this.files = value;
     });
+    // this.files = this.http.files;
+    if(this.files.length===0){
+        this.http.getIllTag();
+    }
     }
 
 
@@ -103,7 +106,12 @@ export class ArticleComponent implements OnInit {
         if (this.http.storeget('ffys_user_info')) {
             const userinfo: any = this.http.storeget('ffys_user_info')
             this.realname = userinfo.name;
-            this.userpic = userinfo.headImgPath;
+            if(userinfo.headImgPath===''){
+                this.userpic = '/assets/img/default.jpg'
+            }else{
+                this.userpic = userinfo.headImgPath;
+            }
+          
             this.userId = userinfo.userId;
             if (this.realname === "") {
                 this.router.navigateByUrl("login");
@@ -245,7 +253,7 @@ export class ArticleComponent implements OnInit {
             const ext: string = file.name.substring(dotIndex + 1, file.name.length)
             const form: any = this.uploadImage(file, ext, width, height)
             try {
-                const data: any = await this.http.request('http://viodoc.tpddns.cn:9500/api/viodoc/uploadPIC', {
+                const data: any = await this.http.request('api/viodoc/uploadPIC', {
                     body: form
                 })
                 var a = JSON.parse(data._body)
@@ -265,6 +273,7 @@ export class ArticleComponent implements OnInit {
             let dotIndex = file.name.lastIndexOf('.')
             const ext = file.name.substring(dotIndex + 1, file.name.length)
             this.uploadVideo(file, ext).then(async (data: any) => {
+                debugger
                 const readerFile: any = await this.readImageAttr(file)
                 const width = readerFile.width
                 const height = readerFile.height
@@ -290,7 +299,7 @@ export class ArticleComponent implements OnInit {
         form.append('firstPicExtName', '')
         form.append('videoFileName', `article_video_${new Date().getTime()}`)
         form.append('videoExtName', ext)
-        return this.http.request('http://viodoc.tpddns.cn:9500/api/viodoc/uploadVideo', {
+        return this.http.request('api/viodoc/uploadVideo', {
             body: form
         })
     }
