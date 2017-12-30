@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpService } from '../common/http.service';
-import { WorkspaceService } from '../workspace/workspace.service';
-import { pageAnimation, tagAnimation, LiveData,TreeNode } from '../common/public-data';
+import { HttpService } from '../../common/http.service';
+import { WorkspaceService } from '../workspace.service';
+import { pageAnimation, tagAnimation, LiveData,TreeNode } from '../../common/public-data';
 
 @Component({
   selector: 'app-treedemo',

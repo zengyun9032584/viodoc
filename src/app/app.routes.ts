@@ -1,4 +1,4 @@
-import {LoginComponent} from './login/login.component';
+import { LoginComponent } from './login/login.component';
 // import {PageNotFoundComponent} from './not-found.component'
 
 export const appRoutes = [

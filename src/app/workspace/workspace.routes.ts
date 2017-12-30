@@ -1,5 +1,5 @@
 import {WorkspaceComponent} from './workspace.component';
-import {PageNotFoundComponent} from '../not-found.component';
+import {PageNotFoundComponent} from './not-found.component';
 
 export const workspaceRoutes = [
   {

@@ -1,4 +1,4 @@
-import {NgModule} from '@angular/core';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
@@ -8,12 +8,12 @@ import {HttpModule, JsonpModule} from '@angular/http';
 import {WorkspaceComponent} from './workspace.component';
 import {workspaceRoutes} from './workspace.routes';
 
-import {PageNotFoundComponent} from '../not-found.component';
-
+import {PageNotFoundComponent} from './not-found.component';
+import {WorkspaceService} from './workspace.service';
 import {MyGoTopModule} from '../components/my-gotop/my-gotop';
 import {DialogModule, ButtonModule, InputTextModule} from 'primeng/primeng';
 import {SharedModule, AccordionModule, GrowlModule, TooltipModule} from 'primeng/primeng';
-// import { TreedemoComponent } from '.././treedemo/treedemo.component';
+import { TreedemoComponent } from './treedemo/treedemo.component';
 
 
 
@@ -33,7 +33,6 @@ import {SharedModule, AccordionModule, GrowlModule, TooltipModule} from 'primeng
     GrowlModule,         //  peimrNG msg提示
     TooltipModule,       //  Tooltip 提示
     MyGoTopModule,       //回到顶部组件
-    
     DialogModule,
     ButtonModule,
     InputTextModule,
@@ -42,10 +41,12 @@ import {SharedModule, AccordionModule, GrowlModule, TooltipModule} from 'primeng
   declarations: [
     WorkspaceComponent,
     PageNotFoundComponent,
-    // TreedemoComponent
+    TreedemoComponent
   ],
   providers: [
+    WorkspaceService
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class WorkspaceModule {
 }
